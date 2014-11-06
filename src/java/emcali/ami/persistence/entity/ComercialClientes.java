@@ -39,7 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ComercialClientes.findByDireccion", query = "SELECT c FROM ComercialClientes c WHERE c.direccion = :direccion"),
     @NamedQuery(name = "ComercialClientes.findByTelefono", query = "SELECT c FROM ComercialClientes c WHERE c.telefono = :telefono"),
     @NamedQuery(name = "ComercialClientes.findByMail", query = "SELECT c FROM ComercialClientes c WHERE c.mail = :mail"),
-    @NamedQuery(name = "ComercialClientes.findByFkAtributosEstados", query = "SELECT c FROM ComercialClientes c WHERE c.fkAtributosEstados = :fkAtributosEstados"),
     @NamedQuery(name = "ComercialClientes.findByCreadoPor", query = "SELECT c FROM ComercialClientes c WHERE c.creadoPor = :creadoPor"),
     @NamedQuery(name = "ComercialClientes.findByFechaCreacion", query = "SELECT c FROM ComercialClientes c WHERE c.fechaCreacion = :fechaCreacion"),
     @NamedQuery(name = "ComercialClientes.findByModificadoPor", query = "SELECT c FROM ComercialClientes c WHERE c.modificadoPor = :modificadoPor"),
@@ -79,10 +78,6 @@ public class ComercialClientes implements Serializable {
     private String mail;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FK_ATRIBUTOS_ESTADOS")
-    private long fkAtributosEstados;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CREADO_POR")
     private long creadoPor;
     @Basic(optional = false)
@@ -114,14 +109,13 @@ public class ComercialClientes implements Serializable {
         this.idClientes = idClientes;
     }
 
-    public ComercialClientes(Long idClientes, String nombreClientes, String tipoIdentificacion, String direccion, String telefono, String mail, long fkAtributosEstados, long creadoPor, Date fechaCreacion, long modificadoPor, Date fechaModificacion) {
+    public ComercialClientes(Long idClientes, String nombreClientes, String tipoIdentificacion, String direccion, String telefono, String mail, long creadoPor, Date fechaCreacion, long modificadoPor, Date fechaModificacion) {
         this.idClientes = idClientes;
         this.nombreClientes = nombreClientes;
         this.tipoIdentificacion = tipoIdentificacion;
         this.direccion = direccion;
         this.telefono = telefono;
         this.mail = mail;
-        this.fkAtributosEstados = fkAtributosEstados;
         this.creadoPor = creadoPor;
         this.fechaCreacion = fechaCreacion;
         this.modificadoPor = modificadoPor;
@@ -174,14 +168,6 @@ public class ComercialClientes implements Serializable {
 
     public void setMail(String mail) {
         this.mail = mail;
-    }
-
-    public long getFkAtributosEstados() {
-        return fkAtributosEstados;
-    }
-
-    public void setFkAtributosEstados(long fkAtributosEstados) {
-        this.fkAtributosEstados = fkAtributosEstados;
     }
 
     public long getCreadoPor() {
