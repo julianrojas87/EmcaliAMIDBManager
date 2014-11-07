@@ -126,7 +126,8 @@ public class IPTVAMIWebService {
                     }
                 }
             }
-            resp.put("data", consumos);
+            data.put("consumos", consumos);
+            resp.put("data", data);
         } catch (NullPointerException ex) {
             resp.put("message", "Invalid Telco user");
             resp.put("type", "error");
