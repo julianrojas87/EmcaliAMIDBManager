@@ -17,7 +17,6 @@ import javax.persistence.criteria.Root;
 import emcali.ami.persistence.entity.AtrFncsActvMedidores;
 import emcali.ami.persistence.entity.AtributosFuncionMedidores;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,27 +40,27 @@ public class AtributosFuncionMedidoresJpaController implements Serializable {
     }
 
     public void create(AtributosFuncionMedidores atributosFuncionMedidores) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (atributosFuncionMedidores.getAtrFncsActvMedidoresCollection() == null) {
-            atributosFuncionMedidores.setAtrFncsActvMedidoresCollection(new ArrayList<AtrFncsActvMedidores>());
+        if (atributosFuncionMedidores.getAtrFncsActvMedidoresList() == null) {
+            atributosFuncionMedidores.setAtrFncsActvMedidoresList(new ArrayList<AtrFncsActvMedidores>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<AtrFncsActvMedidores> attachedAtrFncsActvMedidoresCollection = new ArrayList<AtrFncsActvMedidores>();
-            for (AtrFncsActvMedidores atrFncsActvMedidoresCollectionAtrFncsActvMedidoresToAttach : atributosFuncionMedidores.getAtrFncsActvMedidoresCollection()) {
-                atrFncsActvMedidoresCollectionAtrFncsActvMedidoresToAttach = em.getReference(atrFncsActvMedidoresCollectionAtrFncsActvMedidoresToAttach.getClass(), atrFncsActvMedidoresCollectionAtrFncsActvMedidoresToAttach.getIdFuncionActivaMedidor());
-                attachedAtrFncsActvMedidoresCollection.add(atrFncsActvMedidoresCollectionAtrFncsActvMedidoresToAttach);
+            List<AtrFncsActvMedidores> attachedAtrFncsActvMedidoresList = new ArrayList<AtrFncsActvMedidores>();
+            for (AtrFncsActvMedidores atrFncsActvMedidoresListAtrFncsActvMedidoresToAttach : atributosFuncionMedidores.getAtrFncsActvMedidoresList()) {
+                atrFncsActvMedidoresListAtrFncsActvMedidoresToAttach = em.getReference(atrFncsActvMedidoresListAtrFncsActvMedidoresToAttach.getClass(), atrFncsActvMedidoresListAtrFncsActvMedidoresToAttach.getIdFuncionActivaMedidor());
+                attachedAtrFncsActvMedidoresList.add(atrFncsActvMedidoresListAtrFncsActvMedidoresToAttach);
             }
-            atributosFuncionMedidores.setAtrFncsActvMedidoresCollection(attachedAtrFncsActvMedidoresCollection);
+            atributosFuncionMedidores.setAtrFncsActvMedidoresList(attachedAtrFncsActvMedidoresList);
             em.persist(atributosFuncionMedidores);
-            for (AtrFncsActvMedidores atrFncsActvMedidoresCollectionAtrFncsActvMedidores : atributosFuncionMedidores.getAtrFncsActvMedidoresCollection()) {
-                AtributosFuncionMedidores oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionAtrFncsActvMedidores = atrFncsActvMedidoresCollectionAtrFncsActvMedidores.getFkAtrFncMedidores();
-                atrFncsActvMedidoresCollectionAtrFncsActvMedidores.setFkAtrFncMedidores(atributosFuncionMedidores);
-                atrFncsActvMedidoresCollectionAtrFncsActvMedidores = em.merge(atrFncsActvMedidoresCollectionAtrFncsActvMedidores);
-                if (oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionAtrFncsActvMedidores != null) {
-                    oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionAtrFncsActvMedidores.getAtrFncsActvMedidoresCollection().remove(atrFncsActvMedidoresCollectionAtrFncsActvMedidores);
-                    oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionAtrFncsActvMedidores = em.merge(oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionAtrFncsActvMedidores);
+            for (AtrFncsActvMedidores atrFncsActvMedidoresListAtrFncsActvMedidores : atributosFuncionMedidores.getAtrFncsActvMedidoresList()) {
+                AtributosFuncionMedidores oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListAtrFncsActvMedidores = atrFncsActvMedidoresListAtrFncsActvMedidores.getFkAtrFncMedidores();
+                atrFncsActvMedidoresListAtrFncsActvMedidores.setFkAtrFncMedidores(atributosFuncionMedidores);
+                atrFncsActvMedidoresListAtrFncsActvMedidores = em.merge(atrFncsActvMedidoresListAtrFncsActvMedidores);
+                if (oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListAtrFncsActvMedidores != null) {
+                    oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListAtrFncsActvMedidores.getAtrFncsActvMedidoresList().remove(atrFncsActvMedidoresListAtrFncsActvMedidores);
+                    oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListAtrFncsActvMedidores = em.merge(oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListAtrFncsActvMedidores);
                 }
             }
             utx.commit();
@@ -88,36 +87,36 @@ public class AtributosFuncionMedidoresJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             AtributosFuncionMedidores persistentAtributosFuncionMedidores = em.find(AtributosFuncionMedidores.class, atributosFuncionMedidores.getIdFuncionMedidores());
-            Collection<AtrFncsActvMedidores> atrFncsActvMedidoresCollectionOld = persistentAtributosFuncionMedidores.getAtrFncsActvMedidoresCollection();
-            Collection<AtrFncsActvMedidores> atrFncsActvMedidoresCollectionNew = atributosFuncionMedidores.getAtrFncsActvMedidoresCollection();
+            List<AtrFncsActvMedidores> atrFncsActvMedidoresListOld = persistentAtributosFuncionMedidores.getAtrFncsActvMedidoresList();
+            List<AtrFncsActvMedidores> atrFncsActvMedidoresListNew = atributosFuncionMedidores.getAtrFncsActvMedidoresList();
             List<String> illegalOrphanMessages = null;
-            for (AtrFncsActvMedidores atrFncsActvMedidoresCollectionOldAtrFncsActvMedidores : atrFncsActvMedidoresCollectionOld) {
-                if (!atrFncsActvMedidoresCollectionNew.contains(atrFncsActvMedidoresCollectionOldAtrFncsActvMedidores)) {
+            for (AtrFncsActvMedidores atrFncsActvMedidoresListOldAtrFncsActvMedidores : atrFncsActvMedidoresListOld) {
+                if (!atrFncsActvMedidoresListNew.contains(atrFncsActvMedidoresListOldAtrFncsActvMedidores)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain AtrFncsActvMedidores " + atrFncsActvMedidoresCollectionOldAtrFncsActvMedidores + " since its fkAtrFncMedidores field is not nullable.");
+                    illegalOrphanMessages.add("You must retain AtrFncsActvMedidores " + atrFncsActvMedidoresListOldAtrFncsActvMedidores + " since its fkAtrFncMedidores field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<AtrFncsActvMedidores> attachedAtrFncsActvMedidoresCollectionNew = new ArrayList<AtrFncsActvMedidores>();
-            for (AtrFncsActvMedidores atrFncsActvMedidoresCollectionNewAtrFncsActvMedidoresToAttach : atrFncsActvMedidoresCollectionNew) {
-                atrFncsActvMedidoresCollectionNewAtrFncsActvMedidoresToAttach = em.getReference(atrFncsActvMedidoresCollectionNewAtrFncsActvMedidoresToAttach.getClass(), atrFncsActvMedidoresCollectionNewAtrFncsActvMedidoresToAttach.getIdFuncionActivaMedidor());
-                attachedAtrFncsActvMedidoresCollectionNew.add(atrFncsActvMedidoresCollectionNewAtrFncsActvMedidoresToAttach);
+            List<AtrFncsActvMedidores> attachedAtrFncsActvMedidoresListNew = new ArrayList<AtrFncsActvMedidores>();
+            for (AtrFncsActvMedidores atrFncsActvMedidoresListNewAtrFncsActvMedidoresToAttach : atrFncsActvMedidoresListNew) {
+                atrFncsActvMedidoresListNewAtrFncsActvMedidoresToAttach = em.getReference(atrFncsActvMedidoresListNewAtrFncsActvMedidoresToAttach.getClass(), atrFncsActvMedidoresListNewAtrFncsActvMedidoresToAttach.getIdFuncionActivaMedidor());
+                attachedAtrFncsActvMedidoresListNew.add(atrFncsActvMedidoresListNewAtrFncsActvMedidoresToAttach);
             }
-            atrFncsActvMedidoresCollectionNew = attachedAtrFncsActvMedidoresCollectionNew;
-            atributosFuncionMedidores.setAtrFncsActvMedidoresCollection(atrFncsActvMedidoresCollectionNew);
+            atrFncsActvMedidoresListNew = attachedAtrFncsActvMedidoresListNew;
+            atributosFuncionMedidores.setAtrFncsActvMedidoresList(atrFncsActvMedidoresListNew);
             atributosFuncionMedidores = em.merge(atributosFuncionMedidores);
-            for (AtrFncsActvMedidores atrFncsActvMedidoresCollectionNewAtrFncsActvMedidores : atrFncsActvMedidoresCollectionNew) {
-                if (!atrFncsActvMedidoresCollectionOld.contains(atrFncsActvMedidoresCollectionNewAtrFncsActvMedidores)) {
-                    AtributosFuncionMedidores oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionNewAtrFncsActvMedidores = atrFncsActvMedidoresCollectionNewAtrFncsActvMedidores.getFkAtrFncMedidores();
-                    atrFncsActvMedidoresCollectionNewAtrFncsActvMedidores.setFkAtrFncMedidores(atributosFuncionMedidores);
-                    atrFncsActvMedidoresCollectionNewAtrFncsActvMedidores = em.merge(atrFncsActvMedidoresCollectionNewAtrFncsActvMedidores);
-                    if (oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionNewAtrFncsActvMedidores != null && !oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionNewAtrFncsActvMedidores.equals(atributosFuncionMedidores)) {
-                        oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionNewAtrFncsActvMedidores.getAtrFncsActvMedidoresCollection().remove(atrFncsActvMedidoresCollectionNewAtrFncsActvMedidores);
-                        oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionNewAtrFncsActvMedidores = em.merge(oldFkAtrFncMedidoresOfAtrFncsActvMedidoresCollectionNewAtrFncsActvMedidores);
+            for (AtrFncsActvMedidores atrFncsActvMedidoresListNewAtrFncsActvMedidores : atrFncsActvMedidoresListNew) {
+                if (!atrFncsActvMedidoresListOld.contains(atrFncsActvMedidoresListNewAtrFncsActvMedidores)) {
+                    AtributosFuncionMedidores oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListNewAtrFncsActvMedidores = atrFncsActvMedidoresListNewAtrFncsActvMedidores.getFkAtrFncMedidores();
+                    atrFncsActvMedidoresListNewAtrFncsActvMedidores.setFkAtrFncMedidores(atributosFuncionMedidores);
+                    atrFncsActvMedidoresListNewAtrFncsActvMedidores = em.merge(atrFncsActvMedidoresListNewAtrFncsActvMedidores);
+                    if (oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListNewAtrFncsActvMedidores != null && !oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListNewAtrFncsActvMedidores.equals(atributosFuncionMedidores)) {
+                        oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListNewAtrFncsActvMedidores.getAtrFncsActvMedidoresList().remove(atrFncsActvMedidoresListNewAtrFncsActvMedidores);
+                        oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListNewAtrFncsActvMedidores = em.merge(oldFkAtrFncMedidoresOfAtrFncsActvMedidoresListNewAtrFncsActvMedidores);
                     }
                 }
             }
@@ -156,12 +155,12 @@ public class AtributosFuncionMedidoresJpaController implements Serializable {
                 throw new NonexistentEntityException("The atributosFuncionMedidores with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<AtrFncsActvMedidores> atrFncsActvMedidoresCollectionOrphanCheck = atributosFuncionMedidores.getAtrFncsActvMedidoresCollection();
-            for (AtrFncsActvMedidores atrFncsActvMedidoresCollectionOrphanCheckAtrFncsActvMedidores : atrFncsActvMedidoresCollectionOrphanCheck) {
+            List<AtrFncsActvMedidores> atrFncsActvMedidoresListOrphanCheck = atributosFuncionMedidores.getAtrFncsActvMedidoresList();
+            for (AtrFncsActvMedidores atrFncsActvMedidoresListOrphanCheckAtrFncsActvMedidores : atrFncsActvMedidoresListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This AtributosFuncionMedidores (" + atributosFuncionMedidores + ") cannot be destroyed since the AtrFncsActvMedidores " + atrFncsActvMedidoresCollectionOrphanCheckAtrFncsActvMedidores + " in its atrFncsActvMedidoresCollection field has a non-nullable fkAtrFncMedidores field.");
+                illegalOrphanMessages.add("This AtributosFuncionMedidores (" + atributosFuncionMedidores + ") cannot be destroyed since the AtrFncsActvMedidores " + atrFncsActvMedidoresListOrphanCheckAtrFncsActvMedidores + " in its atrFncsActvMedidoresList field has a non-nullable fkAtrFncMedidores field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

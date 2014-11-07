@@ -17,7 +17,6 @@ import javax.persistence.criteria.Root;
 import emcali.ami.persistence.entity.PrepagoClientes;
 import emcali.ami.persistence.entity.PrepagoEstado;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,27 +40,27 @@ public class PrepagoEstadoJpaController implements Serializable {
     }
 
     public void create(PrepagoEstado prepagoEstado) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (prepagoEstado.getPrepagoClientesCollection() == null) {
-            prepagoEstado.setPrepagoClientesCollection(new ArrayList<PrepagoClientes>());
+        if (prepagoEstado.getPrepagoClientesList() == null) {
+            prepagoEstado.setPrepagoClientesList(new ArrayList<PrepagoClientes>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<PrepagoClientes> attachedPrepagoClientesCollection = new ArrayList<PrepagoClientes>();
-            for (PrepagoClientes prepagoClientesCollectionPrepagoClientesToAttach : prepagoEstado.getPrepagoClientesCollection()) {
-                prepagoClientesCollectionPrepagoClientesToAttach = em.getReference(prepagoClientesCollectionPrepagoClientesToAttach.getClass(), prepagoClientesCollectionPrepagoClientesToAttach.getIdClientePrepago());
-                attachedPrepagoClientesCollection.add(prepagoClientesCollectionPrepagoClientesToAttach);
+            List<PrepagoClientes> attachedPrepagoClientesList = new ArrayList<PrepagoClientes>();
+            for (PrepagoClientes prepagoClientesListPrepagoClientesToAttach : prepagoEstado.getPrepagoClientesList()) {
+                prepagoClientesListPrepagoClientesToAttach = em.getReference(prepagoClientesListPrepagoClientesToAttach.getClass(), prepagoClientesListPrepagoClientesToAttach.getIdClientePrepago());
+                attachedPrepagoClientesList.add(prepagoClientesListPrepagoClientesToAttach);
             }
-            prepagoEstado.setPrepagoClientesCollection(attachedPrepagoClientesCollection);
+            prepagoEstado.setPrepagoClientesList(attachedPrepagoClientesList);
             em.persist(prepagoEstado);
-            for (PrepagoClientes prepagoClientesCollectionPrepagoClientes : prepagoEstado.getPrepagoClientesCollection()) {
-                PrepagoEstado oldFkPrepagoEstadoOfPrepagoClientesCollectionPrepagoClientes = prepagoClientesCollectionPrepagoClientes.getFkPrepagoEstado();
-                prepagoClientesCollectionPrepagoClientes.setFkPrepagoEstado(prepagoEstado);
-                prepagoClientesCollectionPrepagoClientes = em.merge(prepagoClientesCollectionPrepagoClientes);
-                if (oldFkPrepagoEstadoOfPrepagoClientesCollectionPrepagoClientes != null) {
-                    oldFkPrepagoEstadoOfPrepagoClientesCollectionPrepagoClientes.getPrepagoClientesCollection().remove(prepagoClientesCollectionPrepagoClientes);
-                    oldFkPrepagoEstadoOfPrepagoClientesCollectionPrepagoClientes = em.merge(oldFkPrepagoEstadoOfPrepagoClientesCollectionPrepagoClientes);
+            for (PrepagoClientes prepagoClientesListPrepagoClientes : prepagoEstado.getPrepagoClientesList()) {
+                PrepagoEstado oldFkPrepagoEstadoOfPrepagoClientesListPrepagoClientes = prepagoClientesListPrepagoClientes.getFkPrepagoEstado();
+                prepagoClientesListPrepagoClientes.setFkPrepagoEstado(prepagoEstado);
+                prepagoClientesListPrepagoClientes = em.merge(prepagoClientesListPrepagoClientes);
+                if (oldFkPrepagoEstadoOfPrepagoClientesListPrepagoClientes != null) {
+                    oldFkPrepagoEstadoOfPrepagoClientesListPrepagoClientes.getPrepagoClientesList().remove(prepagoClientesListPrepagoClientes);
+                    oldFkPrepagoEstadoOfPrepagoClientesListPrepagoClientes = em.merge(oldFkPrepagoEstadoOfPrepagoClientesListPrepagoClientes);
                 }
             }
             utx.commit();
@@ -88,36 +87,36 @@ public class PrepagoEstadoJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             PrepagoEstado persistentPrepagoEstado = em.find(PrepagoEstado.class, prepagoEstado.getIdEstado());
-            Collection<PrepagoClientes> prepagoClientesCollectionOld = persistentPrepagoEstado.getPrepagoClientesCollection();
-            Collection<PrepagoClientes> prepagoClientesCollectionNew = prepagoEstado.getPrepagoClientesCollection();
+            List<PrepagoClientes> prepagoClientesListOld = persistentPrepagoEstado.getPrepagoClientesList();
+            List<PrepagoClientes> prepagoClientesListNew = prepagoEstado.getPrepagoClientesList();
             List<String> illegalOrphanMessages = null;
-            for (PrepagoClientes prepagoClientesCollectionOldPrepagoClientes : prepagoClientesCollectionOld) {
-                if (!prepagoClientesCollectionNew.contains(prepagoClientesCollectionOldPrepagoClientes)) {
+            for (PrepagoClientes prepagoClientesListOldPrepagoClientes : prepagoClientesListOld) {
+                if (!prepagoClientesListNew.contains(prepagoClientesListOldPrepagoClientes)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain PrepagoClientes " + prepagoClientesCollectionOldPrepagoClientes + " since its fkPrepagoEstado field is not nullable.");
+                    illegalOrphanMessages.add("You must retain PrepagoClientes " + prepagoClientesListOldPrepagoClientes + " since its fkPrepagoEstado field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<PrepagoClientes> attachedPrepagoClientesCollectionNew = new ArrayList<PrepagoClientes>();
-            for (PrepagoClientes prepagoClientesCollectionNewPrepagoClientesToAttach : prepagoClientesCollectionNew) {
-                prepagoClientesCollectionNewPrepagoClientesToAttach = em.getReference(prepagoClientesCollectionNewPrepagoClientesToAttach.getClass(), prepagoClientesCollectionNewPrepagoClientesToAttach.getIdClientePrepago());
-                attachedPrepagoClientesCollectionNew.add(prepagoClientesCollectionNewPrepagoClientesToAttach);
+            List<PrepagoClientes> attachedPrepagoClientesListNew = new ArrayList<PrepagoClientes>();
+            for (PrepagoClientes prepagoClientesListNewPrepagoClientesToAttach : prepagoClientesListNew) {
+                prepagoClientesListNewPrepagoClientesToAttach = em.getReference(prepagoClientesListNewPrepagoClientesToAttach.getClass(), prepagoClientesListNewPrepagoClientesToAttach.getIdClientePrepago());
+                attachedPrepagoClientesListNew.add(prepagoClientesListNewPrepagoClientesToAttach);
             }
-            prepagoClientesCollectionNew = attachedPrepagoClientesCollectionNew;
-            prepagoEstado.setPrepagoClientesCollection(prepagoClientesCollectionNew);
+            prepagoClientesListNew = attachedPrepagoClientesListNew;
+            prepagoEstado.setPrepagoClientesList(prepagoClientesListNew);
             prepagoEstado = em.merge(prepagoEstado);
-            for (PrepagoClientes prepagoClientesCollectionNewPrepagoClientes : prepagoClientesCollectionNew) {
-                if (!prepagoClientesCollectionOld.contains(prepagoClientesCollectionNewPrepagoClientes)) {
-                    PrepagoEstado oldFkPrepagoEstadoOfPrepagoClientesCollectionNewPrepagoClientes = prepagoClientesCollectionNewPrepagoClientes.getFkPrepagoEstado();
-                    prepagoClientesCollectionNewPrepagoClientes.setFkPrepagoEstado(prepagoEstado);
-                    prepagoClientesCollectionNewPrepagoClientes = em.merge(prepagoClientesCollectionNewPrepagoClientes);
-                    if (oldFkPrepagoEstadoOfPrepagoClientesCollectionNewPrepagoClientes != null && !oldFkPrepagoEstadoOfPrepagoClientesCollectionNewPrepagoClientes.equals(prepagoEstado)) {
-                        oldFkPrepagoEstadoOfPrepagoClientesCollectionNewPrepagoClientes.getPrepagoClientesCollection().remove(prepagoClientesCollectionNewPrepagoClientes);
-                        oldFkPrepagoEstadoOfPrepagoClientesCollectionNewPrepagoClientes = em.merge(oldFkPrepagoEstadoOfPrepagoClientesCollectionNewPrepagoClientes);
+            for (PrepagoClientes prepagoClientesListNewPrepagoClientes : prepagoClientesListNew) {
+                if (!prepagoClientesListOld.contains(prepagoClientesListNewPrepagoClientes)) {
+                    PrepagoEstado oldFkPrepagoEstadoOfPrepagoClientesListNewPrepagoClientes = prepagoClientesListNewPrepagoClientes.getFkPrepagoEstado();
+                    prepagoClientesListNewPrepagoClientes.setFkPrepagoEstado(prepagoEstado);
+                    prepagoClientesListNewPrepagoClientes = em.merge(prepagoClientesListNewPrepagoClientes);
+                    if (oldFkPrepagoEstadoOfPrepagoClientesListNewPrepagoClientes != null && !oldFkPrepagoEstadoOfPrepagoClientesListNewPrepagoClientes.equals(prepagoEstado)) {
+                        oldFkPrepagoEstadoOfPrepagoClientesListNewPrepagoClientes.getPrepagoClientesList().remove(prepagoClientesListNewPrepagoClientes);
+                        oldFkPrepagoEstadoOfPrepagoClientesListNewPrepagoClientes = em.merge(oldFkPrepagoEstadoOfPrepagoClientesListNewPrepagoClientes);
                     }
                 }
             }
@@ -156,12 +155,12 @@ public class PrepagoEstadoJpaController implements Serializable {
                 throw new NonexistentEntityException("The prepagoEstado with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<PrepagoClientes> prepagoClientesCollectionOrphanCheck = prepagoEstado.getPrepagoClientesCollection();
-            for (PrepagoClientes prepagoClientesCollectionOrphanCheckPrepagoClientes : prepagoClientesCollectionOrphanCheck) {
+            List<PrepagoClientes> prepagoClientesListOrphanCheck = prepagoEstado.getPrepagoClientesList();
+            for (PrepagoClientes prepagoClientesListOrphanCheckPrepagoClientes : prepagoClientesListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This PrepagoEstado (" + prepagoEstado + ") cannot be destroyed since the PrepagoClientes " + prepagoClientesCollectionOrphanCheckPrepagoClientes + " in its prepagoClientesCollection field has a non-nullable fkPrepagoEstado field.");
+                illegalOrphanMessages.add("This PrepagoEstado (" + prepagoEstado + ") cannot be destroyed since the PrepagoClientes " + prepagoClientesListOrphanCheckPrepagoClientes + " in its prepagoClientesList field has a non-nullable fkPrepagoEstado field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

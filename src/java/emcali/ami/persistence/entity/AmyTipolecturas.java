@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,11 +51,11 @@ public class AmyTipolecturas implements Serializable {
     @Column(name = "UNIDAD_MEDIDA")
     private String unidadMedida;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyTipolecturas")
-    private Collection<AmyLecturas> amyLecturasCollection;
+    private List<AmyLecturas> amyLecturasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyTipolecturas")
-    private Collection<ConsumosConsumos> consumosConsumosCollection;
+    private List<ConsumosConsumos> consumosConsumosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyTipolecturas")
-    private Collection<AmyConsumos> amyConsumosCollection;
+    private List<AmyConsumos> amyConsumosList;
 
     public AmyTipolecturas() {
     }
@@ -95,30 +95,30 @@ public class AmyTipolecturas implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AmyLecturas> getAmyLecturasCollection() {
-        return amyLecturasCollection;
+    public List<AmyLecturas> getAmyLecturasList() {
+        return amyLecturasList;
     }
 
-    public void setAmyLecturasCollection(Collection<AmyLecturas> amyLecturasCollection) {
-        this.amyLecturasCollection = amyLecturasCollection;
-    }
-
-    @XmlTransient
-    public Collection<ConsumosConsumos> getConsumosConsumosCollection() {
-        return consumosConsumosCollection;
-    }
-
-    public void setConsumosConsumosCollection(Collection<ConsumosConsumos> consumosConsumosCollection) {
-        this.consumosConsumosCollection = consumosConsumosCollection;
+    public void setAmyLecturasList(List<AmyLecturas> amyLecturasList) {
+        this.amyLecturasList = amyLecturasList;
     }
 
     @XmlTransient
-    public Collection<AmyConsumos> getAmyConsumosCollection() {
-        return amyConsumosCollection;
+    public List<ConsumosConsumos> getConsumosConsumosList() {
+        return consumosConsumosList;
     }
 
-    public void setAmyConsumosCollection(Collection<AmyConsumos> amyConsumosCollection) {
-        this.amyConsumosCollection = amyConsumosCollection;
+    public void setConsumosConsumosList(List<ConsumosConsumos> consumosConsumosList) {
+        this.consumosConsumosList = consumosConsumosList;
+    }
+
+    @XmlTransient
+    public List<AmyConsumos> getAmyConsumosList() {
+        return amyConsumosList;
+    }
+
+    public void setAmyConsumosList(List<AmyConsumos> amyConsumosList) {
+        this.amyConsumosList = amyConsumosList;
     }
 
     @Override

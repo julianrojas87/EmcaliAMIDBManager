@@ -49,7 +49,7 @@ public class ConsumosConsumosJpaController implements Serializable {
             }
             em.persist(consumosConsumos);
             if (fkAmyTipolecturas != null) {
-                fkAmyTipolecturas.getConsumosConsumosCollection().add(consumosConsumos);
+                fkAmyTipolecturas.getConsumosConsumosList().add(consumosConsumos);
                 fkAmyTipolecturas = em.merge(fkAmyTipolecturas);
             }
             utx.commit();
@@ -84,11 +84,11 @@ public class ConsumosConsumosJpaController implements Serializable {
             }
             consumosConsumos = em.merge(consumosConsumos);
             if (fkAmyTipolecturasOld != null && !fkAmyTipolecturasOld.equals(fkAmyTipolecturasNew)) {
-                fkAmyTipolecturasOld.getConsumosConsumosCollection().remove(consumosConsumos);
+                fkAmyTipolecturasOld.getConsumosConsumosList().remove(consumosConsumos);
                 fkAmyTipolecturasOld = em.merge(fkAmyTipolecturasOld);
             }
             if (fkAmyTipolecturasNew != null && !fkAmyTipolecturasNew.equals(fkAmyTipolecturasOld)) {
-                fkAmyTipolecturasNew.getConsumosConsumosCollection().add(consumosConsumos);
+                fkAmyTipolecturasNew.getConsumosConsumosList().add(consumosConsumos);
                 fkAmyTipolecturasNew = em.merge(fkAmyTipolecturasNew);
             }
             utx.commit();
@@ -127,7 +127,7 @@ public class ConsumosConsumosJpaController implements Serializable {
             }
             AmyTipolecturas fkAmyTipolecturas = consumosConsumos.getFkAmyTipolecturas();
             if (fkAmyTipolecturas != null) {
-                fkAmyTipolecturas.getConsumosConsumosCollection().remove(consumosConsumos);
+                fkAmyTipolecturas.getConsumosConsumosList().remove(consumosConsumos);
                 fkAmyTipolecturas = em.merge(fkAmyTipolecturas);
             }
             em.remove(consumosConsumos);

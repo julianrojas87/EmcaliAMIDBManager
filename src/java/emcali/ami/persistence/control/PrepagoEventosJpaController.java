@@ -55,11 +55,11 @@ public class PrepagoEventosJpaController implements Serializable {
             }
             em.persist(prepagoEventos);
             if (fkComercialProductos != null) {
-                fkComercialProductos.getPrepagoEventosCollection().add(prepagoEventos);
+                fkComercialProductos.getPrepagoEventosList().add(prepagoEventos);
                 fkComercialProductos = em.merge(fkComercialProductos);
             }
             if (fkAmyTipoEventos != null) {
-                fkAmyTipoEventos.getPrepagoEventosCollection().add(prepagoEventos);
+                fkAmyTipoEventos.getPrepagoEventosList().add(prepagoEventos);
                 fkAmyTipoEventos = em.merge(fkAmyTipoEventos);
             }
             utx.commit();
@@ -100,19 +100,19 @@ public class PrepagoEventosJpaController implements Serializable {
             }
             prepagoEventos = em.merge(prepagoEventos);
             if (fkComercialProductosOld != null && !fkComercialProductosOld.equals(fkComercialProductosNew)) {
-                fkComercialProductosOld.getPrepagoEventosCollection().remove(prepagoEventos);
+                fkComercialProductosOld.getPrepagoEventosList().remove(prepagoEventos);
                 fkComercialProductosOld = em.merge(fkComercialProductosOld);
             }
             if (fkComercialProductosNew != null && !fkComercialProductosNew.equals(fkComercialProductosOld)) {
-                fkComercialProductosNew.getPrepagoEventosCollection().add(prepagoEventos);
+                fkComercialProductosNew.getPrepagoEventosList().add(prepagoEventos);
                 fkComercialProductosNew = em.merge(fkComercialProductosNew);
             }
             if (fkAmyTipoEventosOld != null && !fkAmyTipoEventosOld.equals(fkAmyTipoEventosNew)) {
-                fkAmyTipoEventosOld.getPrepagoEventosCollection().remove(prepagoEventos);
+                fkAmyTipoEventosOld.getPrepagoEventosList().remove(prepagoEventos);
                 fkAmyTipoEventosOld = em.merge(fkAmyTipoEventosOld);
             }
             if (fkAmyTipoEventosNew != null && !fkAmyTipoEventosNew.equals(fkAmyTipoEventosOld)) {
-                fkAmyTipoEventosNew.getPrepagoEventosCollection().add(prepagoEventos);
+                fkAmyTipoEventosNew.getPrepagoEventosList().add(prepagoEventos);
                 fkAmyTipoEventosNew = em.merge(fkAmyTipoEventosNew);
             }
             utx.commit();
@@ -151,12 +151,12 @@ public class PrepagoEventosJpaController implements Serializable {
             }
             ComercialProductos fkComercialProductos = prepagoEventos.getFkComercialProductos();
             if (fkComercialProductos != null) {
-                fkComercialProductos.getPrepagoEventosCollection().remove(prepagoEventos);
+                fkComercialProductos.getPrepagoEventosList().remove(prepagoEventos);
                 fkComercialProductos = em.merge(fkComercialProductos);
             }
             AmyTipoEventos fkAmyTipoEventos = prepagoEventos.getFkAmyTipoEventos();
             if (fkAmyTipoEventos != null) {
-                fkAmyTipoEventos.getPrepagoEventosCollection().remove(prepagoEventos);
+                fkAmyTipoEventos.getPrepagoEventosList().remove(prepagoEventos);
                 fkAmyTipoEventos = em.merge(fkAmyTipoEventos);
             }
             em.remove(prepagoEventos);

@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,7 +43,7 @@ public class SaldosTipoSaldo implements Serializable {
     @Column(name = "TIPO_SALDO")
     private String tipoSaldo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkSaldosTipoSaldo")
-    private Collection<SaldosHistoria> saldosHistoriaCollection;
+    private List<SaldosHistoria> saldosHistoriaList;
 
     public SaldosTipoSaldo() {
     }
@@ -69,12 +69,12 @@ public class SaldosTipoSaldo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<SaldosHistoria> getSaldosHistoriaCollection() {
-        return saldosHistoriaCollection;
+    public List<SaldosHistoria> getSaldosHistoriaList() {
+        return saldosHistoriaList;
     }
 
-    public void setSaldosHistoriaCollection(Collection<SaldosHistoria> saldosHistoriaCollection) {
-        this.saldosHistoriaCollection = saldosHistoriaCollection;
+    public void setSaldosHistoriaList(List<SaldosHistoria> saldosHistoriaList) {
+        this.saldosHistoriaList = saldosHistoriaList;
     }
 
     @Override

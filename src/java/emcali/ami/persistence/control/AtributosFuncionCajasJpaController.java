@@ -17,7 +17,6 @@ import javax.persistence.criteria.Root;
 import emcali.ami.persistence.entity.AtrFncsActvCajas;
 import emcali.ami.persistence.entity.AtributosFuncionCajas;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,27 +40,27 @@ public class AtributosFuncionCajasJpaController implements Serializable {
     }
 
     public void create(AtributosFuncionCajas atributosFuncionCajas) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (atributosFuncionCajas.getAtrFncsActvCajasCollection() == null) {
-            atributosFuncionCajas.setAtrFncsActvCajasCollection(new ArrayList<AtrFncsActvCajas>());
+        if (atributosFuncionCajas.getAtrFncsActvCajasList() == null) {
+            atributosFuncionCajas.setAtrFncsActvCajasList(new ArrayList<AtrFncsActvCajas>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<AtrFncsActvCajas> attachedAtrFncsActvCajasCollection = new ArrayList<AtrFncsActvCajas>();
-            for (AtrFncsActvCajas atrFncsActvCajasCollectionAtrFncsActvCajasToAttach : atributosFuncionCajas.getAtrFncsActvCajasCollection()) {
-                atrFncsActvCajasCollectionAtrFncsActvCajasToAttach = em.getReference(atrFncsActvCajasCollectionAtrFncsActvCajasToAttach.getClass(), atrFncsActvCajasCollectionAtrFncsActvCajasToAttach.getIdFuncionActivaCaja());
-                attachedAtrFncsActvCajasCollection.add(atrFncsActvCajasCollectionAtrFncsActvCajasToAttach);
+            List<AtrFncsActvCajas> attachedAtrFncsActvCajasList = new ArrayList<AtrFncsActvCajas>();
+            for (AtrFncsActvCajas atrFncsActvCajasListAtrFncsActvCajasToAttach : atributosFuncionCajas.getAtrFncsActvCajasList()) {
+                atrFncsActvCajasListAtrFncsActvCajasToAttach = em.getReference(atrFncsActvCajasListAtrFncsActvCajasToAttach.getClass(), atrFncsActvCajasListAtrFncsActvCajasToAttach.getIdFuncionActivaCaja());
+                attachedAtrFncsActvCajasList.add(atrFncsActvCajasListAtrFncsActvCajasToAttach);
             }
-            atributosFuncionCajas.setAtrFncsActvCajasCollection(attachedAtrFncsActvCajasCollection);
+            atributosFuncionCajas.setAtrFncsActvCajasList(attachedAtrFncsActvCajasList);
             em.persist(atributosFuncionCajas);
-            for (AtrFncsActvCajas atrFncsActvCajasCollectionAtrFncsActvCajas : atributosFuncionCajas.getAtrFncsActvCajasCollection()) {
-                AtributosFuncionCajas oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionAtrFncsActvCajas = atrFncsActvCajasCollectionAtrFncsActvCajas.getFkAtributosFuncionCajas();
-                atrFncsActvCajasCollectionAtrFncsActvCajas.setFkAtributosFuncionCajas(atributosFuncionCajas);
-                atrFncsActvCajasCollectionAtrFncsActvCajas = em.merge(atrFncsActvCajasCollectionAtrFncsActvCajas);
-                if (oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionAtrFncsActvCajas != null) {
-                    oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionAtrFncsActvCajas.getAtrFncsActvCajasCollection().remove(atrFncsActvCajasCollectionAtrFncsActvCajas);
-                    oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionAtrFncsActvCajas = em.merge(oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionAtrFncsActvCajas);
+            for (AtrFncsActvCajas atrFncsActvCajasListAtrFncsActvCajas : atributosFuncionCajas.getAtrFncsActvCajasList()) {
+                AtributosFuncionCajas oldFkAtributosFuncionCajasOfAtrFncsActvCajasListAtrFncsActvCajas = atrFncsActvCajasListAtrFncsActvCajas.getFkAtributosFuncionCajas();
+                atrFncsActvCajasListAtrFncsActvCajas.setFkAtributosFuncionCajas(atributosFuncionCajas);
+                atrFncsActvCajasListAtrFncsActvCajas = em.merge(atrFncsActvCajasListAtrFncsActvCajas);
+                if (oldFkAtributosFuncionCajasOfAtrFncsActvCajasListAtrFncsActvCajas != null) {
+                    oldFkAtributosFuncionCajasOfAtrFncsActvCajasListAtrFncsActvCajas.getAtrFncsActvCajasList().remove(atrFncsActvCajasListAtrFncsActvCajas);
+                    oldFkAtributosFuncionCajasOfAtrFncsActvCajasListAtrFncsActvCajas = em.merge(oldFkAtributosFuncionCajasOfAtrFncsActvCajasListAtrFncsActvCajas);
                 }
             }
             utx.commit();
@@ -88,36 +87,36 @@ public class AtributosFuncionCajasJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             AtributosFuncionCajas persistentAtributosFuncionCajas = em.find(AtributosFuncionCajas.class, atributosFuncionCajas.getIdFuncion());
-            Collection<AtrFncsActvCajas> atrFncsActvCajasCollectionOld = persistentAtributosFuncionCajas.getAtrFncsActvCajasCollection();
-            Collection<AtrFncsActvCajas> atrFncsActvCajasCollectionNew = atributosFuncionCajas.getAtrFncsActvCajasCollection();
+            List<AtrFncsActvCajas> atrFncsActvCajasListOld = persistentAtributosFuncionCajas.getAtrFncsActvCajasList();
+            List<AtrFncsActvCajas> atrFncsActvCajasListNew = atributosFuncionCajas.getAtrFncsActvCajasList();
             List<String> illegalOrphanMessages = null;
-            for (AtrFncsActvCajas atrFncsActvCajasCollectionOldAtrFncsActvCajas : atrFncsActvCajasCollectionOld) {
-                if (!atrFncsActvCajasCollectionNew.contains(atrFncsActvCajasCollectionOldAtrFncsActvCajas)) {
+            for (AtrFncsActvCajas atrFncsActvCajasListOldAtrFncsActvCajas : atrFncsActvCajasListOld) {
+                if (!atrFncsActvCajasListNew.contains(atrFncsActvCajasListOldAtrFncsActvCajas)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain AtrFncsActvCajas " + atrFncsActvCajasCollectionOldAtrFncsActvCajas + " since its fkAtributosFuncionCajas field is not nullable.");
+                    illegalOrphanMessages.add("You must retain AtrFncsActvCajas " + atrFncsActvCajasListOldAtrFncsActvCajas + " since its fkAtributosFuncionCajas field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<AtrFncsActvCajas> attachedAtrFncsActvCajasCollectionNew = new ArrayList<AtrFncsActvCajas>();
-            for (AtrFncsActvCajas atrFncsActvCajasCollectionNewAtrFncsActvCajasToAttach : atrFncsActvCajasCollectionNew) {
-                atrFncsActvCajasCollectionNewAtrFncsActvCajasToAttach = em.getReference(atrFncsActvCajasCollectionNewAtrFncsActvCajasToAttach.getClass(), atrFncsActvCajasCollectionNewAtrFncsActvCajasToAttach.getIdFuncionActivaCaja());
-                attachedAtrFncsActvCajasCollectionNew.add(atrFncsActvCajasCollectionNewAtrFncsActvCajasToAttach);
+            List<AtrFncsActvCajas> attachedAtrFncsActvCajasListNew = new ArrayList<AtrFncsActvCajas>();
+            for (AtrFncsActvCajas atrFncsActvCajasListNewAtrFncsActvCajasToAttach : atrFncsActvCajasListNew) {
+                atrFncsActvCajasListNewAtrFncsActvCajasToAttach = em.getReference(atrFncsActvCajasListNewAtrFncsActvCajasToAttach.getClass(), atrFncsActvCajasListNewAtrFncsActvCajasToAttach.getIdFuncionActivaCaja());
+                attachedAtrFncsActvCajasListNew.add(atrFncsActvCajasListNewAtrFncsActvCajasToAttach);
             }
-            atrFncsActvCajasCollectionNew = attachedAtrFncsActvCajasCollectionNew;
-            atributosFuncionCajas.setAtrFncsActvCajasCollection(atrFncsActvCajasCollectionNew);
+            atrFncsActvCajasListNew = attachedAtrFncsActvCajasListNew;
+            atributosFuncionCajas.setAtrFncsActvCajasList(atrFncsActvCajasListNew);
             atributosFuncionCajas = em.merge(atributosFuncionCajas);
-            for (AtrFncsActvCajas atrFncsActvCajasCollectionNewAtrFncsActvCajas : atrFncsActvCajasCollectionNew) {
-                if (!atrFncsActvCajasCollectionOld.contains(atrFncsActvCajasCollectionNewAtrFncsActvCajas)) {
-                    AtributosFuncionCajas oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionNewAtrFncsActvCajas = atrFncsActvCajasCollectionNewAtrFncsActvCajas.getFkAtributosFuncionCajas();
-                    atrFncsActvCajasCollectionNewAtrFncsActvCajas.setFkAtributosFuncionCajas(atributosFuncionCajas);
-                    atrFncsActvCajasCollectionNewAtrFncsActvCajas = em.merge(atrFncsActvCajasCollectionNewAtrFncsActvCajas);
-                    if (oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionNewAtrFncsActvCajas != null && !oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionNewAtrFncsActvCajas.equals(atributosFuncionCajas)) {
-                        oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionNewAtrFncsActvCajas.getAtrFncsActvCajasCollection().remove(atrFncsActvCajasCollectionNewAtrFncsActvCajas);
-                        oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionNewAtrFncsActvCajas = em.merge(oldFkAtributosFuncionCajasOfAtrFncsActvCajasCollectionNewAtrFncsActvCajas);
+            for (AtrFncsActvCajas atrFncsActvCajasListNewAtrFncsActvCajas : atrFncsActvCajasListNew) {
+                if (!atrFncsActvCajasListOld.contains(atrFncsActvCajasListNewAtrFncsActvCajas)) {
+                    AtributosFuncionCajas oldFkAtributosFuncionCajasOfAtrFncsActvCajasListNewAtrFncsActvCajas = atrFncsActvCajasListNewAtrFncsActvCajas.getFkAtributosFuncionCajas();
+                    atrFncsActvCajasListNewAtrFncsActvCajas.setFkAtributosFuncionCajas(atributosFuncionCajas);
+                    atrFncsActvCajasListNewAtrFncsActvCajas = em.merge(atrFncsActvCajasListNewAtrFncsActvCajas);
+                    if (oldFkAtributosFuncionCajasOfAtrFncsActvCajasListNewAtrFncsActvCajas != null && !oldFkAtributosFuncionCajasOfAtrFncsActvCajasListNewAtrFncsActvCajas.equals(atributosFuncionCajas)) {
+                        oldFkAtributosFuncionCajasOfAtrFncsActvCajasListNewAtrFncsActvCajas.getAtrFncsActvCajasList().remove(atrFncsActvCajasListNewAtrFncsActvCajas);
+                        oldFkAtributosFuncionCajasOfAtrFncsActvCajasListNewAtrFncsActvCajas = em.merge(oldFkAtributosFuncionCajasOfAtrFncsActvCajasListNewAtrFncsActvCajas);
                     }
                 }
             }
@@ -156,12 +155,12 @@ public class AtributosFuncionCajasJpaController implements Serializable {
                 throw new NonexistentEntityException("The atributosFuncionCajas with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<AtrFncsActvCajas> atrFncsActvCajasCollectionOrphanCheck = atributosFuncionCajas.getAtrFncsActvCajasCollection();
-            for (AtrFncsActvCajas atrFncsActvCajasCollectionOrphanCheckAtrFncsActvCajas : atrFncsActvCajasCollectionOrphanCheck) {
+            List<AtrFncsActvCajas> atrFncsActvCajasListOrphanCheck = atributosFuncionCajas.getAtrFncsActvCajasList();
+            for (AtrFncsActvCajas atrFncsActvCajasListOrphanCheckAtrFncsActvCajas : atrFncsActvCajasListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This AtributosFuncionCajas (" + atributosFuncionCajas + ") cannot be destroyed since the AtrFncsActvCajas " + atrFncsActvCajasCollectionOrphanCheckAtrFncsActvCajas + " in its atrFncsActvCajasCollection field has a non-nullable fkAtributosFuncionCajas field.");
+                illegalOrphanMessages.add("This AtributosFuncionCajas (" + atributosFuncionCajas + ") cannot be destroyed since the AtrFncsActvCajas " + atrFncsActvCajasListOrphanCheckAtrFncsActvCajas + " in its atrFncsActvCajasList field has a non-nullable fkAtributosFuncionCajas field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

@@ -35,9 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "GestionUsuarios.findByLogin", query = "SELECT g FROM GestionUsuarios g WHERE g.login = :login"),
     @NamedQuery(name = "GestionUsuarios.findByPassword", query = "SELECT g FROM GestionUsuarios g WHERE g.password = :password"),
     @NamedQuery(name = "GestionUsuarios.findByUltimoAcceso", query = "SELECT g FROM GestionUsuarios g WHERE g.ultimoAcceso = :ultimoAcceso"),
-    @NamedQuery(name = "GestionUsuarios.findByCreadoPor", query = "SELECT g FROM GestionUsuarios g WHERE g.creadoPor = :creadoPor"),
     @NamedQuery(name = "GestionUsuarios.findByFechaCreacion", query = "SELECT g FROM GestionUsuarios g WHERE g.fechaCreacion = :fechaCreacion"),
-    @NamedQuery(name = "GestionUsuarios.findByModificadoPor", query = "SELECT g FROM GestionUsuarios g WHERE g.modificadoPor = :modificadoPor"),
     @NamedQuery(name = "GestionUsuarios.findByFechaModificacion", query = "SELECT g FROM GestionUsuarios g WHERE g.fechaModificacion = :fechaModificacion"),
     @NamedQuery(name = "GestionUsuarios.findByObservaciones", query = "SELECT g FROM GestionUsuarios g WHERE g.observaciones = :observaciones")})
 public class GestionUsuarios implements Serializable {
@@ -64,17 +62,9 @@ public class GestionUsuarios implements Serializable {
     private Date ultimoAcceso;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CREADO_POR")
-    private long creadoPor;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHA_CREACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "MODIFICADO_POR")
-    private long modificadoPor;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_MODIFICACION")
@@ -89,6 +79,12 @@ public class GestionUsuarios implements Serializable {
     @JoinColumn(name = "FK_GESTION_FUNCIONARIOS", referencedColumnName = "ID_FUNCIONARIOS")
     @ManyToOne(optional = false)
     private GestionFuncionarios fkGestionFuncionarios;
+    @JoinColumn(name = "CREADO_POR", referencedColumnName = "ID_FUNCIONARIOS")
+    @ManyToOne(optional = false)
+    private GestionFuncionarios creadoPor;
+    @JoinColumn(name = "MODIFICADO_POR", referencedColumnName = "ID_FUNCIONARIOS")
+    @ManyToOne(optional = false)
+    private GestionFuncionarios modificadoPor;
 
     public GestionUsuarios() {
     }
@@ -97,14 +93,12 @@ public class GestionUsuarios implements Serializable {
         this.idUsuarios = idUsuarios;
     }
 
-    public GestionUsuarios(Long idUsuarios, String login, String password, Date ultimoAcceso, long creadoPor, Date fechaCreacion, long modificadoPor, Date fechaModificacion) {
+    public GestionUsuarios(Long idUsuarios, String login, String password, Date ultimoAcceso, Date fechaCreacion, Date fechaModificacion) {
         this.idUsuarios = idUsuarios;
         this.login = login;
         this.password = password;
         this.ultimoAcceso = ultimoAcceso;
-        this.creadoPor = creadoPor;
         this.fechaCreacion = fechaCreacion;
-        this.modificadoPor = modificadoPor;
         this.fechaModificacion = fechaModificacion;
     }
 
@@ -140,28 +134,12 @@ public class GestionUsuarios implements Serializable {
         this.ultimoAcceso = ultimoAcceso;
     }
 
-    public long getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(long creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
 
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
-    }
-
-    public long getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(long modificadoPor) {
-        this.modificadoPor = modificadoPor;
     }
 
     public Date getFechaModificacion() {
@@ -194,6 +172,22 @@ public class GestionUsuarios implements Serializable {
 
     public void setFkGestionFuncionarios(GestionFuncionarios fkGestionFuncionarios) {
         this.fkGestionFuncionarios = fkGestionFuncionarios;
+    }
+
+    public GestionFuncionarios getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(GestionFuncionarios creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public GestionFuncionarios getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(GestionFuncionarios modificadoPor) {
+        this.modificadoPor = modificadoPor;
     }
 
     @Override

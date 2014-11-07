@@ -55,11 +55,11 @@ public class TelcoInfoJpaController implements Serializable {
             }
             em.persist(telcoInfo);
             if (fkComercialClientes != null) {
-                fkComercialClientes.getTelcoInfoCollection().add(telcoInfo);
+                fkComercialClientes.getTelcoInfoList().add(telcoInfo);
                 fkComercialClientes = em.merge(fkComercialClientes);
             }
             if (fkAmyMedidores != null) {
-                fkAmyMedidores.getTelcoInfoCollection().add(telcoInfo);
+                fkAmyMedidores.getTelcoInfoList().add(telcoInfo);
                 fkAmyMedidores = em.merge(fkAmyMedidores);
             }
             utx.commit();
@@ -100,19 +100,19 @@ public class TelcoInfoJpaController implements Serializable {
             }
             telcoInfo = em.merge(telcoInfo);
             if (fkComercialClientesOld != null && !fkComercialClientesOld.equals(fkComercialClientesNew)) {
-                fkComercialClientesOld.getTelcoInfoCollection().remove(telcoInfo);
+                fkComercialClientesOld.getTelcoInfoList().remove(telcoInfo);
                 fkComercialClientesOld = em.merge(fkComercialClientesOld);
             }
             if (fkComercialClientesNew != null && !fkComercialClientesNew.equals(fkComercialClientesOld)) {
-                fkComercialClientesNew.getTelcoInfoCollection().add(telcoInfo);
+                fkComercialClientesNew.getTelcoInfoList().add(telcoInfo);
                 fkComercialClientesNew = em.merge(fkComercialClientesNew);
             }
             if (fkAmyMedidoresOld != null && !fkAmyMedidoresOld.equals(fkAmyMedidoresNew)) {
-                fkAmyMedidoresOld.getTelcoInfoCollection().remove(telcoInfo);
+                fkAmyMedidoresOld.getTelcoInfoList().remove(telcoInfo);
                 fkAmyMedidoresOld = em.merge(fkAmyMedidoresOld);
             }
             if (fkAmyMedidoresNew != null && !fkAmyMedidoresNew.equals(fkAmyMedidoresOld)) {
-                fkAmyMedidoresNew.getTelcoInfoCollection().add(telcoInfo);
+                fkAmyMedidoresNew.getTelcoInfoList().add(telcoInfo);
                 fkAmyMedidoresNew = em.merge(fkAmyMedidoresNew);
             }
             utx.commit();
@@ -151,12 +151,12 @@ public class TelcoInfoJpaController implements Serializable {
             }
             ComercialClientes fkComercialClientes = telcoInfo.getFkComercialClientes();
             if (fkComercialClientes != null) {
-                fkComercialClientes.getTelcoInfoCollection().remove(telcoInfo);
+                fkComercialClientes.getTelcoInfoList().remove(telcoInfo);
                 fkComercialClientes = em.merge(fkComercialClientes);
             }
             AmyMedidores fkAmyMedidores = telcoInfo.getFkAmyMedidores();
             if (fkAmyMedidores != null) {
-                fkAmyMedidores.getTelcoInfoCollection().remove(telcoInfo);
+                fkAmyMedidores.getTelcoInfoList().remove(telcoInfo);
                 fkAmyMedidores = em.merge(fkAmyMedidores);
             }
             em.remove(telcoInfo);

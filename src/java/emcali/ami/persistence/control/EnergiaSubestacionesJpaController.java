@@ -17,7 +17,6 @@ import javax.persistence.criteria.Root;
 import emcali.ami.persistence.entity.EnergiaCircuitos;
 import emcali.ami.persistence.entity.EnergiaSubestaciones;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,27 +40,27 @@ public class EnergiaSubestacionesJpaController implements Serializable {
     }
 
     public void create(EnergiaSubestaciones energiaSubestaciones) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (energiaSubestaciones.getEnergiaCircuitosCollection() == null) {
-            energiaSubestaciones.setEnergiaCircuitosCollection(new ArrayList<EnergiaCircuitos>());
+        if (energiaSubestaciones.getEnergiaCircuitosList() == null) {
+            energiaSubestaciones.setEnergiaCircuitosList(new ArrayList<EnergiaCircuitos>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<EnergiaCircuitos> attachedEnergiaCircuitosCollection = new ArrayList<EnergiaCircuitos>();
-            for (EnergiaCircuitos energiaCircuitosCollectionEnergiaCircuitosToAttach : energiaSubestaciones.getEnergiaCircuitosCollection()) {
-                energiaCircuitosCollectionEnergiaCircuitosToAttach = em.getReference(energiaCircuitosCollectionEnergiaCircuitosToAttach.getClass(), energiaCircuitosCollectionEnergiaCircuitosToAttach.getIdCircuitos());
-                attachedEnergiaCircuitosCollection.add(energiaCircuitosCollectionEnergiaCircuitosToAttach);
+            List<EnergiaCircuitos> attachedEnergiaCircuitosList = new ArrayList<EnergiaCircuitos>();
+            for (EnergiaCircuitos energiaCircuitosListEnergiaCircuitosToAttach : energiaSubestaciones.getEnergiaCircuitosList()) {
+                energiaCircuitosListEnergiaCircuitosToAttach = em.getReference(energiaCircuitosListEnergiaCircuitosToAttach.getClass(), energiaCircuitosListEnergiaCircuitosToAttach.getIdCircuitos());
+                attachedEnergiaCircuitosList.add(energiaCircuitosListEnergiaCircuitosToAttach);
             }
-            energiaSubestaciones.setEnergiaCircuitosCollection(attachedEnergiaCircuitosCollection);
+            energiaSubestaciones.setEnergiaCircuitosList(attachedEnergiaCircuitosList);
             em.persist(energiaSubestaciones);
-            for (EnergiaCircuitos energiaCircuitosCollectionEnergiaCircuitos : energiaSubestaciones.getEnergiaCircuitosCollection()) {
-                EnergiaSubestaciones oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionEnergiaCircuitos = energiaCircuitosCollectionEnergiaCircuitos.getFkEnergiaSubestaciones();
-                energiaCircuitosCollectionEnergiaCircuitos.setFkEnergiaSubestaciones(energiaSubestaciones);
-                energiaCircuitosCollectionEnergiaCircuitos = em.merge(energiaCircuitosCollectionEnergiaCircuitos);
-                if (oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionEnergiaCircuitos != null) {
-                    oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionEnergiaCircuitos.getEnergiaCircuitosCollection().remove(energiaCircuitosCollectionEnergiaCircuitos);
-                    oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionEnergiaCircuitos = em.merge(oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionEnergiaCircuitos);
+            for (EnergiaCircuitos energiaCircuitosListEnergiaCircuitos : energiaSubestaciones.getEnergiaCircuitosList()) {
+                EnergiaSubestaciones oldFkEnergiaSubestacionesOfEnergiaCircuitosListEnergiaCircuitos = energiaCircuitosListEnergiaCircuitos.getFkEnergiaSubestaciones();
+                energiaCircuitosListEnergiaCircuitos.setFkEnergiaSubestaciones(energiaSubestaciones);
+                energiaCircuitosListEnergiaCircuitos = em.merge(energiaCircuitosListEnergiaCircuitos);
+                if (oldFkEnergiaSubestacionesOfEnergiaCircuitosListEnergiaCircuitos != null) {
+                    oldFkEnergiaSubestacionesOfEnergiaCircuitosListEnergiaCircuitos.getEnergiaCircuitosList().remove(energiaCircuitosListEnergiaCircuitos);
+                    oldFkEnergiaSubestacionesOfEnergiaCircuitosListEnergiaCircuitos = em.merge(oldFkEnergiaSubestacionesOfEnergiaCircuitosListEnergiaCircuitos);
                 }
             }
             utx.commit();
@@ -88,36 +87,36 @@ public class EnergiaSubestacionesJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             EnergiaSubestaciones persistentEnergiaSubestaciones = em.find(EnergiaSubestaciones.class, energiaSubestaciones.getIdSubestaciones());
-            Collection<EnergiaCircuitos> energiaCircuitosCollectionOld = persistentEnergiaSubestaciones.getEnergiaCircuitosCollection();
-            Collection<EnergiaCircuitos> energiaCircuitosCollectionNew = energiaSubestaciones.getEnergiaCircuitosCollection();
+            List<EnergiaCircuitos> energiaCircuitosListOld = persistentEnergiaSubestaciones.getEnergiaCircuitosList();
+            List<EnergiaCircuitos> energiaCircuitosListNew = energiaSubestaciones.getEnergiaCircuitosList();
             List<String> illegalOrphanMessages = null;
-            for (EnergiaCircuitos energiaCircuitosCollectionOldEnergiaCircuitos : energiaCircuitosCollectionOld) {
-                if (!energiaCircuitosCollectionNew.contains(energiaCircuitosCollectionOldEnergiaCircuitos)) {
+            for (EnergiaCircuitos energiaCircuitosListOldEnergiaCircuitos : energiaCircuitosListOld) {
+                if (!energiaCircuitosListNew.contains(energiaCircuitosListOldEnergiaCircuitos)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain EnergiaCircuitos " + energiaCircuitosCollectionOldEnergiaCircuitos + " since its fkEnergiaSubestaciones field is not nullable.");
+                    illegalOrphanMessages.add("You must retain EnergiaCircuitos " + energiaCircuitosListOldEnergiaCircuitos + " since its fkEnergiaSubestaciones field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<EnergiaCircuitos> attachedEnergiaCircuitosCollectionNew = new ArrayList<EnergiaCircuitos>();
-            for (EnergiaCircuitos energiaCircuitosCollectionNewEnergiaCircuitosToAttach : energiaCircuitosCollectionNew) {
-                energiaCircuitosCollectionNewEnergiaCircuitosToAttach = em.getReference(energiaCircuitosCollectionNewEnergiaCircuitosToAttach.getClass(), energiaCircuitosCollectionNewEnergiaCircuitosToAttach.getIdCircuitos());
-                attachedEnergiaCircuitosCollectionNew.add(energiaCircuitosCollectionNewEnergiaCircuitosToAttach);
+            List<EnergiaCircuitos> attachedEnergiaCircuitosListNew = new ArrayList<EnergiaCircuitos>();
+            for (EnergiaCircuitos energiaCircuitosListNewEnergiaCircuitosToAttach : energiaCircuitosListNew) {
+                energiaCircuitosListNewEnergiaCircuitosToAttach = em.getReference(energiaCircuitosListNewEnergiaCircuitosToAttach.getClass(), energiaCircuitosListNewEnergiaCircuitosToAttach.getIdCircuitos());
+                attachedEnergiaCircuitosListNew.add(energiaCircuitosListNewEnergiaCircuitosToAttach);
             }
-            energiaCircuitosCollectionNew = attachedEnergiaCircuitosCollectionNew;
-            energiaSubestaciones.setEnergiaCircuitosCollection(energiaCircuitosCollectionNew);
+            energiaCircuitosListNew = attachedEnergiaCircuitosListNew;
+            energiaSubestaciones.setEnergiaCircuitosList(energiaCircuitosListNew);
             energiaSubestaciones = em.merge(energiaSubestaciones);
-            for (EnergiaCircuitos energiaCircuitosCollectionNewEnergiaCircuitos : energiaCircuitosCollectionNew) {
-                if (!energiaCircuitosCollectionOld.contains(energiaCircuitosCollectionNewEnergiaCircuitos)) {
-                    EnergiaSubestaciones oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionNewEnergiaCircuitos = energiaCircuitosCollectionNewEnergiaCircuitos.getFkEnergiaSubestaciones();
-                    energiaCircuitosCollectionNewEnergiaCircuitos.setFkEnergiaSubestaciones(energiaSubestaciones);
-                    energiaCircuitosCollectionNewEnergiaCircuitos = em.merge(energiaCircuitosCollectionNewEnergiaCircuitos);
-                    if (oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionNewEnergiaCircuitos != null && !oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionNewEnergiaCircuitos.equals(energiaSubestaciones)) {
-                        oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionNewEnergiaCircuitos.getEnergiaCircuitosCollection().remove(energiaCircuitosCollectionNewEnergiaCircuitos);
-                        oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionNewEnergiaCircuitos = em.merge(oldFkEnergiaSubestacionesOfEnergiaCircuitosCollectionNewEnergiaCircuitos);
+            for (EnergiaCircuitos energiaCircuitosListNewEnergiaCircuitos : energiaCircuitosListNew) {
+                if (!energiaCircuitosListOld.contains(energiaCircuitosListNewEnergiaCircuitos)) {
+                    EnergiaSubestaciones oldFkEnergiaSubestacionesOfEnergiaCircuitosListNewEnergiaCircuitos = energiaCircuitosListNewEnergiaCircuitos.getFkEnergiaSubestaciones();
+                    energiaCircuitosListNewEnergiaCircuitos.setFkEnergiaSubestaciones(energiaSubestaciones);
+                    energiaCircuitosListNewEnergiaCircuitos = em.merge(energiaCircuitosListNewEnergiaCircuitos);
+                    if (oldFkEnergiaSubestacionesOfEnergiaCircuitosListNewEnergiaCircuitos != null && !oldFkEnergiaSubestacionesOfEnergiaCircuitosListNewEnergiaCircuitos.equals(energiaSubestaciones)) {
+                        oldFkEnergiaSubestacionesOfEnergiaCircuitosListNewEnergiaCircuitos.getEnergiaCircuitosList().remove(energiaCircuitosListNewEnergiaCircuitos);
+                        oldFkEnergiaSubestacionesOfEnergiaCircuitosListNewEnergiaCircuitos = em.merge(oldFkEnergiaSubestacionesOfEnergiaCircuitosListNewEnergiaCircuitos);
                     }
                 }
             }
@@ -156,12 +155,12 @@ public class EnergiaSubestacionesJpaController implements Serializable {
                 throw new NonexistentEntityException("The energiaSubestaciones with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<EnergiaCircuitos> energiaCircuitosCollectionOrphanCheck = energiaSubestaciones.getEnergiaCircuitosCollection();
-            for (EnergiaCircuitos energiaCircuitosCollectionOrphanCheckEnergiaCircuitos : energiaCircuitosCollectionOrphanCheck) {
+            List<EnergiaCircuitos> energiaCircuitosListOrphanCheck = energiaSubestaciones.getEnergiaCircuitosList();
+            for (EnergiaCircuitos energiaCircuitosListOrphanCheckEnergiaCircuitos : energiaCircuitosListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This EnergiaSubestaciones (" + energiaSubestaciones + ") cannot be destroyed since the EnergiaCircuitos " + energiaCircuitosCollectionOrphanCheckEnergiaCircuitos + " in its energiaCircuitosCollection field has a non-nullable fkEnergiaSubestaciones field.");
+                illegalOrphanMessages.add("This EnergiaSubestaciones (" + energiaSubestaciones + ") cannot be destroyed since the EnergiaCircuitos " + energiaCircuitosListOrphanCheckEnergiaCircuitos + " in its energiaCircuitosList field has a non-nullable fkEnergiaSubestaciones field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

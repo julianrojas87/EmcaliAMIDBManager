@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,7 +49,7 @@ public class GestionMenu implements Serializable {
     @Column(name = "COMENTARIO")
     private String comentario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkGestionMenu")
-    private Collection<GestionPerfilesMenu> gestionPerfilesMenuCollection;
+    private List<GestionPerfilesMenu> gestionPerfilesMenuList;
 
     public GestionMenu() {
     }
@@ -88,12 +88,12 @@ public class GestionMenu implements Serializable {
     }
 
     @XmlTransient
-    public Collection<GestionPerfilesMenu> getGestionPerfilesMenuCollection() {
-        return gestionPerfilesMenuCollection;
+    public List<GestionPerfilesMenu> getGestionPerfilesMenuList() {
+        return gestionPerfilesMenuList;
     }
 
-    public void setGestionPerfilesMenuCollection(Collection<GestionPerfilesMenu> gestionPerfilesMenuCollection) {
-        this.gestionPerfilesMenuCollection = gestionPerfilesMenuCollection;
+    public void setGestionPerfilesMenuList(List<GestionPerfilesMenu> gestionPerfilesMenuList) {
+        this.gestionPerfilesMenuList = gestionPerfilesMenuList;
     }
 
     @Override

@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,7 +49,7 @@ public class AtributosFuncionMedidores implements Serializable {
     @Column(name = "PARAMETRO2")
     private Long parametro2;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAtrFncMedidores")
-    private Collection<AtrFncsActvMedidores> atrFncsActvMedidoresCollection;
+    private List<AtrFncsActvMedidores> atrFncsActvMedidoresList;
 
     public AtributosFuncionMedidores() {
     }
@@ -91,12 +91,12 @@ public class AtributosFuncionMedidores implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AtrFncsActvMedidores> getAtrFncsActvMedidoresCollection() {
-        return atrFncsActvMedidoresCollection;
+    public List<AtrFncsActvMedidores> getAtrFncsActvMedidoresList() {
+        return atrFncsActvMedidoresList;
     }
 
-    public void setAtrFncsActvMedidoresCollection(Collection<AtrFncsActvMedidores> atrFncsActvMedidoresCollection) {
-        this.atrFncsActvMedidoresCollection = atrFncsActvMedidoresCollection;
+    public void setAtrFncsActvMedidoresList(List<AtrFncsActvMedidores> atrFncsActvMedidoresList) {
+        this.atrFncsActvMedidoresList = atrFncsActvMedidoresList;
     }
 
     @Override

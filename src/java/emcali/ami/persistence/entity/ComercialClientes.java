@@ -6,13 +6,15 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -39,9 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ComercialClientes.findByDireccion", query = "SELECT c FROM ComercialClientes c WHERE c.direccion = :direccion"),
     @NamedQuery(name = "ComercialClientes.findByTelefono", query = "SELECT c FROM ComercialClientes c WHERE c.telefono = :telefono"),
     @NamedQuery(name = "ComercialClientes.findByMail", query = "SELECT c FROM ComercialClientes c WHERE c.mail = :mail"),
-    @NamedQuery(name = "ComercialClientes.findByCreadoPor", query = "SELECT c FROM ComercialClientes c WHERE c.creadoPor = :creadoPor"),
     @NamedQuery(name = "ComercialClientes.findByFechaCreacion", query = "SELECT c FROM ComercialClientes c WHERE c.fechaCreacion = :fechaCreacion"),
-    @NamedQuery(name = "ComercialClientes.findByModificadoPor", query = "SELECT c FROM ComercialClientes c WHERE c.modificadoPor = :modificadoPor"),
     @NamedQuery(name = "ComercialClientes.findByFechaModificacion", query = "SELECT c FROM ComercialClientes c WHERE c.fechaModificacion = :fechaModificacion"),
     @NamedQuery(name = "ComercialClientes.findByObservaciones", query = "SELECT c FROM ComercialClientes c WHERE c.observaciones = :observaciones")})
 public class ComercialClientes implements Serializable {
@@ -78,17 +78,9 @@ public class ComercialClientes implements Serializable {
     private String mail;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CREADO_POR")
-    private long creadoPor;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHA_CREACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "MODIFICADO_POR")
-    private long modificadoPor;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_MODIFICACION")
@@ -97,10 +89,16 @@ public class ComercialClientes implements Serializable {
     @Size(max = 45)
     @Column(name = "OBSERVACIONES")
     private String observaciones;
+    @JoinColumn(name = "MODIFICADO_POR", referencedColumnName = "ID_FUNCIONARIOS")
+    @ManyToOne(optional = false)
+    private GestionFuncionarios modificadoPor;
+    @JoinColumn(name = "CREADO_POR", referencedColumnName = "ID_FUNCIONARIOS")
+    @ManyToOne(optional = false)
+    private GestionFuncionarios creadoPor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkComercialClientes")
-    private Collection<TelcoInfo> telcoInfoCollection;
+    private List<TelcoInfo> telcoInfoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkComercialClientes")
-    private Collection<ComercialContratos> comercialContratosCollection;
+    private List<ComercialContratos> comercialContratosList;
 
     public ComercialClientes() {
     }
@@ -109,16 +107,14 @@ public class ComercialClientes implements Serializable {
         this.idClientes = idClientes;
     }
 
-    public ComercialClientes(Long idClientes, String nombreClientes, String tipoIdentificacion, String direccion, String telefono, String mail, long creadoPor, Date fechaCreacion, long modificadoPor, Date fechaModificacion) {
+    public ComercialClientes(Long idClientes, String nombreClientes, String tipoIdentificacion, String direccion, String telefono, String mail, Date fechaCreacion, Date fechaModificacion) {
         this.idClientes = idClientes;
         this.nombreClientes = nombreClientes;
         this.tipoIdentificacion = tipoIdentificacion;
         this.direccion = direccion;
         this.telefono = telefono;
         this.mail = mail;
-        this.creadoPor = creadoPor;
         this.fechaCreacion = fechaCreacion;
-        this.modificadoPor = modificadoPor;
         this.fechaModificacion = fechaModificacion;
     }
 
@@ -170,28 +166,12 @@ public class ComercialClientes implements Serializable {
         this.mail = mail;
     }
 
-    public long getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(long creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
 
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
-    }
-
-    public long getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(long modificadoPor) {
-        this.modificadoPor = modificadoPor;
     }
 
     public Date getFechaModificacion() {
@@ -210,22 +190,38 @@ public class ComercialClientes implements Serializable {
         this.observaciones = observaciones;
     }
 
+    public GestionFuncionarios getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(GestionFuncionarios modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    public GestionFuncionarios getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(GestionFuncionarios creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
     @XmlTransient
-    public Collection<TelcoInfo> getTelcoInfoCollection() {
-        return telcoInfoCollection;
+    public List<TelcoInfo> getTelcoInfoList() {
+        return telcoInfoList;
     }
 
-    public void setTelcoInfoCollection(Collection<TelcoInfo> telcoInfoCollection) {
-        this.telcoInfoCollection = telcoInfoCollection;
+    public void setTelcoInfoList(List<TelcoInfo> telcoInfoList) {
+        this.telcoInfoList = telcoInfoList;
     }
 
     @XmlTransient
-    public Collection<ComercialContratos> getComercialContratosCollection() {
-        return comercialContratosCollection;
+    public List<ComercialContratos> getComercialContratosList() {
+        return comercialContratosList;
     }
 
-    public void setComercialContratosCollection(Collection<ComercialContratos> comercialContratosCollection) {
-        this.comercialContratosCollection = comercialContratosCollection;
+    public void setComercialContratosList(List<ComercialContratos> comercialContratosList) {
+        this.comercialContratosList = comercialContratosList;
     }
 
     @Override

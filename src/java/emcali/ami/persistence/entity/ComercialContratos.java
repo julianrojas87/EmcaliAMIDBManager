@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,7 +48,7 @@ public class ComercialContratos implements Serializable {
     @ManyToOne(optional = false)
     private ComercialClientes fkComercialClientes;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkComercialContratos")
-    private Collection<ComercialProductos> comercialProductosCollection;
+    private List<ComercialProductos> comercialProductosList;
 
     public ComercialContratos() {
     }
@@ -87,12 +87,12 @@ public class ComercialContratos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<ComercialProductos> getComercialProductosCollection() {
-        return comercialProductosCollection;
+    public List<ComercialProductos> getComercialProductosList() {
+        return comercialProductosList;
     }
 
-    public void setComercialProductosCollection(Collection<ComercialProductos> comercialProductosCollection) {
-        this.comercialProductosCollection = comercialProductosCollection;
+    public void setComercialProductosList(List<ComercialProductos> comercialProductosList) {
+        this.comercialProductosList = comercialProductosList;
     }
 
     @Override

@@ -55,11 +55,11 @@ public class GestionPerfilesMenuJpaController implements Serializable {
             }
             em.persist(gestionPerfilesMenu);
             if (fkGestionPerfiles != null) {
-                fkGestionPerfiles.getGestionPerfilesMenuCollection().add(gestionPerfilesMenu);
+                fkGestionPerfiles.getGestionPerfilesMenuList().add(gestionPerfilesMenu);
                 fkGestionPerfiles = em.merge(fkGestionPerfiles);
             }
             if (fkGestionMenu != null) {
-                fkGestionMenu.getGestionPerfilesMenuCollection().add(gestionPerfilesMenu);
+                fkGestionMenu.getGestionPerfilesMenuList().add(gestionPerfilesMenu);
                 fkGestionMenu = em.merge(fkGestionMenu);
             }
             utx.commit();
@@ -100,19 +100,19 @@ public class GestionPerfilesMenuJpaController implements Serializable {
             }
             gestionPerfilesMenu = em.merge(gestionPerfilesMenu);
             if (fkGestionPerfilesOld != null && !fkGestionPerfilesOld.equals(fkGestionPerfilesNew)) {
-                fkGestionPerfilesOld.getGestionPerfilesMenuCollection().remove(gestionPerfilesMenu);
+                fkGestionPerfilesOld.getGestionPerfilesMenuList().remove(gestionPerfilesMenu);
                 fkGestionPerfilesOld = em.merge(fkGestionPerfilesOld);
             }
             if (fkGestionPerfilesNew != null && !fkGestionPerfilesNew.equals(fkGestionPerfilesOld)) {
-                fkGestionPerfilesNew.getGestionPerfilesMenuCollection().add(gestionPerfilesMenu);
+                fkGestionPerfilesNew.getGestionPerfilesMenuList().add(gestionPerfilesMenu);
                 fkGestionPerfilesNew = em.merge(fkGestionPerfilesNew);
             }
             if (fkGestionMenuOld != null && !fkGestionMenuOld.equals(fkGestionMenuNew)) {
-                fkGestionMenuOld.getGestionPerfilesMenuCollection().remove(gestionPerfilesMenu);
+                fkGestionMenuOld.getGestionPerfilesMenuList().remove(gestionPerfilesMenu);
                 fkGestionMenuOld = em.merge(fkGestionMenuOld);
             }
             if (fkGestionMenuNew != null && !fkGestionMenuNew.equals(fkGestionMenuOld)) {
-                fkGestionMenuNew.getGestionPerfilesMenuCollection().add(gestionPerfilesMenu);
+                fkGestionMenuNew.getGestionPerfilesMenuList().add(gestionPerfilesMenu);
                 fkGestionMenuNew = em.merge(fkGestionMenuNew);
             }
             utx.commit();
@@ -151,12 +151,12 @@ public class GestionPerfilesMenuJpaController implements Serializable {
             }
             GestionPerfiles fkGestionPerfiles = gestionPerfilesMenu.getFkGestionPerfiles();
             if (fkGestionPerfiles != null) {
-                fkGestionPerfiles.getGestionPerfilesMenuCollection().remove(gestionPerfilesMenu);
+                fkGestionPerfiles.getGestionPerfilesMenuList().remove(gestionPerfilesMenu);
                 fkGestionPerfiles = em.merge(fkGestionPerfiles);
             }
             GestionMenu fkGestionMenu = gestionPerfilesMenu.getFkGestionMenu();
             if (fkGestionMenu != null) {
-                fkGestionMenu.getGestionPerfilesMenuCollection().remove(gestionPerfilesMenu);
+                fkGestionMenu.getGestionPerfilesMenuList().remove(gestionPerfilesMenu);
                 fkGestionMenu = em.merge(fkGestionMenu);
             }
             em.remove(gestionPerfilesMenu);

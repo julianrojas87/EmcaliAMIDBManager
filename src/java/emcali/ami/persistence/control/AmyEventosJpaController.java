@@ -55,11 +55,11 @@ public class AmyEventosJpaController implements Serializable {
             }
             em.persist(amyEventos);
             if (fkAmyTipoEventos != null) {
-                fkAmyTipoEventos.getAmyEventosCollection().add(amyEventos);
+                fkAmyTipoEventos.getAmyEventosList().add(amyEventos);
                 fkAmyTipoEventos = em.merge(fkAmyTipoEventos);
             }
             if (fkAmyMedidores != null) {
-                fkAmyMedidores.getAmyEventosCollection().add(amyEventos);
+                fkAmyMedidores.getAmyEventosList().add(amyEventos);
                 fkAmyMedidores = em.merge(fkAmyMedidores);
             }
             utx.commit();
@@ -100,19 +100,19 @@ public class AmyEventosJpaController implements Serializable {
             }
             amyEventos = em.merge(amyEventos);
             if (fkAmyTipoEventosOld != null && !fkAmyTipoEventosOld.equals(fkAmyTipoEventosNew)) {
-                fkAmyTipoEventosOld.getAmyEventosCollection().remove(amyEventos);
+                fkAmyTipoEventosOld.getAmyEventosList().remove(amyEventos);
                 fkAmyTipoEventosOld = em.merge(fkAmyTipoEventosOld);
             }
             if (fkAmyTipoEventosNew != null && !fkAmyTipoEventosNew.equals(fkAmyTipoEventosOld)) {
-                fkAmyTipoEventosNew.getAmyEventosCollection().add(amyEventos);
+                fkAmyTipoEventosNew.getAmyEventosList().add(amyEventos);
                 fkAmyTipoEventosNew = em.merge(fkAmyTipoEventosNew);
             }
             if (fkAmyMedidoresOld != null && !fkAmyMedidoresOld.equals(fkAmyMedidoresNew)) {
-                fkAmyMedidoresOld.getAmyEventosCollection().remove(amyEventos);
+                fkAmyMedidoresOld.getAmyEventosList().remove(amyEventos);
                 fkAmyMedidoresOld = em.merge(fkAmyMedidoresOld);
             }
             if (fkAmyMedidoresNew != null && !fkAmyMedidoresNew.equals(fkAmyMedidoresOld)) {
-                fkAmyMedidoresNew.getAmyEventosCollection().add(amyEventos);
+                fkAmyMedidoresNew.getAmyEventosList().add(amyEventos);
                 fkAmyMedidoresNew = em.merge(fkAmyMedidoresNew);
             }
             utx.commit();
@@ -151,12 +151,12 @@ public class AmyEventosJpaController implements Serializable {
             }
             AmyTipoEventos fkAmyTipoEventos = amyEventos.getFkAmyTipoEventos();
             if (fkAmyTipoEventos != null) {
-                fkAmyTipoEventos.getAmyEventosCollection().remove(amyEventos);
+                fkAmyTipoEventos.getAmyEventosList().remove(amyEventos);
                 fkAmyTipoEventos = em.merge(fkAmyTipoEventos);
             }
             AmyMedidores fkAmyMedidores = amyEventos.getFkAmyMedidores();
             if (fkAmyMedidores != null) {
-                fkAmyMedidores.getAmyEventosCollection().remove(amyEventos);
+                fkAmyMedidores.getAmyEventosList().remove(amyEventos);
                 fkAmyMedidores = em.merge(fkAmyMedidores);
             }
             em.remove(amyEventos);

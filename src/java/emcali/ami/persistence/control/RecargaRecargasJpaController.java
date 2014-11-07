@@ -55,11 +55,11 @@ public class RecargaRecargasJpaController implements Serializable {
             }
             em.persist(recargaRecargas);
             if (fkPrepagoTipoRecarga != null) {
-                fkPrepagoTipoRecarga.getRecargaRecargasCollection().add(recargaRecargas);
+                fkPrepagoTipoRecarga.getRecargaRecargasList().add(recargaRecargas);
                 fkPrepagoTipoRecarga = em.merge(fkPrepagoTipoRecarga);
             }
             if (fkComercialProductos != null) {
-                fkComercialProductos.getRecargaRecargasCollection().add(recargaRecargas);
+                fkComercialProductos.getRecargaRecargasList().add(recargaRecargas);
                 fkComercialProductos = em.merge(fkComercialProductos);
             }
             utx.commit();
@@ -100,19 +100,19 @@ public class RecargaRecargasJpaController implements Serializable {
             }
             recargaRecargas = em.merge(recargaRecargas);
             if (fkPrepagoTipoRecargaOld != null && !fkPrepagoTipoRecargaOld.equals(fkPrepagoTipoRecargaNew)) {
-                fkPrepagoTipoRecargaOld.getRecargaRecargasCollection().remove(recargaRecargas);
+                fkPrepagoTipoRecargaOld.getRecargaRecargasList().remove(recargaRecargas);
                 fkPrepagoTipoRecargaOld = em.merge(fkPrepagoTipoRecargaOld);
             }
             if (fkPrepagoTipoRecargaNew != null && !fkPrepagoTipoRecargaNew.equals(fkPrepagoTipoRecargaOld)) {
-                fkPrepagoTipoRecargaNew.getRecargaRecargasCollection().add(recargaRecargas);
+                fkPrepagoTipoRecargaNew.getRecargaRecargasList().add(recargaRecargas);
                 fkPrepagoTipoRecargaNew = em.merge(fkPrepagoTipoRecargaNew);
             }
             if (fkComercialProductosOld != null && !fkComercialProductosOld.equals(fkComercialProductosNew)) {
-                fkComercialProductosOld.getRecargaRecargasCollection().remove(recargaRecargas);
+                fkComercialProductosOld.getRecargaRecargasList().remove(recargaRecargas);
                 fkComercialProductosOld = em.merge(fkComercialProductosOld);
             }
             if (fkComercialProductosNew != null && !fkComercialProductosNew.equals(fkComercialProductosOld)) {
-                fkComercialProductosNew.getRecargaRecargasCollection().add(recargaRecargas);
+                fkComercialProductosNew.getRecargaRecargasList().add(recargaRecargas);
                 fkComercialProductosNew = em.merge(fkComercialProductosNew);
             }
             utx.commit();
@@ -151,12 +151,12 @@ public class RecargaRecargasJpaController implements Serializable {
             }
             RecargaTipoRecarga fkPrepagoTipoRecarga = recargaRecargas.getFkPrepagoTipoRecarga();
             if (fkPrepagoTipoRecarga != null) {
-                fkPrepagoTipoRecarga.getRecargaRecargasCollection().remove(recargaRecargas);
+                fkPrepagoTipoRecarga.getRecargaRecargasList().remove(recargaRecargas);
                 fkPrepagoTipoRecarga = em.merge(fkPrepagoTipoRecarga);
             }
             ComercialProductos fkComercialProductos = recargaRecargas.getFkComercialProductos();
             if (fkComercialProductos != null) {
-                fkComercialProductos.getRecargaRecargasCollection().remove(recargaRecargas);
+                fkComercialProductos.getRecargaRecargasList().remove(recargaRecargas);
                 fkComercialProductos = em.merge(fkComercialProductos);
             }
             em.remove(recargaRecargas);

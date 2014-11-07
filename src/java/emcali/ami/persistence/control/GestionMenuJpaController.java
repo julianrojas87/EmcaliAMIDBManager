@@ -17,7 +17,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import emcali.ami.persistence.entity.GestionPerfilesMenu;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,27 +40,27 @@ public class GestionMenuJpaController implements Serializable {
     }
 
     public void create(GestionMenu gestionMenu) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (gestionMenu.getGestionPerfilesMenuCollection() == null) {
-            gestionMenu.setGestionPerfilesMenuCollection(new ArrayList<GestionPerfilesMenu>());
+        if (gestionMenu.getGestionPerfilesMenuList() == null) {
+            gestionMenu.setGestionPerfilesMenuList(new ArrayList<GestionPerfilesMenu>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<GestionPerfilesMenu> attachedGestionPerfilesMenuCollection = new ArrayList<GestionPerfilesMenu>();
-            for (GestionPerfilesMenu gestionPerfilesMenuCollectionGestionPerfilesMenuToAttach : gestionMenu.getGestionPerfilesMenuCollection()) {
-                gestionPerfilesMenuCollectionGestionPerfilesMenuToAttach = em.getReference(gestionPerfilesMenuCollectionGestionPerfilesMenuToAttach.getClass(), gestionPerfilesMenuCollectionGestionPerfilesMenuToAttach.getIdPerfilesMenu());
-                attachedGestionPerfilesMenuCollection.add(gestionPerfilesMenuCollectionGestionPerfilesMenuToAttach);
+            List<GestionPerfilesMenu> attachedGestionPerfilesMenuList = new ArrayList<GestionPerfilesMenu>();
+            for (GestionPerfilesMenu gestionPerfilesMenuListGestionPerfilesMenuToAttach : gestionMenu.getGestionPerfilesMenuList()) {
+                gestionPerfilesMenuListGestionPerfilesMenuToAttach = em.getReference(gestionPerfilesMenuListGestionPerfilesMenuToAttach.getClass(), gestionPerfilesMenuListGestionPerfilesMenuToAttach.getIdPerfilesMenu());
+                attachedGestionPerfilesMenuList.add(gestionPerfilesMenuListGestionPerfilesMenuToAttach);
             }
-            gestionMenu.setGestionPerfilesMenuCollection(attachedGestionPerfilesMenuCollection);
+            gestionMenu.setGestionPerfilesMenuList(attachedGestionPerfilesMenuList);
             em.persist(gestionMenu);
-            for (GestionPerfilesMenu gestionPerfilesMenuCollectionGestionPerfilesMenu : gestionMenu.getGestionPerfilesMenuCollection()) {
-                GestionMenu oldFkGestionMenuOfGestionPerfilesMenuCollectionGestionPerfilesMenu = gestionPerfilesMenuCollectionGestionPerfilesMenu.getFkGestionMenu();
-                gestionPerfilesMenuCollectionGestionPerfilesMenu.setFkGestionMenu(gestionMenu);
-                gestionPerfilesMenuCollectionGestionPerfilesMenu = em.merge(gestionPerfilesMenuCollectionGestionPerfilesMenu);
-                if (oldFkGestionMenuOfGestionPerfilesMenuCollectionGestionPerfilesMenu != null) {
-                    oldFkGestionMenuOfGestionPerfilesMenuCollectionGestionPerfilesMenu.getGestionPerfilesMenuCollection().remove(gestionPerfilesMenuCollectionGestionPerfilesMenu);
-                    oldFkGestionMenuOfGestionPerfilesMenuCollectionGestionPerfilesMenu = em.merge(oldFkGestionMenuOfGestionPerfilesMenuCollectionGestionPerfilesMenu);
+            for (GestionPerfilesMenu gestionPerfilesMenuListGestionPerfilesMenu : gestionMenu.getGestionPerfilesMenuList()) {
+                GestionMenu oldFkGestionMenuOfGestionPerfilesMenuListGestionPerfilesMenu = gestionPerfilesMenuListGestionPerfilesMenu.getFkGestionMenu();
+                gestionPerfilesMenuListGestionPerfilesMenu.setFkGestionMenu(gestionMenu);
+                gestionPerfilesMenuListGestionPerfilesMenu = em.merge(gestionPerfilesMenuListGestionPerfilesMenu);
+                if (oldFkGestionMenuOfGestionPerfilesMenuListGestionPerfilesMenu != null) {
+                    oldFkGestionMenuOfGestionPerfilesMenuListGestionPerfilesMenu.getGestionPerfilesMenuList().remove(gestionPerfilesMenuListGestionPerfilesMenu);
+                    oldFkGestionMenuOfGestionPerfilesMenuListGestionPerfilesMenu = em.merge(oldFkGestionMenuOfGestionPerfilesMenuListGestionPerfilesMenu);
                 }
             }
             utx.commit();
@@ -88,36 +87,36 @@ public class GestionMenuJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             GestionMenu persistentGestionMenu = em.find(GestionMenu.class, gestionMenu.getIdMenu());
-            Collection<GestionPerfilesMenu> gestionPerfilesMenuCollectionOld = persistentGestionMenu.getGestionPerfilesMenuCollection();
-            Collection<GestionPerfilesMenu> gestionPerfilesMenuCollectionNew = gestionMenu.getGestionPerfilesMenuCollection();
+            List<GestionPerfilesMenu> gestionPerfilesMenuListOld = persistentGestionMenu.getGestionPerfilesMenuList();
+            List<GestionPerfilesMenu> gestionPerfilesMenuListNew = gestionMenu.getGestionPerfilesMenuList();
             List<String> illegalOrphanMessages = null;
-            for (GestionPerfilesMenu gestionPerfilesMenuCollectionOldGestionPerfilesMenu : gestionPerfilesMenuCollectionOld) {
-                if (!gestionPerfilesMenuCollectionNew.contains(gestionPerfilesMenuCollectionOldGestionPerfilesMenu)) {
+            for (GestionPerfilesMenu gestionPerfilesMenuListOldGestionPerfilesMenu : gestionPerfilesMenuListOld) {
+                if (!gestionPerfilesMenuListNew.contains(gestionPerfilesMenuListOldGestionPerfilesMenu)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain GestionPerfilesMenu " + gestionPerfilesMenuCollectionOldGestionPerfilesMenu + " since its fkGestionMenu field is not nullable.");
+                    illegalOrphanMessages.add("You must retain GestionPerfilesMenu " + gestionPerfilesMenuListOldGestionPerfilesMenu + " since its fkGestionMenu field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<GestionPerfilesMenu> attachedGestionPerfilesMenuCollectionNew = new ArrayList<GestionPerfilesMenu>();
-            for (GestionPerfilesMenu gestionPerfilesMenuCollectionNewGestionPerfilesMenuToAttach : gestionPerfilesMenuCollectionNew) {
-                gestionPerfilesMenuCollectionNewGestionPerfilesMenuToAttach = em.getReference(gestionPerfilesMenuCollectionNewGestionPerfilesMenuToAttach.getClass(), gestionPerfilesMenuCollectionNewGestionPerfilesMenuToAttach.getIdPerfilesMenu());
-                attachedGestionPerfilesMenuCollectionNew.add(gestionPerfilesMenuCollectionNewGestionPerfilesMenuToAttach);
+            List<GestionPerfilesMenu> attachedGestionPerfilesMenuListNew = new ArrayList<GestionPerfilesMenu>();
+            for (GestionPerfilesMenu gestionPerfilesMenuListNewGestionPerfilesMenuToAttach : gestionPerfilesMenuListNew) {
+                gestionPerfilesMenuListNewGestionPerfilesMenuToAttach = em.getReference(gestionPerfilesMenuListNewGestionPerfilesMenuToAttach.getClass(), gestionPerfilesMenuListNewGestionPerfilesMenuToAttach.getIdPerfilesMenu());
+                attachedGestionPerfilesMenuListNew.add(gestionPerfilesMenuListNewGestionPerfilesMenuToAttach);
             }
-            gestionPerfilesMenuCollectionNew = attachedGestionPerfilesMenuCollectionNew;
-            gestionMenu.setGestionPerfilesMenuCollection(gestionPerfilesMenuCollectionNew);
+            gestionPerfilesMenuListNew = attachedGestionPerfilesMenuListNew;
+            gestionMenu.setGestionPerfilesMenuList(gestionPerfilesMenuListNew);
             gestionMenu = em.merge(gestionMenu);
-            for (GestionPerfilesMenu gestionPerfilesMenuCollectionNewGestionPerfilesMenu : gestionPerfilesMenuCollectionNew) {
-                if (!gestionPerfilesMenuCollectionOld.contains(gestionPerfilesMenuCollectionNewGestionPerfilesMenu)) {
-                    GestionMenu oldFkGestionMenuOfGestionPerfilesMenuCollectionNewGestionPerfilesMenu = gestionPerfilesMenuCollectionNewGestionPerfilesMenu.getFkGestionMenu();
-                    gestionPerfilesMenuCollectionNewGestionPerfilesMenu.setFkGestionMenu(gestionMenu);
-                    gestionPerfilesMenuCollectionNewGestionPerfilesMenu = em.merge(gestionPerfilesMenuCollectionNewGestionPerfilesMenu);
-                    if (oldFkGestionMenuOfGestionPerfilesMenuCollectionNewGestionPerfilesMenu != null && !oldFkGestionMenuOfGestionPerfilesMenuCollectionNewGestionPerfilesMenu.equals(gestionMenu)) {
-                        oldFkGestionMenuOfGestionPerfilesMenuCollectionNewGestionPerfilesMenu.getGestionPerfilesMenuCollection().remove(gestionPerfilesMenuCollectionNewGestionPerfilesMenu);
-                        oldFkGestionMenuOfGestionPerfilesMenuCollectionNewGestionPerfilesMenu = em.merge(oldFkGestionMenuOfGestionPerfilesMenuCollectionNewGestionPerfilesMenu);
+            for (GestionPerfilesMenu gestionPerfilesMenuListNewGestionPerfilesMenu : gestionPerfilesMenuListNew) {
+                if (!gestionPerfilesMenuListOld.contains(gestionPerfilesMenuListNewGestionPerfilesMenu)) {
+                    GestionMenu oldFkGestionMenuOfGestionPerfilesMenuListNewGestionPerfilesMenu = gestionPerfilesMenuListNewGestionPerfilesMenu.getFkGestionMenu();
+                    gestionPerfilesMenuListNewGestionPerfilesMenu.setFkGestionMenu(gestionMenu);
+                    gestionPerfilesMenuListNewGestionPerfilesMenu = em.merge(gestionPerfilesMenuListNewGestionPerfilesMenu);
+                    if (oldFkGestionMenuOfGestionPerfilesMenuListNewGestionPerfilesMenu != null && !oldFkGestionMenuOfGestionPerfilesMenuListNewGestionPerfilesMenu.equals(gestionMenu)) {
+                        oldFkGestionMenuOfGestionPerfilesMenuListNewGestionPerfilesMenu.getGestionPerfilesMenuList().remove(gestionPerfilesMenuListNewGestionPerfilesMenu);
+                        oldFkGestionMenuOfGestionPerfilesMenuListNewGestionPerfilesMenu = em.merge(oldFkGestionMenuOfGestionPerfilesMenuListNewGestionPerfilesMenu);
                     }
                 }
             }
@@ -156,12 +155,12 @@ public class GestionMenuJpaController implements Serializable {
                 throw new NonexistentEntityException("The gestionMenu with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<GestionPerfilesMenu> gestionPerfilesMenuCollectionOrphanCheck = gestionMenu.getGestionPerfilesMenuCollection();
-            for (GestionPerfilesMenu gestionPerfilesMenuCollectionOrphanCheckGestionPerfilesMenu : gestionPerfilesMenuCollectionOrphanCheck) {
+            List<GestionPerfilesMenu> gestionPerfilesMenuListOrphanCheck = gestionMenu.getGestionPerfilesMenuList();
+            for (GestionPerfilesMenu gestionPerfilesMenuListOrphanCheckGestionPerfilesMenu : gestionPerfilesMenuListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This GestionMenu (" + gestionMenu + ") cannot be destroyed since the GestionPerfilesMenu " + gestionPerfilesMenuCollectionOrphanCheckGestionPerfilesMenu + " in its gestionPerfilesMenuCollection field has a non-nullable fkGestionMenu field.");
+                illegalOrphanMessages.add("This GestionMenu (" + gestionMenu + ") cannot be destroyed since the GestionPerfilesMenu " + gestionPerfilesMenuListOrphanCheckGestionPerfilesMenu + " in its gestionPerfilesMenuList field has a non-nullable fkGestionMenu field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

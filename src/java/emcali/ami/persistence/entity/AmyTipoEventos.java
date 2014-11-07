@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,9 +43,9 @@ public class AmyTipoEventos implements Serializable {
     @Column(name = "DESCRIPCION_TIPO_EVENTO")
     private String descripcionTipoEvento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyTipoEventos")
-    private Collection<AmyEventos> amyEventosCollection;
+    private List<AmyEventos> amyEventosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyTipoEventos")
-    private Collection<PrepagoEventos> prepagoEventosCollection;
+    private List<PrepagoEventos> prepagoEventosList;
 
     public AmyTipoEventos() {
     }
@@ -71,21 +71,21 @@ public class AmyTipoEventos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AmyEventos> getAmyEventosCollection() {
-        return amyEventosCollection;
+    public List<AmyEventos> getAmyEventosList() {
+        return amyEventosList;
     }
 
-    public void setAmyEventosCollection(Collection<AmyEventos> amyEventosCollection) {
-        this.amyEventosCollection = amyEventosCollection;
+    public void setAmyEventosList(List<AmyEventos> amyEventosList) {
+        this.amyEventosList = amyEventosList;
     }
 
     @XmlTransient
-    public Collection<PrepagoEventos> getPrepagoEventosCollection() {
-        return prepagoEventosCollection;
+    public List<PrepagoEventos> getPrepagoEventosList() {
+        return prepagoEventosList;
     }
 
-    public void setPrepagoEventosCollection(Collection<PrepagoEventos> prepagoEventosCollection) {
-        this.prepagoEventosCollection = prepagoEventosCollection;
+    public void setPrepagoEventosList(List<PrepagoEventos> prepagoEventosList) {
+        this.prepagoEventosList = prepagoEventosList;
     }
 
     @Override

@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -52,7 +52,7 @@ public class AtributosTiposCajas implements Serializable {
     @Column(name = "CANTIDAD_MEDIDORES")
     private short cantidadMedidores;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkTiposCajas")
-    private Collection<AmyCajas> amyCajasCollection;
+    private List<AmyCajas> amyCajasList;
     @JoinColumn(name = "FK_ATRIBUTOS_FABRICANTES", referencedColumnName = "ID_FABRICANTES")
     @ManyToOne(optional = false)
     private AtributosFabricantes fkAtributosFabricantes;
@@ -95,12 +95,12 @@ public class AtributosTiposCajas implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AmyCajas> getAmyCajasCollection() {
-        return amyCajasCollection;
+    public List<AmyCajas> getAmyCajasList() {
+        return amyCajasList;
     }
 
-    public void setAmyCajasCollection(Collection<AmyCajas> amyCajasCollection) {
-        this.amyCajasCollection = amyCajasCollection;
+    public void setAmyCajasList(List<AmyCajas> amyCajasList) {
+        this.amyCajasList = amyCajasList;
     }
 
     public AtributosFabricantes getFkAtributosFabricantes() {

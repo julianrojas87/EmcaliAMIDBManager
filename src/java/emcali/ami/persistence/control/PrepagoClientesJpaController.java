@@ -55,11 +55,11 @@ public class PrepagoClientesJpaController implements Serializable {
             }
             em.persist(prepagoClientes);
             if (fkPrepagoEstado != null) {
-                fkPrepagoEstado.getPrepagoClientesCollection().add(prepagoClientes);
+                fkPrepagoEstado.getPrepagoClientesList().add(prepagoClientes);
                 fkPrepagoEstado = em.merge(fkPrepagoEstado);
             }
             if (fkComercialProductos != null) {
-                fkComercialProductos.getPrepagoClientesCollection().add(prepagoClientes);
+                fkComercialProductos.getPrepagoClientesList().add(prepagoClientes);
                 fkComercialProductos = em.merge(fkComercialProductos);
             }
             utx.commit();
@@ -100,19 +100,19 @@ public class PrepagoClientesJpaController implements Serializable {
             }
             prepagoClientes = em.merge(prepagoClientes);
             if (fkPrepagoEstadoOld != null && !fkPrepagoEstadoOld.equals(fkPrepagoEstadoNew)) {
-                fkPrepagoEstadoOld.getPrepagoClientesCollection().remove(prepagoClientes);
+                fkPrepagoEstadoOld.getPrepagoClientesList().remove(prepagoClientes);
                 fkPrepagoEstadoOld = em.merge(fkPrepagoEstadoOld);
             }
             if (fkPrepagoEstadoNew != null && !fkPrepagoEstadoNew.equals(fkPrepagoEstadoOld)) {
-                fkPrepagoEstadoNew.getPrepagoClientesCollection().add(prepagoClientes);
+                fkPrepagoEstadoNew.getPrepagoClientesList().add(prepagoClientes);
                 fkPrepagoEstadoNew = em.merge(fkPrepagoEstadoNew);
             }
             if (fkComercialProductosOld != null && !fkComercialProductosOld.equals(fkComercialProductosNew)) {
-                fkComercialProductosOld.getPrepagoClientesCollection().remove(prepagoClientes);
+                fkComercialProductosOld.getPrepagoClientesList().remove(prepagoClientes);
                 fkComercialProductosOld = em.merge(fkComercialProductosOld);
             }
             if (fkComercialProductosNew != null && !fkComercialProductosNew.equals(fkComercialProductosOld)) {
-                fkComercialProductosNew.getPrepagoClientesCollection().add(prepagoClientes);
+                fkComercialProductosNew.getPrepagoClientesList().add(prepagoClientes);
                 fkComercialProductosNew = em.merge(fkComercialProductosNew);
             }
             utx.commit();
@@ -151,12 +151,12 @@ public class PrepagoClientesJpaController implements Serializable {
             }
             PrepagoEstado fkPrepagoEstado = prepagoClientes.getFkPrepagoEstado();
             if (fkPrepagoEstado != null) {
-                fkPrepagoEstado.getPrepagoClientesCollection().remove(prepagoClientes);
+                fkPrepagoEstado.getPrepagoClientesList().remove(prepagoClientes);
                 fkPrepagoEstado = em.merge(fkPrepagoEstado);
             }
             ComercialProductos fkComercialProductos = prepagoClientes.getFkComercialProductos();
             if (fkComercialProductos != null) {
-                fkComercialProductos.getPrepagoClientesCollection().remove(prepagoClientes);
+                fkComercialProductos.getPrepagoClientesList().remove(prepagoClientes);
                 fkComercialProductos = em.merge(fkComercialProductos);
             }
             em.remove(prepagoClientes);

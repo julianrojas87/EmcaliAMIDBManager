@@ -15,11 +15,11 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import emcali.ami.persistence.entity.GestionFuncionarios;
 import emcali.ami.persistence.entity.TelcoInfo;
 import java.util.ArrayList;
-import java.util.Collection;
-import emcali.ami.persistence.entity.ComercialContratos;
 import java.util.List;
+import emcali.ami.persistence.entity.ComercialContratos;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
@@ -42,45 +42,63 @@ public class ComercialClientesJpaController implements Serializable {
     }
 
     public void create(ComercialClientes comercialClientes) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (comercialClientes.getTelcoInfoCollection() == null) {
-            comercialClientes.setTelcoInfoCollection(new ArrayList<TelcoInfo>());
+        if (comercialClientes.getTelcoInfoList() == null) {
+            comercialClientes.setTelcoInfoList(new ArrayList<TelcoInfo>());
         }
-        if (comercialClientes.getComercialContratosCollection() == null) {
-            comercialClientes.setComercialContratosCollection(new ArrayList<ComercialContratos>());
+        if (comercialClientes.getComercialContratosList() == null) {
+            comercialClientes.setComercialContratosList(new ArrayList<ComercialContratos>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<TelcoInfo> attachedTelcoInfoCollection = new ArrayList<TelcoInfo>();
-            for (TelcoInfo telcoInfoCollectionTelcoInfoToAttach : comercialClientes.getTelcoInfoCollection()) {
-                telcoInfoCollectionTelcoInfoToAttach = em.getReference(telcoInfoCollectionTelcoInfoToAttach.getClass(), telcoInfoCollectionTelcoInfoToAttach.getIdSuscriptor());
-                attachedTelcoInfoCollection.add(telcoInfoCollectionTelcoInfoToAttach);
+            GestionFuncionarios modificadoPor = comercialClientes.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getIdFuncionarios());
+                comercialClientes.setModificadoPor(modificadoPor);
             }
-            comercialClientes.setTelcoInfoCollection(attachedTelcoInfoCollection);
-            Collection<ComercialContratos> attachedComercialContratosCollection = new ArrayList<ComercialContratos>();
-            for (ComercialContratos comercialContratosCollectionComercialContratosToAttach : comercialClientes.getComercialContratosCollection()) {
-                comercialContratosCollectionComercialContratosToAttach = em.getReference(comercialContratosCollectionComercialContratosToAttach.getClass(), comercialContratosCollectionComercialContratosToAttach.getIdContratos());
-                attachedComercialContratosCollection.add(comercialContratosCollectionComercialContratosToAttach);
+            GestionFuncionarios creadoPor = comercialClientes.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getIdFuncionarios());
+                comercialClientes.setCreadoPor(creadoPor);
             }
-            comercialClientes.setComercialContratosCollection(attachedComercialContratosCollection);
+            List<TelcoInfo> attachedTelcoInfoList = new ArrayList<TelcoInfo>();
+            for (TelcoInfo telcoInfoListTelcoInfoToAttach : comercialClientes.getTelcoInfoList()) {
+                telcoInfoListTelcoInfoToAttach = em.getReference(telcoInfoListTelcoInfoToAttach.getClass(), telcoInfoListTelcoInfoToAttach.getIdSuscriptor());
+                attachedTelcoInfoList.add(telcoInfoListTelcoInfoToAttach);
+            }
+            comercialClientes.setTelcoInfoList(attachedTelcoInfoList);
+            List<ComercialContratos> attachedComercialContratosList = new ArrayList<ComercialContratos>();
+            for (ComercialContratos comercialContratosListComercialContratosToAttach : comercialClientes.getComercialContratosList()) {
+                comercialContratosListComercialContratosToAttach = em.getReference(comercialContratosListComercialContratosToAttach.getClass(), comercialContratosListComercialContratosToAttach.getIdContratos());
+                attachedComercialContratosList.add(comercialContratosListComercialContratosToAttach);
+            }
+            comercialClientes.setComercialContratosList(attachedComercialContratosList);
             em.persist(comercialClientes);
-            for (TelcoInfo telcoInfoCollectionTelcoInfo : comercialClientes.getTelcoInfoCollection()) {
-                ComercialClientes oldFkComercialClientesOfTelcoInfoCollectionTelcoInfo = telcoInfoCollectionTelcoInfo.getFkComercialClientes();
-                telcoInfoCollectionTelcoInfo.setFkComercialClientes(comercialClientes);
-                telcoInfoCollectionTelcoInfo = em.merge(telcoInfoCollectionTelcoInfo);
-                if (oldFkComercialClientesOfTelcoInfoCollectionTelcoInfo != null) {
-                    oldFkComercialClientesOfTelcoInfoCollectionTelcoInfo.getTelcoInfoCollection().remove(telcoInfoCollectionTelcoInfo);
-                    oldFkComercialClientesOfTelcoInfoCollectionTelcoInfo = em.merge(oldFkComercialClientesOfTelcoInfoCollectionTelcoInfo);
+            if (modificadoPor != null) {
+                modificadoPor.getComercialClientesList().add(comercialClientes);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            if (creadoPor != null) {
+                creadoPor.getComercialClientesList().add(comercialClientes);
+                creadoPor = em.merge(creadoPor);
+            }
+            for (TelcoInfo telcoInfoListTelcoInfo : comercialClientes.getTelcoInfoList()) {
+                ComercialClientes oldFkComercialClientesOfTelcoInfoListTelcoInfo = telcoInfoListTelcoInfo.getFkComercialClientes();
+                telcoInfoListTelcoInfo.setFkComercialClientes(comercialClientes);
+                telcoInfoListTelcoInfo = em.merge(telcoInfoListTelcoInfo);
+                if (oldFkComercialClientesOfTelcoInfoListTelcoInfo != null) {
+                    oldFkComercialClientesOfTelcoInfoListTelcoInfo.getTelcoInfoList().remove(telcoInfoListTelcoInfo);
+                    oldFkComercialClientesOfTelcoInfoListTelcoInfo = em.merge(oldFkComercialClientesOfTelcoInfoListTelcoInfo);
                 }
             }
-            for (ComercialContratos comercialContratosCollectionComercialContratos : comercialClientes.getComercialContratosCollection()) {
-                ComercialClientes oldFkComercialClientesOfComercialContratosCollectionComercialContratos = comercialContratosCollectionComercialContratos.getFkComercialClientes();
-                comercialContratosCollectionComercialContratos.setFkComercialClientes(comercialClientes);
-                comercialContratosCollectionComercialContratos = em.merge(comercialContratosCollectionComercialContratos);
-                if (oldFkComercialClientesOfComercialContratosCollectionComercialContratos != null) {
-                    oldFkComercialClientesOfComercialContratosCollectionComercialContratos.getComercialContratosCollection().remove(comercialContratosCollectionComercialContratos);
-                    oldFkComercialClientesOfComercialContratosCollectionComercialContratos = em.merge(oldFkComercialClientesOfComercialContratosCollectionComercialContratos);
+            for (ComercialContratos comercialContratosListComercialContratos : comercialClientes.getComercialContratosList()) {
+                ComercialClientes oldFkComercialClientesOfComercialContratosListComercialContratos = comercialContratosListComercialContratos.getFkComercialClientes();
+                comercialContratosListComercialContratos.setFkComercialClientes(comercialClientes);
+                comercialContratosListComercialContratos = em.merge(comercialContratosListComercialContratos);
+                if (oldFkComercialClientesOfComercialContratosListComercialContratos != null) {
+                    oldFkComercialClientesOfComercialContratosListComercialContratos.getComercialContratosList().remove(comercialContratosListComercialContratos);
+                    oldFkComercialClientesOfComercialContratosListComercialContratos = em.merge(oldFkComercialClientesOfComercialContratosListComercialContratos);
                 }
             }
             utx.commit();
@@ -107,64 +125,92 @@ public class ComercialClientesJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             ComercialClientes persistentComercialClientes = em.find(ComercialClientes.class, comercialClientes.getIdClientes());
-            Collection<TelcoInfo> telcoInfoCollectionOld = persistentComercialClientes.getTelcoInfoCollection();
-            Collection<TelcoInfo> telcoInfoCollectionNew = comercialClientes.getTelcoInfoCollection();
-            Collection<ComercialContratos> comercialContratosCollectionOld = persistentComercialClientes.getComercialContratosCollection();
-            Collection<ComercialContratos> comercialContratosCollectionNew = comercialClientes.getComercialContratosCollection();
+            GestionFuncionarios modificadoPorOld = persistentComercialClientes.getModificadoPor();
+            GestionFuncionarios modificadoPorNew = comercialClientes.getModificadoPor();
+            GestionFuncionarios creadoPorOld = persistentComercialClientes.getCreadoPor();
+            GestionFuncionarios creadoPorNew = comercialClientes.getCreadoPor();
+            List<TelcoInfo> telcoInfoListOld = persistentComercialClientes.getTelcoInfoList();
+            List<TelcoInfo> telcoInfoListNew = comercialClientes.getTelcoInfoList();
+            List<ComercialContratos> comercialContratosListOld = persistentComercialClientes.getComercialContratosList();
+            List<ComercialContratos> comercialContratosListNew = comercialClientes.getComercialContratosList();
             List<String> illegalOrphanMessages = null;
-            for (TelcoInfo telcoInfoCollectionOldTelcoInfo : telcoInfoCollectionOld) {
-                if (!telcoInfoCollectionNew.contains(telcoInfoCollectionOldTelcoInfo)) {
+            for (TelcoInfo telcoInfoListOldTelcoInfo : telcoInfoListOld) {
+                if (!telcoInfoListNew.contains(telcoInfoListOldTelcoInfo)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain TelcoInfo " + telcoInfoCollectionOldTelcoInfo + " since its fkComercialClientes field is not nullable.");
+                    illegalOrphanMessages.add("You must retain TelcoInfo " + telcoInfoListOldTelcoInfo + " since its fkComercialClientes field is not nullable.");
                 }
             }
-            for (ComercialContratos comercialContratosCollectionOldComercialContratos : comercialContratosCollectionOld) {
-                if (!comercialContratosCollectionNew.contains(comercialContratosCollectionOldComercialContratos)) {
+            for (ComercialContratos comercialContratosListOldComercialContratos : comercialContratosListOld) {
+                if (!comercialContratosListNew.contains(comercialContratosListOldComercialContratos)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain ComercialContratos " + comercialContratosCollectionOldComercialContratos + " since its fkComercialClientes field is not nullable.");
+                    illegalOrphanMessages.add("You must retain ComercialContratos " + comercialContratosListOldComercialContratos + " since its fkComercialClientes field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<TelcoInfo> attachedTelcoInfoCollectionNew = new ArrayList<TelcoInfo>();
-            for (TelcoInfo telcoInfoCollectionNewTelcoInfoToAttach : telcoInfoCollectionNew) {
-                telcoInfoCollectionNewTelcoInfoToAttach = em.getReference(telcoInfoCollectionNewTelcoInfoToAttach.getClass(), telcoInfoCollectionNewTelcoInfoToAttach.getIdSuscriptor());
-                attachedTelcoInfoCollectionNew.add(telcoInfoCollectionNewTelcoInfoToAttach);
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getIdFuncionarios());
+                comercialClientes.setModificadoPor(modificadoPorNew);
             }
-            telcoInfoCollectionNew = attachedTelcoInfoCollectionNew;
-            comercialClientes.setTelcoInfoCollection(telcoInfoCollectionNew);
-            Collection<ComercialContratos> attachedComercialContratosCollectionNew = new ArrayList<ComercialContratos>();
-            for (ComercialContratos comercialContratosCollectionNewComercialContratosToAttach : comercialContratosCollectionNew) {
-                comercialContratosCollectionNewComercialContratosToAttach = em.getReference(comercialContratosCollectionNewComercialContratosToAttach.getClass(), comercialContratosCollectionNewComercialContratosToAttach.getIdContratos());
-                attachedComercialContratosCollectionNew.add(comercialContratosCollectionNewComercialContratosToAttach);
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getIdFuncionarios());
+                comercialClientes.setCreadoPor(creadoPorNew);
             }
-            comercialContratosCollectionNew = attachedComercialContratosCollectionNew;
-            comercialClientes.setComercialContratosCollection(comercialContratosCollectionNew);
+            List<TelcoInfo> attachedTelcoInfoListNew = new ArrayList<TelcoInfo>();
+            for (TelcoInfo telcoInfoListNewTelcoInfoToAttach : telcoInfoListNew) {
+                telcoInfoListNewTelcoInfoToAttach = em.getReference(telcoInfoListNewTelcoInfoToAttach.getClass(), telcoInfoListNewTelcoInfoToAttach.getIdSuscriptor());
+                attachedTelcoInfoListNew.add(telcoInfoListNewTelcoInfoToAttach);
+            }
+            telcoInfoListNew = attachedTelcoInfoListNew;
+            comercialClientes.setTelcoInfoList(telcoInfoListNew);
+            List<ComercialContratos> attachedComercialContratosListNew = new ArrayList<ComercialContratos>();
+            for (ComercialContratos comercialContratosListNewComercialContratosToAttach : comercialContratosListNew) {
+                comercialContratosListNewComercialContratosToAttach = em.getReference(comercialContratosListNewComercialContratosToAttach.getClass(), comercialContratosListNewComercialContratosToAttach.getIdContratos());
+                attachedComercialContratosListNew.add(comercialContratosListNewComercialContratosToAttach);
+            }
+            comercialContratosListNew = attachedComercialContratosListNew;
+            comercialClientes.setComercialContratosList(comercialContratosListNew);
             comercialClientes = em.merge(comercialClientes);
-            for (TelcoInfo telcoInfoCollectionNewTelcoInfo : telcoInfoCollectionNew) {
-                if (!telcoInfoCollectionOld.contains(telcoInfoCollectionNewTelcoInfo)) {
-                    ComercialClientes oldFkComercialClientesOfTelcoInfoCollectionNewTelcoInfo = telcoInfoCollectionNewTelcoInfo.getFkComercialClientes();
-                    telcoInfoCollectionNewTelcoInfo.setFkComercialClientes(comercialClientes);
-                    telcoInfoCollectionNewTelcoInfo = em.merge(telcoInfoCollectionNewTelcoInfo);
-                    if (oldFkComercialClientesOfTelcoInfoCollectionNewTelcoInfo != null && !oldFkComercialClientesOfTelcoInfoCollectionNewTelcoInfo.equals(comercialClientes)) {
-                        oldFkComercialClientesOfTelcoInfoCollectionNewTelcoInfo.getTelcoInfoCollection().remove(telcoInfoCollectionNewTelcoInfo);
-                        oldFkComercialClientesOfTelcoInfoCollectionNewTelcoInfo = em.merge(oldFkComercialClientesOfTelcoInfoCollectionNewTelcoInfo);
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getComercialClientesList().remove(comercialClientes);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getComercialClientesList().add(comercialClientes);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getComercialClientesList().remove(comercialClientes);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getComercialClientesList().add(comercialClientes);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            for (TelcoInfo telcoInfoListNewTelcoInfo : telcoInfoListNew) {
+                if (!telcoInfoListOld.contains(telcoInfoListNewTelcoInfo)) {
+                    ComercialClientes oldFkComercialClientesOfTelcoInfoListNewTelcoInfo = telcoInfoListNewTelcoInfo.getFkComercialClientes();
+                    telcoInfoListNewTelcoInfo.setFkComercialClientes(comercialClientes);
+                    telcoInfoListNewTelcoInfo = em.merge(telcoInfoListNewTelcoInfo);
+                    if (oldFkComercialClientesOfTelcoInfoListNewTelcoInfo != null && !oldFkComercialClientesOfTelcoInfoListNewTelcoInfo.equals(comercialClientes)) {
+                        oldFkComercialClientesOfTelcoInfoListNewTelcoInfo.getTelcoInfoList().remove(telcoInfoListNewTelcoInfo);
+                        oldFkComercialClientesOfTelcoInfoListNewTelcoInfo = em.merge(oldFkComercialClientesOfTelcoInfoListNewTelcoInfo);
                     }
                 }
             }
-            for (ComercialContratos comercialContratosCollectionNewComercialContratos : comercialContratosCollectionNew) {
-                if (!comercialContratosCollectionOld.contains(comercialContratosCollectionNewComercialContratos)) {
-                    ComercialClientes oldFkComercialClientesOfComercialContratosCollectionNewComercialContratos = comercialContratosCollectionNewComercialContratos.getFkComercialClientes();
-                    comercialContratosCollectionNewComercialContratos.setFkComercialClientes(comercialClientes);
-                    comercialContratosCollectionNewComercialContratos = em.merge(comercialContratosCollectionNewComercialContratos);
-                    if (oldFkComercialClientesOfComercialContratosCollectionNewComercialContratos != null && !oldFkComercialClientesOfComercialContratosCollectionNewComercialContratos.equals(comercialClientes)) {
-                        oldFkComercialClientesOfComercialContratosCollectionNewComercialContratos.getComercialContratosCollection().remove(comercialContratosCollectionNewComercialContratos);
-                        oldFkComercialClientesOfComercialContratosCollectionNewComercialContratos = em.merge(oldFkComercialClientesOfComercialContratosCollectionNewComercialContratos);
+            for (ComercialContratos comercialContratosListNewComercialContratos : comercialContratosListNew) {
+                if (!comercialContratosListOld.contains(comercialContratosListNewComercialContratos)) {
+                    ComercialClientes oldFkComercialClientesOfComercialContratosListNewComercialContratos = comercialContratosListNewComercialContratos.getFkComercialClientes();
+                    comercialContratosListNewComercialContratos.setFkComercialClientes(comercialClientes);
+                    comercialContratosListNewComercialContratos = em.merge(comercialContratosListNewComercialContratos);
+                    if (oldFkComercialClientesOfComercialContratosListNewComercialContratos != null && !oldFkComercialClientesOfComercialContratosListNewComercialContratos.equals(comercialClientes)) {
+                        oldFkComercialClientesOfComercialContratosListNewComercialContratos.getComercialContratosList().remove(comercialContratosListNewComercialContratos);
+                        oldFkComercialClientesOfComercialContratosListNewComercialContratos = em.merge(oldFkComercialClientesOfComercialContratosListNewComercialContratos);
                     }
                 }
             }
@@ -203,22 +249,32 @@ public class ComercialClientesJpaController implements Serializable {
                 throw new NonexistentEntityException("The comercialClientes with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<TelcoInfo> telcoInfoCollectionOrphanCheck = comercialClientes.getTelcoInfoCollection();
-            for (TelcoInfo telcoInfoCollectionOrphanCheckTelcoInfo : telcoInfoCollectionOrphanCheck) {
+            List<TelcoInfo> telcoInfoListOrphanCheck = comercialClientes.getTelcoInfoList();
+            for (TelcoInfo telcoInfoListOrphanCheckTelcoInfo : telcoInfoListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This ComercialClientes (" + comercialClientes + ") cannot be destroyed since the TelcoInfo " + telcoInfoCollectionOrphanCheckTelcoInfo + " in its telcoInfoCollection field has a non-nullable fkComercialClientes field.");
+                illegalOrphanMessages.add("This ComercialClientes (" + comercialClientes + ") cannot be destroyed since the TelcoInfo " + telcoInfoListOrphanCheckTelcoInfo + " in its telcoInfoList field has a non-nullable fkComercialClientes field.");
             }
-            Collection<ComercialContratos> comercialContratosCollectionOrphanCheck = comercialClientes.getComercialContratosCollection();
-            for (ComercialContratos comercialContratosCollectionOrphanCheckComercialContratos : comercialContratosCollectionOrphanCheck) {
+            List<ComercialContratos> comercialContratosListOrphanCheck = comercialClientes.getComercialContratosList();
+            for (ComercialContratos comercialContratosListOrphanCheckComercialContratos : comercialContratosListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This ComercialClientes (" + comercialClientes + ") cannot be destroyed since the ComercialContratos " + comercialContratosCollectionOrphanCheckComercialContratos + " in its comercialContratosCollection field has a non-nullable fkComercialClientes field.");
+                illegalOrphanMessages.add("This ComercialClientes (" + comercialClientes + ") cannot be destroyed since the ComercialContratos " + comercialContratosListOrphanCheckComercialContratos + " in its comercialContratosList field has a non-nullable fkComercialClientes field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            GestionFuncionarios modificadoPor = comercialClientes.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getComercialClientesList().remove(comercialClientes);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            GestionFuncionarios creadoPor = comercialClientes.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getComercialClientesList().remove(comercialClientes);
+                creadoPor = em.merge(creadoPor);
             }
             em.remove(comercialClientes);
             utx.commit();

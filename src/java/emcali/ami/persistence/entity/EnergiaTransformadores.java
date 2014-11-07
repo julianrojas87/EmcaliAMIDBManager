@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,7 +45,7 @@ public class EnergiaTransformadores implements Serializable {
     @Column(name = "COD_TRAFFO")
     private String codTraffo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkEnergiaTransformadores")
-    private Collection<AmyCajas> amyCajasCollection;
+    private List<AmyCajas> amyCajasList;
     @JoinColumn(name = "FK_ENERGIA_CIRCUITOS", referencedColumnName = "ID_CIRCUITOS")
     @ManyToOne(optional = false)
     private EnergiaCircuitos fkEnergiaCircuitos;
@@ -74,12 +74,12 @@ public class EnergiaTransformadores implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AmyCajas> getAmyCajasCollection() {
-        return amyCajasCollection;
+    public List<AmyCajas> getAmyCajasList() {
+        return amyCajasList;
     }
 
-    public void setAmyCajasCollection(Collection<AmyCajas> amyCajasCollection) {
-        this.amyCajasCollection = amyCajasCollection;
+    public void setAmyCajasList(List<AmyCajas> amyCajasList) {
+        this.amyCajasList = amyCajasList;
     }
 
     public EnergiaCircuitos getFkEnergiaCircuitos() {

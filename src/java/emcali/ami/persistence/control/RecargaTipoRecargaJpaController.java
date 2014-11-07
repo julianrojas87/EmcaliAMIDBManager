@@ -17,9 +17,8 @@ import javax.persistence.criteria.Root;
 import emcali.ami.persistence.entity.RecargaRecargas;
 import emcali.ami.persistence.entity.RecargaTipoRecarga;
 import java.util.ArrayList;
-import java.util.Collection;
-import emcali.ami.persistence.entity.SaldosHistoria;
 import java.util.List;
+import emcali.ami.persistence.entity.SaldosHistoria;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
@@ -42,45 +41,45 @@ public class RecargaTipoRecargaJpaController implements Serializable {
     }
 
     public void create(RecargaTipoRecarga recargaTipoRecarga) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (recargaTipoRecarga.getRecargaRecargasCollection() == null) {
-            recargaTipoRecarga.setRecargaRecargasCollection(new ArrayList<RecargaRecargas>());
+        if (recargaTipoRecarga.getRecargaRecargasList() == null) {
+            recargaTipoRecarga.setRecargaRecargasList(new ArrayList<RecargaRecargas>());
         }
-        if (recargaTipoRecarga.getSaldosHistoriaCollection() == null) {
-            recargaTipoRecarga.setSaldosHistoriaCollection(new ArrayList<SaldosHistoria>());
+        if (recargaTipoRecarga.getSaldosHistoriaList() == null) {
+            recargaTipoRecarga.setSaldosHistoriaList(new ArrayList<SaldosHistoria>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<RecargaRecargas> attachedRecargaRecargasCollection = new ArrayList<RecargaRecargas>();
-            for (RecargaRecargas recargaRecargasCollectionRecargaRecargasToAttach : recargaTipoRecarga.getRecargaRecargasCollection()) {
-                recargaRecargasCollectionRecargaRecargasToAttach = em.getReference(recargaRecargasCollectionRecargaRecargasToAttach.getClass(), recargaRecargasCollectionRecargaRecargasToAttach.getIdRecargas());
-                attachedRecargaRecargasCollection.add(recargaRecargasCollectionRecargaRecargasToAttach);
+            List<RecargaRecargas> attachedRecargaRecargasList = new ArrayList<RecargaRecargas>();
+            for (RecargaRecargas recargaRecargasListRecargaRecargasToAttach : recargaTipoRecarga.getRecargaRecargasList()) {
+                recargaRecargasListRecargaRecargasToAttach = em.getReference(recargaRecargasListRecargaRecargasToAttach.getClass(), recargaRecargasListRecargaRecargasToAttach.getIdRecargas());
+                attachedRecargaRecargasList.add(recargaRecargasListRecargaRecargasToAttach);
             }
-            recargaTipoRecarga.setRecargaRecargasCollection(attachedRecargaRecargasCollection);
-            Collection<SaldosHistoria> attachedSaldosHistoriaCollection = new ArrayList<SaldosHistoria>();
-            for (SaldosHistoria saldosHistoriaCollectionSaldosHistoriaToAttach : recargaTipoRecarga.getSaldosHistoriaCollection()) {
-                saldosHistoriaCollectionSaldosHistoriaToAttach = em.getReference(saldosHistoriaCollectionSaldosHistoriaToAttach.getClass(), saldosHistoriaCollectionSaldosHistoriaToAttach.getIdSaldosHistoria());
-                attachedSaldosHistoriaCollection.add(saldosHistoriaCollectionSaldosHistoriaToAttach);
+            recargaTipoRecarga.setRecargaRecargasList(attachedRecargaRecargasList);
+            List<SaldosHistoria> attachedSaldosHistoriaList = new ArrayList<SaldosHistoria>();
+            for (SaldosHistoria saldosHistoriaListSaldosHistoriaToAttach : recargaTipoRecarga.getSaldosHistoriaList()) {
+                saldosHistoriaListSaldosHistoriaToAttach = em.getReference(saldosHistoriaListSaldosHistoriaToAttach.getClass(), saldosHistoriaListSaldosHistoriaToAttach.getIdSaldosHistoria());
+                attachedSaldosHistoriaList.add(saldosHistoriaListSaldosHistoriaToAttach);
             }
-            recargaTipoRecarga.setSaldosHistoriaCollection(attachedSaldosHistoriaCollection);
+            recargaTipoRecarga.setSaldosHistoriaList(attachedSaldosHistoriaList);
             em.persist(recargaTipoRecarga);
-            for (RecargaRecargas recargaRecargasCollectionRecargaRecargas : recargaTipoRecarga.getRecargaRecargasCollection()) {
-                RecargaTipoRecarga oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionRecargaRecargas = recargaRecargasCollectionRecargaRecargas.getFkPrepagoTipoRecarga();
-                recargaRecargasCollectionRecargaRecargas.setFkPrepagoTipoRecarga(recargaTipoRecarga);
-                recargaRecargasCollectionRecargaRecargas = em.merge(recargaRecargasCollectionRecargaRecargas);
-                if (oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionRecargaRecargas != null) {
-                    oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionRecargaRecargas.getRecargaRecargasCollection().remove(recargaRecargasCollectionRecargaRecargas);
-                    oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionRecargaRecargas = em.merge(oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionRecargaRecargas);
+            for (RecargaRecargas recargaRecargasListRecargaRecargas : recargaTipoRecarga.getRecargaRecargasList()) {
+                RecargaTipoRecarga oldFkPrepagoTipoRecargaOfRecargaRecargasListRecargaRecargas = recargaRecargasListRecargaRecargas.getFkPrepagoTipoRecarga();
+                recargaRecargasListRecargaRecargas.setFkPrepagoTipoRecarga(recargaTipoRecarga);
+                recargaRecargasListRecargaRecargas = em.merge(recargaRecargasListRecargaRecargas);
+                if (oldFkPrepagoTipoRecargaOfRecargaRecargasListRecargaRecargas != null) {
+                    oldFkPrepagoTipoRecargaOfRecargaRecargasListRecargaRecargas.getRecargaRecargasList().remove(recargaRecargasListRecargaRecargas);
+                    oldFkPrepagoTipoRecargaOfRecargaRecargasListRecargaRecargas = em.merge(oldFkPrepagoTipoRecargaOfRecargaRecargasListRecargaRecargas);
                 }
             }
-            for (SaldosHistoria saldosHistoriaCollectionSaldosHistoria : recargaTipoRecarga.getSaldosHistoriaCollection()) {
-                RecargaTipoRecarga oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionSaldosHistoria = saldosHistoriaCollectionSaldosHistoria.getFkRecargaTipoRecarga();
-                saldosHistoriaCollectionSaldosHistoria.setFkRecargaTipoRecarga(recargaTipoRecarga);
-                saldosHistoriaCollectionSaldosHistoria = em.merge(saldosHistoriaCollectionSaldosHistoria);
-                if (oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionSaldosHistoria != null) {
-                    oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionSaldosHistoria.getSaldosHistoriaCollection().remove(saldosHistoriaCollectionSaldosHistoria);
-                    oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionSaldosHistoria = em.merge(oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionSaldosHistoria);
+            for (SaldosHistoria saldosHistoriaListSaldosHistoria : recargaTipoRecarga.getSaldosHistoriaList()) {
+                RecargaTipoRecarga oldFkRecargaTipoRecargaOfSaldosHistoriaListSaldosHistoria = saldosHistoriaListSaldosHistoria.getFkRecargaTipoRecarga();
+                saldosHistoriaListSaldosHistoria.setFkRecargaTipoRecarga(recargaTipoRecarga);
+                saldosHistoriaListSaldosHistoria = em.merge(saldosHistoriaListSaldosHistoria);
+                if (oldFkRecargaTipoRecargaOfSaldosHistoriaListSaldosHistoria != null) {
+                    oldFkRecargaTipoRecargaOfSaldosHistoriaListSaldosHistoria.getSaldosHistoriaList().remove(saldosHistoriaListSaldosHistoria);
+                    oldFkRecargaTipoRecargaOfSaldosHistoriaListSaldosHistoria = em.merge(oldFkRecargaTipoRecargaOfSaldosHistoriaListSaldosHistoria);
                 }
             }
             utx.commit();
@@ -107,64 +106,64 @@ public class RecargaTipoRecargaJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             RecargaTipoRecarga persistentRecargaTipoRecarga = em.find(RecargaTipoRecarga.class, recargaTipoRecarga.getIdTipoRecarga());
-            Collection<RecargaRecargas> recargaRecargasCollectionOld = persistentRecargaTipoRecarga.getRecargaRecargasCollection();
-            Collection<RecargaRecargas> recargaRecargasCollectionNew = recargaTipoRecarga.getRecargaRecargasCollection();
-            Collection<SaldosHistoria> saldosHistoriaCollectionOld = persistentRecargaTipoRecarga.getSaldosHistoriaCollection();
-            Collection<SaldosHistoria> saldosHistoriaCollectionNew = recargaTipoRecarga.getSaldosHistoriaCollection();
+            List<RecargaRecargas> recargaRecargasListOld = persistentRecargaTipoRecarga.getRecargaRecargasList();
+            List<RecargaRecargas> recargaRecargasListNew = recargaTipoRecarga.getRecargaRecargasList();
+            List<SaldosHistoria> saldosHistoriaListOld = persistentRecargaTipoRecarga.getSaldosHistoriaList();
+            List<SaldosHistoria> saldosHistoriaListNew = recargaTipoRecarga.getSaldosHistoriaList();
             List<String> illegalOrphanMessages = null;
-            for (RecargaRecargas recargaRecargasCollectionOldRecargaRecargas : recargaRecargasCollectionOld) {
-                if (!recargaRecargasCollectionNew.contains(recargaRecargasCollectionOldRecargaRecargas)) {
+            for (RecargaRecargas recargaRecargasListOldRecargaRecargas : recargaRecargasListOld) {
+                if (!recargaRecargasListNew.contains(recargaRecargasListOldRecargaRecargas)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain RecargaRecargas " + recargaRecargasCollectionOldRecargaRecargas + " since its fkPrepagoTipoRecarga field is not nullable.");
+                    illegalOrphanMessages.add("You must retain RecargaRecargas " + recargaRecargasListOldRecargaRecargas + " since its fkPrepagoTipoRecarga field is not nullable.");
                 }
             }
-            for (SaldosHistoria saldosHistoriaCollectionOldSaldosHistoria : saldosHistoriaCollectionOld) {
-                if (!saldosHistoriaCollectionNew.contains(saldosHistoriaCollectionOldSaldosHistoria)) {
+            for (SaldosHistoria saldosHistoriaListOldSaldosHistoria : saldosHistoriaListOld) {
+                if (!saldosHistoriaListNew.contains(saldosHistoriaListOldSaldosHistoria)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain SaldosHistoria " + saldosHistoriaCollectionOldSaldosHistoria + " since its fkRecargaTipoRecarga field is not nullable.");
+                    illegalOrphanMessages.add("You must retain SaldosHistoria " + saldosHistoriaListOldSaldosHistoria + " since its fkRecargaTipoRecarga field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<RecargaRecargas> attachedRecargaRecargasCollectionNew = new ArrayList<RecargaRecargas>();
-            for (RecargaRecargas recargaRecargasCollectionNewRecargaRecargasToAttach : recargaRecargasCollectionNew) {
-                recargaRecargasCollectionNewRecargaRecargasToAttach = em.getReference(recargaRecargasCollectionNewRecargaRecargasToAttach.getClass(), recargaRecargasCollectionNewRecargaRecargasToAttach.getIdRecargas());
-                attachedRecargaRecargasCollectionNew.add(recargaRecargasCollectionNewRecargaRecargasToAttach);
+            List<RecargaRecargas> attachedRecargaRecargasListNew = new ArrayList<RecargaRecargas>();
+            for (RecargaRecargas recargaRecargasListNewRecargaRecargasToAttach : recargaRecargasListNew) {
+                recargaRecargasListNewRecargaRecargasToAttach = em.getReference(recargaRecargasListNewRecargaRecargasToAttach.getClass(), recargaRecargasListNewRecargaRecargasToAttach.getIdRecargas());
+                attachedRecargaRecargasListNew.add(recargaRecargasListNewRecargaRecargasToAttach);
             }
-            recargaRecargasCollectionNew = attachedRecargaRecargasCollectionNew;
-            recargaTipoRecarga.setRecargaRecargasCollection(recargaRecargasCollectionNew);
-            Collection<SaldosHistoria> attachedSaldosHistoriaCollectionNew = new ArrayList<SaldosHistoria>();
-            for (SaldosHistoria saldosHistoriaCollectionNewSaldosHistoriaToAttach : saldosHistoriaCollectionNew) {
-                saldosHistoriaCollectionNewSaldosHistoriaToAttach = em.getReference(saldosHistoriaCollectionNewSaldosHistoriaToAttach.getClass(), saldosHistoriaCollectionNewSaldosHistoriaToAttach.getIdSaldosHistoria());
-                attachedSaldosHistoriaCollectionNew.add(saldosHistoriaCollectionNewSaldosHistoriaToAttach);
+            recargaRecargasListNew = attachedRecargaRecargasListNew;
+            recargaTipoRecarga.setRecargaRecargasList(recargaRecargasListNew);
+            List<SaldosHistoria> attachedSaldosHistoriaListNew = new ArrayList<SaldosHistoria>();
+            for (SaldosHistoria saldosHistoriaListNewSaldosHistoriaToAttach : saldosHistoriaListNew) {
+                saldosHistoriaListNewSaldosHistoriaToAttach = em.getReference(saldosHistoriaListNewSaldosHistoriaToAttach.getClass(), saldosHistoriaListNewSaldosHistoriaToAttach.getIdSaldosHistoria());
+                attachedSaldosHistoriaListNew.add(saldosHistoriaListNewSaldosHistoriaToAttach);
             }
-            saldosHistoriaCollectionNew = attachedSaldosHistoriaCollectionNew;
-            recargaTipoRecarga.setSaldosHistoriaCollection(saldosHistoriaCollectionNew);
+            saldosHistoriaListNew = attachedSaldosHistoriaListNew;
+            recargaTipoRecarga.setSaldosHistoriaList(saldosHistoriaListNew);
             recargaTipoRecarga = em.merge(recargaTipoRecarga);
-            for (RecargaRecargas recargaRecargasCollectionNewRecargaRecargas : recargaRecargasCollectionNew) {
-                if (!recargaRecargasCollectionOld.contains(recargaRecargasCollectionNewRecargaRecargas)) {
-                    RecargaTipoRecarga oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionNewRecargaRecargas = recargaRecargasCollectionNewRecargaRecargas.getFkPrepagoTipoRecarga();
-                    recargaRecargasCollectionNewRecargaRecargas.setFkPrepagoTipoRecarga(recargaTipoRecarga);
-                    recargaRecargasCollectionNewRecargaRecargas = em.merge(recargaRecargasCollectionNewRecargaRecargas);
-                    if (oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionNewRecargaRecargas != null && !oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionNewRecargaRecargas.equals(recargaTipoRecarga)) {
-                        oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionNewRecargaRecargas.getRecargaRecargasCollection().remove(recargaRecargasCollectionNewRecargaRecargas);
-                        oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionNewRecargaRecargas = em.merge(oldFkPrepagoTipoRecargaOfRecargaRecargasCollectionNewRecargaRecargas);
+            for (RecargaRecargas recargaRecargasListNewRecargaRecargas : recargaRecargasListNew) {
+                if (!recargaRecargasListOld.contains(recargaRecargasListNewRecargaRecargas)) {
+                    RecargaTipoRecarga oldFkPrepagoTipoRecargaOfRecargaRecargasListNewRecargaRecargas = recargaRecargasListNewRecargaRecargas.getFkPrepagoTipoRecarga();
+                    recargaRecargasListNewRecargaRecargas.setFkPrepagoTipoRecarga(recargaTipoRecarga);
+                    recargaRecargasListNewRecargaRecargas = em.merge(recargaRecargasListNewRecargaRecargas);
+                    if (oldFkPrepagoTipoRecargaOfRecargaRecargasListNewRecargaRecargas != null && !oldFkPrepagoTipoRecargaOfRecargaRecargasListNewRecargaRecargas.equals(recargaTipoRecarga)) {
+                        oldFkPrepagoTipoRecargaOfRecargaRecargasListNewRecargaRecargas.getRecargaRecargasList().remove(recargaRecargasListNewRecargaRecargas);
+                        oldFkPrepagoTipoRecargaOfRecargaRecargasListNewRecargaRecargas = em.merge(oldFkPrepagoTipoRecargaOfRecargaRecargasListNewRecargaRecargas);
                     }
                 }
             }
-            for (SaldosHistoria saldosHistoriaCollectionNewSaldosHistoria : saldosHistoriaCollectionNew) {
-                if (!saldosHistoriaCollectionOld.contains(saldosHistoriaCollectionNewSaldosHistoria)) {
-                    RecargaTipoRecarga oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionNewSaldosHistoria = saldosHistoriaCollectionNewSaldosHistoria.getFkRecargaTipoRecarga();
-                    saldosHistoriaCollectionNewSaldosHistoria.setFkRecargaTipoRecarga(recargaTipoRecarga);
-                    saldosHistoriaCollectionNewSaldosHistoria = em.merge(saldosHistoriaCollectionNewSaldosHistoria);
-                    if (oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionNewSaldosHistoria != null && !oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionNewSaldosHistoria.equals(recargaTipoRecarga)) {
-                        oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionNewSaldosHistoria.getSaldosHistoriaCollection().remove(saldosHistoriaCollectionNewSaldosHistoria);
-                        oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionNewSaldosHistoria = em.merge(oldFkRecargaTipoRecargaOfSaldosHistoriaCollectionNewSaldosHistoria);
+            for (SaldosHistoria saldosHistoriaListNewSaldosHistoria : saldosHistoriaListNew) {
+                if (!saldosHistoriaListOld.contains(saldosHistoriaListNewSaldosHistoria)) {
+                    RecargaTipoRecarga oldFkRecargaTipoRecargaOfSaldosHistoriaListNewSaldosHistoria = saldosHistoriaListNewSaldosHistoria.getFkRecargaTipoRecarga();
+                    saldosHistoriaListNewSaldosHistoria.setFkRecargaTipoRecarga(recargaTipoRecarga);
+                    saldosHistoriaListNewSaldosHistoria = em.merge(saldosHistoriaListNewSaldosHistoria);
+                    if (oldFkRecargaTipoRecargaOfSaldosHistoriaListNewSaldosHistoria != null && !oldFkRecargaTipoRecargaOfSaldosHistoriaListNewSaldosHistoria.equals(recargaTipoRecarga)) {
+                        oldFkRecargaTipoRecargaOfSaldosHistoriaListNewSaldosHistoria.getSaldosHistoriaList().remove(saldosHistoriaListNewSaldosHistoria);
+                        oldFkRecargaTipoRecargaOfSaldosHistoriaListNewSaldosHistoria = em.merge(oldFkRecargaTipoRecargaOfSaldosHistoriaListNewSaldosHistoria);
                     }
                 }
             }
@@ -203,19 +202,19 @@ public class RecargaTipoRecargaJpaController implements Serializable {
                 throw new NonexistentEntityException("The recargaTipoRecarga with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<RecargaRecargas> recargaRecargasCollectionOrphanCheck = recargaTipoRecarga.getRecargaRecargasCollection();
-            for (RecargaRecargas recargaRecargasCollectionOrphanCheckRecargaRecargas : recargaRecargasCollectionOrphanCheck) {
+            List<RecargaRecargas> recargaRecargasListOrphanCheck = recargaTipoRecarga.getRecargaRecargasList();
+            for (RecargaRecargas recargaRecargasListOrphanCheckRecargaRecargas : recargaRecargasListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This RecargaTipoRecarga (" + recargaTipoRecarga + ") cannot be destroyed since the RecargaRecargas " + recargaRecargasCollectionOrphanCheckRecargaRecargas + " in its recargaRecargasCollection field has a non-nullable fkPrepagoTipoRecarga field.");
+                illegalOrphanMessages.add("This RecargaTipoRecarga (" + recargaTipoRecarga + ") cannot be destroyed since the RecargaRecargas " + recargaRecargasListOrphanCheckRecargaRecargas + " in its recargaRecargasList field has a non-nullable fkPrepagoTipoRecarga field.");
             }
-            Collection<SaldosHistoria> saldosHistoriaCollectionOrphanCheck = recargaTipoRecarga.getSaldosHistoriaCollection();
-            for (SaldosHistoria saldosHistoriaCollectionOrphanCheckSaldosHistoria : saldosHistoriaCollectionOrphanCheck) {
+            List<SaldosHistoria> saldosHistoriaListOrphanCheck = recargaTipoRecarga.getSaldosHistoriaList();
+            for (SaldosHistoria saldosHistoriaListOrphanCheckSaldosHistoria : saldosHistoriaListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This RecargaTipoRecarga (" + recargaTipoRecarga + ") cannot be destroyed since the SaldosHistoria " + saldosHistoriaCollectionOrphanCheckSaldosHistoria + " in its saldosHistoriaCollection field has a non-nullable fkRecargaTipoRecarga field.");
+                illegalOrphanMessages.add("This RecargaTipoRecarga (" + recargaTipoRecarga + ") cannot be destroyed since the SaldosHistoria " + saldosHistoriaListOrphanCheckSaldosHistoria + " in its saldosHistoriaList field has a non-nullable fkRecargaTipoRecarga field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

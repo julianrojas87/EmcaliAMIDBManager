@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,9 +43,9 @@ public class RecargaTipoRecarga implements Serializable {
     @Column(name = "TIPO_RECARGA")
     private String tipoRecarga;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkPrepagoTipoRecarga")
-    private Collection<RecargaRecargas> recargaRecargasCollection;
+    private List<RecargaRecargas> recargaRecargasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkRecargaTipoRecarga")
-    private Collection<SaldosHistoria> saldosHistoriaCollection;
+    private List<SaldosHistoria> saldosHistoriaList;
 
     public RecargaTipoRecarga() {
     }
@@ -71,21 +71,21 @@ public class RecargaTipoRecarga implements Serializable {
     }
 
     @XmlTransient
-    public Collection<RecargaRecargas> getRecargaRecargasCollection() {
-        return recargaRecargasCollection;
+    public List<RecargaRecargas> getRecargaRecargasList() {
+        return recargaRecargasList;
     }
 
-    public void setRecargaRecargasCollection(Collection<RecargaRecargas> recargaRecargasCollection) {
-        this.recargaRecargasCollection = recargaRecargasCollection;
+    public void setRecargaRecargasList(List<RecargaRecargas> recargaRecargasList) {
+        this.recargaRecargasList = recargaRecargasList;
     }
 
     @XmlTransient
-    public Collection<SaldosHistoria> getSaldosHistoriaCollection() {
-        return saldosHistoriaCollection;
+    public List<SaldosHistoria> getSaldosHistoriaList() {
+        return saldosHistoriaList;
     }
 
-    public void setSaldosHistoriaCollection(Collection<SaldosHistoria> saldosHistoriaCollection) {
-        this.saldosHistoriaCollection = saldosHistoriaCollection;
+    public void setSaldosHistoriaList(List<SaldosHistoria> saldosHistoriaList) {
+        this.saldosHistoriaList = saldosHistoriaList;
     }
 
     @Override

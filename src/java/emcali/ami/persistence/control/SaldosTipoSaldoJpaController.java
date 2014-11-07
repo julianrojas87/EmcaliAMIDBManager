@@ -17,7 +17,6 @@ import javax.persistence.criteria.Root;
 import emcali.ami.persistence.entity.SaldosHistoria;
 import emcali.ami.persistence.entity.SaldosTipoSaldo;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,27 +40,27 @@ public class SaldosTipoSaldoJpaController implements Serializable {
     }
 
     public void create(SaldosTipoSaldo saldosTipoSaldo) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (saldosTipoSaldo.getSaldosHistoriaCollection() == null) {
-            saldosTipoSaldo.setSaldosHistoriaCollection(new ArrayList<SaldosHistoria>());
+        if (saldosTipoSaldo.getSaldosHistoriaList() == null) {
+            saldosTipoSaldo.setSaldosHistoriaList(new ArrayList<SaldosHistoria>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<SaldosHistoria> attachedSaldosHistoriaCollection = new ArrayList<SaldosHistoria>();
-            for (SaldosHistoria saldosHistoriaCollectionSaldosHistoriaToAttach : saldosTipoSaldo.getSaldosHistoriaCollection()) {
-                saldosHistoriaCollectionSaldosHistoriaToAttach = em.getReference(saldosHistoriaCollectionSaldosHistoriaToAttach.getClass(), saldosHistoriaCollectionSaldosHistoriaToAttach.getIdSaldosHistoria());
-                attachedSaldosHistoriaCollection.add(saldosHistoriaCollectionSaldosHistoriaToAttach);
+            List<SaldosHistoria> attachedSaldosHistoriaList = new ArrayList<SaldosHistoria>();
+            for (SaldosHistoria saldosHistoriaListSaldosHistoriaToAttach : saldosTipoSaldo.getSaldosHistoriaList()) {
+                saldosHistoriaListSaldosHistoriaToAttach = em.getReference(saldosHistoriaListSaldosHistoriaToAttach.getClass(), saldosHistoriaListSaldosHistoriaToAttach.getIdSaldosHistoria());
+                attachedSaldosHistoriaList.add(saldosHistoriaListSaldosHistoriaToAttach);
             }
-            saldosTipoSaldo.setSaldosHistoriaCollection(attachedSaldosHistoriaCollection);
+            saldosTipoSaldo.setSaldosHistoriaList(attachedSaldosHistoriaList);
             em.persist(saldosTipoSaldo);
-            for (SaldosHistoria saldosHistoriaCollectionSaldosHistoria : saldosTipoSaldo.getSaldosHistoriaCollection()) {
-                SaldosTipoSaldo oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionSaldosHistoria = saldosHistoriaCollectionSaldosHistoria.getFkSaldosTipoSaldo();
-                saldosHistoriaCollectionSaldosHistoria.setFkSaldosTipoSaldo(saldosTipoSaldo);
-                saldosHistoriaCollectionSaldosHistoria = em.merge(saldosHistoriaCollectionSaldosHistoria);
-                if (oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionSaldosHistoria != null) {
-                    oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionSaldosHistoria.getSaldosHistoriaCollection().remove(saldosHistoriaCollectionSaldosHistoria);
-                    oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionSaldosHistoria = em.merge(oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionSaldosHistoria);
+            for (SaldosHistoria saldosHistoriaListSaldosHistoria : saldosTipoSaldo.getSaldosHistoriaList()) {
+                SaldosTipoSaldo oldFkSaldosTipoSaldoOfSaldosHistoriaListSaldosHistoria = saldosHistoriaListSaldosHistoria.getFkSaldosTipoSaldo();
+                saldosHistoriaListSaldosHistoria.setFkSaldosTipoSaldo(saldosTipoSaldo);
+                saldosHistoriaListSaldosHistoria = em.merge(saldosHistoriaListSaldosHistoria);
+                if (oldFkSaldosTipoSaldoOfSaldosHistoriaListSaldosHistoria != null) {
+                    oldFkSaldosTipoSaldoOfSaldosHistoriaListSaldosHistoria.getSaldosHistoriaList().remove(saldosHistoriaListSaldosHistoria);
+                    oldFkSaldosTipoSaldoOfSaldosHistoriaListSaldosHistoria = em.merge(oldFkSaldosTipoSaldoOfSaldosHistoriaListSaldosHistoria);
                 }
             }
             utx.commit();
@@ -88,36 +87,36 @@ public class SaldosTipoSaldoJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             SaldosTipoSaldo persistentSaldosTipoSaldo = em.find(SaldosTipoSaldo.class, saldosTipoSaldo.getIdTipoSaldo());
-            Collection<SaldosHistoria> saldosHistoriaCollectionOld = persistentSaldosTipoSaldo.getSaldosHistoriaCollection();
-            Collection<SaldosHistoria> saldosHistoriaCollectionNew = saldosTipoSaldo.getSaldosHistoriaCollection();
+            List<SaldosHistoria> saldosHistoriaListOld = persistentSaldosTipoSaldo.getSaldosHistoriaList();
+            List<SaldosHistoria> saldosHistoriaListNew = saldosTipoSaldo.getSaldosHistoriaList();
             List<String> illegalOrphanMessages = null;
-            for (SaldosHistoria saldosHistoriaCollectionOldSaldosHistoria : saldosHistoriaCollectionOld) {
-                if (!saldosHistoriaCollectionNew.contains(saldosHistoriaCollectionOldSaldosHistoria)) {
+            for (SaldosHistoria saldosHistoriaListOldSaldosHistoria : saldosHistoriaListOld) {
+                if (!saldosHistoriaListNew.contains(saldosHistoriaListOldSaldosHistoria)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain SaldosHistoria " + saldosHistoriaCollectionOldSaldosHistoria + " since its fkSaldosTipoSaldo field is not nullable.");
+                    illegalOrphanMessages.add("You must retain SaldosHistoria " + saldosHistoriaListOldSaldosHistoria + " since its fkSaldosTipoSaldo field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<SaldosHistoria> attachedSaldosHistoriaCollectionNew = new ArrayList<SaldosHistoria>();
-            for (SaldosHistoria saldosHistoriaCollectionNewSaldosHistoriaToAttach : saldosHistoriaCollectionNew) {
-                saldosHistoriaCollectionNewSaldosHistoriaToAttach = em.getReference(saldosHistoriaCollectionNewSaldosHistoriaToAttach.getClass(), saldosHistoriaCollectionNewSaldosHistoriaToAttach.getIdSaldosHistoria());
-                attachedSaldosHistoriaCollectionNew.add(saldosHistoriaCollectionNewSaldosHistoriaToAttach);
+            List<SaldosHistoria> attachedSaldosHistoriaListNew = new ArrayList<SaldosHistoria>();
+            for (SaldosHistoria saldosHistoriaListNewSaldosHistoriaToAttach : saldosHistoriaListNew) {
+                saldosHistoriaListNewSaldosHistoriaToAttach = em.getReference(saldosHistoriaListNewSaldosHistoriaToAttach.getClass(), saldosHistoriaListNewSaldosHistoriaToAttach.getIdSaldosHistoria());
+                attachedSaldosHistoriaListNew.add(saldosHistoriaListNewSaldosHistoriaToAttach);
             }
-            saldosHistoriaCollectionNew = attachedSaldosHistoriaCollectionNew;
-            saldosTipoSaldo.setSaldosHistoriaCollection(saldosHistoriaCollectionNew);
+            saldosHistoriaListNew = attachedSaldosHistoriaListNew;
+            saldosTipoSaldo.setSaldosHistoriaList(saldosHistoriaListNew);
             saldosTipoSaldo = em.merge(saldosTipoSaldo);
-            for (SaldosHistoria saldosHistoriaCollectionNewSaldosHistoria : saldosHistoriaCollectionNew) {
-                if (!saldosHistoriaCollectionOld.contains(saldosHistoriaCollectionNewSaldosHistoria)) {
-                    SaldosTipoSaldo oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionNewSaldosHistoria = saldosHistoriaCollectionNewSaldosHistoria.getFkSaldosTipoSaldo();
-                    saldosHistoriaCollectionNewSaldosHistoria.setFkSaldosTipoSaldo(saldosTipoSaldo);
-                    saldosHistoriaCollectionNewSaldosHistoria = em.merge(saldosHistoriaCollectionNewSaldosHistoria);
-                    if (oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionNewSaldosHistoria != null && !oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionNewSaldosHistoria.equals(saldosTipoSaldo)) {
-                        oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionNewSaldosHistoria.getSaldosHistoriaCollection().remove(saldosHistoriaCollectionNewSaldosHistoria);
-                        oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionNewSaldosHistoria = em.merge(oldFkSaldosTipoSaldoOfSaldosHistoriaCollectionNewSaldosHistoria);
+            for (SaldosHistoria saldosHistoriaListNewSaldosHistoria : saldosHistoriaListNew) {
+                if (!saldosHistoriaListOld.contains(saldosHistoriaListNewSaldosHistoria)) {
+                    SaldosTipoSaldo oldFkSaldosTipoSaldoOfSaldosHistoriaListNewSaldosHistoria = saldosHistoriaListNewSaldosHistoria.getFkSaldosTipoSaldo();
+                    saldosHistoriaListNewSaldosHistoria.setFkSaldosTipoSaldo(saldosTipoSaldo);
+                    saldosHistoriaListNewSaldosHistoria = em.merge(saldosHistoriaListNewSaldosHistoria);
+                    if (oldFkSaldosTipoSaldoOfSaldosHistoriaListNewSaldosHistoria != null && !oldFkSaldosTipoSaldoOfSaldosHistoriaListNewSaldosHistoria.equals(saldosTipoSaldo)) {
+                        oldFkSaldosTipoSaldoOfSaldosHistoriaListNewSaldosHistoria.getSaldosHistoriaList().remove(saldosHistoriaListNewSaldosHistoria);
+                        oldFkSaldosTipoSaldoOfSaldosHistoriaListNewSaldosHistoria = em.merge(oldFkSaldosTipoSaldoOfSaldosHistoriaListNewSaldosHistoria);
                     }
                 }
             }
@@ -156,12 +155,12 @@ public class SaldosTipoSaldoJpaController implements Serializable {
                 throw new NonexistentEntityException("The saldosTipoSaldo with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<SaldosHistoria> saldosHistoriaCollectionOrphanCheck = saldosTipoSaldo.getSaldosHistoriaCollection();
-            for (SaldosHistoria saldosHistoriaCollectionOrphanCheckSaldosHistoria : saldosHistoriaCollectionOrphanCheck) {
+            List<SaldosHistoria> saldosHistoriaListOrphanCheck = saldosTipoSaldo.getSaldosHistoriaList();
+            for (SaldosHistoria saldosHistoriaListOrphanCheckSaldosHistoria : saldosHistoriaListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This SaldosTipoSaldo (" + saldosTipoSaldo + ") cannot be destroyed since the SaldosHistoria " + saldosHistoriaCollectionOrphanCheckSaldosHistoria + " in its saldosHistoriaCollection field has a non-nullable fkSaldosTipoSaldo field.");
+                illegalOrphanMessages.add("This SaldosTipoSaldo (" + saldosTipoSaldo + ") cannot be destroyed since the SaldosHistoria " + saldosHistoriaListOrphanCheckSaldosHistoria + " in its saldosHistoriaList field has a non-nullable fkSaldosTipoSaldo field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

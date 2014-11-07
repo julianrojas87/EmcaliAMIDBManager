@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,9 +43,9 @@ public class AmyInterval implements Serializable {
     @Column(name = "INTERVALO")
     private String intervalo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyInterval")
-    private Collection<AmyLecturas> amyLecturasCollection;
+    private List<AmyLecturas> amyLecturasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyInterval")
-    private Collection<AmyConsumos> amyConsumosCollection;
+    private List<AmyConsumos> amyConsumosList;
 
     public AmyInterval() {
     }
@@ -71,21 +71,21 @@ public class AmyInterval implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AmyLecturas> getAmyLecturasCollection() {
-        return amyLecturasCollection;
+    public List<AmyLecturas> getAmyLecturasList() {
+        return amyLecturasList;
     }
 
-    public void setAmyLecturasCollection(Collection<AmyLecturas> amyLecturasCollection) {
-        this.amyLecturasCollection = amyLecturasCollection;
+    public void setAmyLecturasList(List<AmyLecturas> amyLecturasList) {
+        this.amyLecturasList = amyLecturasList;
     }
 
     @XmlTransient
-    public Collection<AmyConsumos> getAmyConsumosCollection() {
-        return amyConsumosCollection;
+    public List<AmyConsumos> getAmyConsumosList() {
+        return amyConsumosList;
     }
 
-    public void setAmyConsumosCollection(Collection<AmyConsumos> amyConsumosCollection) {
-        this.amyConsumosCollection = amyConsumosCollection;
+    public void setAmyConsumosList(List<AmyConsumos> amyConsumosList) {
+        this.amyConsumosList = amyConsumosList;
     }
 
     @Override

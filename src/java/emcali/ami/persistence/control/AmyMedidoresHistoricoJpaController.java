@@ -49,7 +49,7 @@ public class AmyMedidoresHistoricoJpaController implements Serializable {
             }
             em.persist(amyMedidoresHistorico);
             if (fkAmyMedidores != null) {
-                fkAmyMedidores.getAmyMedidoresHistoricoCollection().add(amyMedidoresHistorico);
+                fkAmyMedidores.getAmyMedidoresHistoricoList().add(amyMedidoresHistorico);
                 fkAmyMedidores = em.merge(fkAmyMedidores);
             }
             utx.commit();
@@ -84,11 +84,11 @@ public class AmyMedidoresHistoricoJpaController implements Serializable {
             }
             amyMedidoresHistorico = em.merge(amyMedidoresHistorico);
             if (fkAmyMedidoresOld != null && !fkAmyMedidoresOld.equals(fkAmyMedidoresNew)) {
-                fkAmyMedidoresOld.getAmyMedidoresHistoricoCollection().remove(amyMedidoresHistorico);
+                fkAmyMedidoresOld.getAmyMedidoresHistoricoList().remove(amyMedidoresHistorico);
                 fkAmyMedidoresOld = em.merge(fkAmyMedidoresOld);
             }
             if (fkAmyMedidoresNew != null && !fkAmyMedidoresNew.equals(fkAmyMedidoresOld)) {
-                fkAmyMedidoresNew.getAmyMedidoresHistoricoCollection().add(amyMedidoresHistorico);
+                fkAmyMedidoresNew.getAmyMedidoresHistoricoList().add(amyMedidoresHistorico);
                 fkAmyMedidoresNew = em.merge(fkAmyMedidoresNew);
             }
             utx.commit();
@@ -127,7 +127,7 @@ public class AmyMedidoresHistoricoJpaController implements Serializable {
             }
             AmyMedidores fkAmyMedidores = amyMedidoresHistorico.getFkAmyMedidores();
             if (fkAmyMedidores != null) {
-                fkAmyMedidores.getAmyMedidoresHistoricoCollection().remove(amyMedidoresHistorico);
+                fkAmyMedidores.getAmyMedidoresHistoricoList().remove(amyMedidoresHistorico);
                 fkAmyMedidores = em.merge(fkAmyMedidores);
             }
             em.remove(amyMedidoresHistorico);

@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -62,9 +62,9 @@ public class AmyCajas implements Serializable {
     @ManyToOne(optional = false)
     private AtributosTiposCajas fkTiposCajas;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyCajas")
-    private Collection<AtrFncsActvCajas> atrFncsActvCajasCollection;
+    private List<AtrFncsActvCajas> atrFncsActvCajasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyCajas")
-    private Collection<AmyMedidores> amyMedidoresCollection;
+    private List<AmyMedidores> amyMedidoresList;
 
     public AmyCajas() {
     }
@@ -130,21 +130,21 @@ public class AmyCajas implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AtrFncsActvCajas> getAtrFncsActvCajasCollection() {
-        return atrFncsActvCajasCollection;
+    public List<AtrFncsActvCajas> getAtrFncsActvCajasList() {
+        return atrFncsActvCajasList;
     }
 
-    public void setAtrFncsActvCajasCollection(Collection<AtrFncsActvCajas> atrFncsActvCajasCollection) {
-        this.atrFncsActvCajasCollection = atrFncsActvCajasCollection;
+    public void setAtrFncsActvCajasList(List<AtrFncsActvCajas> atrFncsActvCajasList) {
+        this.atrFncsActvCajasList = atrFncsActvCajasList;
     }
 
     @XmlTransient
-    public Collection<AmyMedidores> getAmyMedidoresCollection() {
-        return amyMedidoresCollection;
+    public List<AmyMedidores> getAmyMedidoresList() {
+        return amyMedidoresList;
     }
 
-    public void setAmyMedidoresCollection(Collection<AmyMedidores> amyMedidoresCollection) {
-        this.amyMedidoresCollection = amyMedidoresCollection;
+    public void setAmyMedidoresList(List<AmyMedidores> amyMedidoresList) {
+        this.amyMedidoresList = amyMedidoresList;
     }
 
     @Override

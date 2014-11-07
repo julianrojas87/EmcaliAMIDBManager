@@ -17,9 +17,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import emcali.ami.persistence.entity.AtributosTiposCajas;
 import java.util.ArrayList;
-import java.util.Collection;
-import emcali.ami.persistence.entity.AtributosTiposMedidores;
 import java.util.List;
+import emcali.ami.persistence.entity.AtributosTiposMedidores;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
@@ -42,45 +41,45 @@ public class AtributosFabricantesJpaController implements Serializable {
     }
 
     public void create(AtributosFabricantes atributosFabricantes) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (atributosFabricantes.getAtributosTiposCajasCollection() == null) {
-            atributosFabricantes.setAtributosTiposCajasCollection(new ArrayList<AtributosTiposCajas>());
+        if (atributosFabricantes.getAtributosTiposCajasList() == null) {
+            atributosFabricantes.setAtributosTiposCajasList(new ArrayList<AtributosTiposCajas>());
         }
-        if (atributosFabricantes.getAtributosTiposMedidoresCollection() == null) {
-            atributosFabricantes.setAtributosTiposMedidoresCollection(new ArrayList<AtributosTiposMedidores>());
+        if (atributosFabricantes.getAtributosTiposMedidoresList() == null) {
+            atributosFabricantes.setAtributosTiposMedidoresList(new ArrayList<AtributosTiposMedidores>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<AtributosTiposCajas> attachedAtributosTiposCajasCollection = new ArrayList<AtributosTiposCajas>();
-            for (AtributosTiposCajas atributosTiposCajasCollectionAtributosTiposCajasToAttach : atributosFabricantes.getAtributosTiposCajasCollection()) {
-                atributosTiposCajasCollectionAtributosTiposCajasToAttach = em.getReference(atributosTiposCajasCollectionAtributosTiposCajasToAttach.getClass(), atributosTiposCajasCollectionAtributosTiposCajasToAttach.getIdTiposCajas());
-                attachedAtributosTiposCajasCollection.add(atributosTiposCajasCollectionAtributosTiposCajasToAttach);
+            List<AtributosTiposCajas> attachedAtributosTiposCajasList = new ArrayList<AtributosTiposCajas>();
+            for (AtributosTiposCajas atributosTiposCajasListAtributosTiposCajasToAttach : atributosFabricantes.getAtributosTiposCajasList()) {
+                atributosTiposCajasListAtributosTiposCajasToAttach = em.getReference(atributosTiposCajasListAtributosTiposCajasToAttach.getClass(), atributosTiposCajasListAtributosTiposCajasToAttach.getIdTiposCajas());
+                attachedAtributosTiposCajasList.add(atributosTiposCajasListAtributosTiposCajasToAttach);
             }
-            atributosFabricantes.setAtributosTiposCajasCollection(attachedAtributosTiposCajasCollection);
-            Collection<AtributosTiposMedidores> attachedAtributosTiposMedidoresCollection = new ArrayList<AtributosTiposMedidores>();
-            for (AtributosTiposMedidores atributosTiposMedidoresCollectionAtributosTiposMedidoresToAttach : atributosFabricantes.getAtributosTiposMedidoresCollection()) {
-                atributosTiposMedidoresCollectionAtributosTiposMedidoresToAttach = em.getReference(atributosTiposMedidoresCollectionAtributosTiposMedidoresToAttach.getClass(), atributosTiposMedidoresCollectionAtributosTiposMedidoresToAttach.getIdTiposMedidores());
-                attachedAtributosTiposMedidoresCollection.add(atributosTiposMedidoresCollectionAtributosTiposMedidoresToAttach);
+            atributosFabricantes.setAtributosTiposCajasList(attachedAtributosTiposCajasList);
+            List<AtributosTiposMedidores> attachedAtributosTiposMedidoresList = new ArrayList<AtributosTiposMedidores>();
+            for (AtributosTiposMedidores atributosTiposMedidoresListAtributosTiposMedidoresToAttach : atributosFabricantes.getAtributosTiposMedidoresList()) {
+                atributosTiposMedidoresListAtributosTiposMedidoresToAttach = em.getReference(atributosTiposMedidoresListAtributosTiposMedidoresToAttach.getClass(), atributosTiposMedidoresListAtributosTiposMedidoresToAttach.getIdTiposMedidores());
+                attachedAtributosTiposMedidoresList.add(atributosTiposMedidoresListAtributosTiposMedidoresToAttach);
             }
-            atributosFabricantes.setAtributosTiposMedidoresCollection(attachedAtributosTiposMedidoresCollection);
+            atributosFabricantes.setAtributosTiposMedidoresList(attachedAtributosTiposMedidoresList);
             em.persist(atributosFabricantes);
-            for (AtributosTiposCajas atributosTiposCajasCollectionAtributosTiposCajas : atributosFabricantes.getAtributosTiposCajasCollection()) {
-                AtributosFabricantes oldFkAtributosFabricantesOfAtributosTiposCajasCollectionAtributosTiposCajas = atributosTiposCajasCollectionAtributosTiposCajas.getFkAtributosFabricantes();
-                atributosTiposCajasCollectionAtributosTiposCajas.setFkAtributosFabricantes(atributosFabricantes);
-                atributosTiposCajasCollectionAtributosTiposCajas = em.merge(atributosTiposCajasCollectionAtributosTiposCajas);
-                if (oldFkAtributosFabricantesOfAtributosTiposCajasCollectionAtributosTiposCajas != null) {
-                    oldFkAtributosFabricantesOfAtributosTiposCajasCollectionAtributosTiposCajas.getAtributosTiposCajasCollection().remove(atributosTiposCajasCollectionAtributosTiposCajas);
-                    oldFkAtributosFabricantesOfAtributosTiposCajasCollectionAtributosTiposCajas = em.merge(oldFkAtributosFabricantesOfAtributosTiposCajasCollectionAtributosTiposCajas);
+            for (AtributosTiposCajas atributosTiposCajasListAtributosTiposCajas : atributosFabricantes.getAtributosTiposCajasList()) {
+                AtributosFabricantes oldFkAtributosFabricantesOfAtributosTiposCajasListAtributosTiposCajas = atributosTiposCajasListAtributosTiposCajas.getFkAtributosFabricantes();
+                atributosTiposCajasListAtributosTiposCajas.setFkAtributosFabricantes(atributosFabricantes);
+                atributosTiposCajasListAtributosTiposCajas = em.merge(atributosTiposCajasListAtributosTiposCajas);
+                if (oldFkAtributosFabricantesOfAtributosTiposCajasListAtributosTiposCajas != null) {
+                    oldFkAtributosFabricantesOfAtributosTiposCajasListAtributosTiposCajas.getAtributosTiposCajasList().remove(atributosTiposCajasListAtributosTiposCajas);
+                    oldFkAtributosFabricantesOfAtributosTiposCajasListAtributosTiposCajas = em.merge(oldFkAtributosFabricantesOfAtributosTiposCajasListAtributosTiposCajas);
                 }
             }
-            for (AtributosTiposMedidores atributosTiposMedidoresCollectionAtributosTiposMedidores : atributosFabricantes.getAtributosTiposMedidoresCollection()) {
-                AtributosFabricantes oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionAtributosTiposMedidores = atributosTiposMedidoresCollectionAtributosTiposMedidores.getFkAtributosFabricantes();
-                atributosTiposMedidoresCollectionAtributosTiposMedidores.setFkAtributosFabricantes(atributosFabricantes);
-                atributosTiposMedidoresCollectionAtributosTiposMedidores = em.merge(atributosTiposMedidoresCollectionAtributosTiposMedidores);
-                if (oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionAtributosTiposMedidores != null) {
-                    oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionAtributosTiposMedidores.getAtributosTiposMedidoresCollection().remove(atributosTiposMedidoresCollectionAtributosTiposMedidores);
-                    oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionAtributosTiposMedidores = em.merge(oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionAtributosTiposMedidores);
+            for (AtributosTiposMedidores atributosTiposMedidoresListAtributosTiposMedidores : atributosFabricantes.getAtributosTiposMedidoresList()) {
+                AtributosFabricantes oldFkAtributosFabricantesOfAtributosTiposMedidoresListAtributosTiposMedidores = atributosTiposMedidoresListAtributosTiposMedidores.getFkAtributosFabricantes();
+                atributosTiposMedidoresListAtributosTiposMedidores.setFkAtributosFabricantes(atributosFabricantes);
+                atributosTiposMedidoresListAtributosTiposMedidores = em.merge(atributosTiposMedidoresListAtributosTiposMedidores);
+                if (oldFkAtributosFabricantesOfAtributosTiposMedidoresListAtributosTiposMedidores != null) {
+                    oldFkAtributosFabricantesOfAtributosTiposMedidoresListAtributosTiposMedidores.getAtributosTiposMedidoresList().remove(atributosTiposMedidoresListAtributosTiposMedidores);
+                    oldFkAtributosFabricantesOfAtributosTiposMedidoresListAtributosTiposMedidores = em.merge(oldFkAtributosFabricantesOfAtributosTiposMedidoresListAtributosTiposMedidores);
                 }
             }
             utx.commit();
@@ -107,64 +106,64 @@ public class AtributosFabricantesJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             AtributosFabricantes persistentAtributosFabricantes = em.find(AtributosFabricantes.class, atributosFabricantes.getIdFabricantes());
-            Collection<AtributosTiposCajas> atributosTiposCajasCollectionOld = persistentAtributosFabricantes.getAtributosTiposCajasCollection();
-            Collection<AtributosTiposCajas> atributosTiposCajasCollectionNew = atributosFabricantes.getAtributosTiposCajasCollection();
-            Collection<AtributosTiposMedidores> atributosTiposMedidoresCollectionOld = persistentAtributosFabricantes.getAtributosTiposMedidoresCollection();
-            Collection<AtributosTiposMedidores> atributosTiposMedidoresCollectionNew = atributosFabricantes.getAtributosTiposMedidoresCollection();
+            List<AtributosTiposCajas> atributosTiposCajasListOld = persistentAtributosFabricantes.getAtributosTiposCajasList();
+            List<AtributosTiposCajas> atributosTiposCajasListNew = atributosFabricantes.getAtributosTiposCajasList();
+            List<AtributosTiposMedidores> atributosTiposMedidoresListOld = persistentAtributosFabricantes.getAtributosTiposMedidoresList();
+            List<AtributosTiposMedidores> atributosTiposMedidoresListNew = atributosFabricantes.getAtributosTiposMedidoresList();
             List<String> illegalOrphanMessages = null;
-            for (AtributosTiposCajas atributosTiposCajasCollectionOldAtributosTiposCajas : atributosTiposCajasCollectionOld) {
-                if (!atributosTiposCajasCollectionNew.contains(atributosTiposCajasCollectionOldAtributosTiposCajas)) {
+            for (AtributosTiposCajas atributosTiposCajasListOldAtributosTiposCajas : atributosTiposCajasListOld) {
+                if (!atributosTiposCajasListNew.contains(atributosTiposCajasListOldAtributosTiposCajas)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain AtributosTiposCajas " + atributosTiposCajasCollectionOldAtributosTiposCajas + " since its fkAtributosFabricantes field is not nullable.");
+                    illegalOrphanMessages.add("You must retain AtributosTiposCajas " + atributosTiposCajasListOldAtributosTiposCajas + " since its fkAtributosFabricantes field is not nullable.");
                 }
             }
-            for (AtributosTiposMedidores atributosTiposMedidoresCollectionOldAtributosTiposMedidores : atributosTiposMedidoresCollectionOld) {
-                if (!atributosTiposMedidoresCollectionNew.contains(atributosTiposMedidoresCollectionOldAtributosTiposMedidores)) {
+            for (AtributosTiposMedidores atributosTiposMedidoresListOldAtributosTiposMedidores : atributosTiposMedidoresListOld) {
+                if (!atributosTiposMedidoresListNew.contains(atributosTiposMedidoresListOldAtributosTiposMedidores)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain AtributosTiposMedidores " + atributosTiposMedidoresCollectionOldAtributosTiposMedidores + " since its fkAtributosFabricantes field is not nullable.");
+                    illegalOrphanMessages.add("You must retain AtributosTiposMedidores " + atributosTiposMedidoresListOldAtributosTiposMedidores + " since its fkAtributosFabricantes field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<AtributosTiposCajas> attachedAtributosTiposCajasCollectionNew = new ArrayList<AtributosTiposCajas>();
-            for (AtributosTiposCajas atributosTiposCajasCollectionNewAtributosTiposCajasToAttach : atributosTiposCajasCollectionNew) {
-                atributosTiposCajasCollectionNewAtributosTiposCajasToAttach = em.getReference(atributosTiposCajasCollectionNewAtributosTiposCajasToAttach.getClass(), atributosTiposCajasCollectionNewAtributosTiposCajasToAttach.getIdTiposCajas());
-                attachedAtributosTiposCajasCollectionNew.add(atributosTiposCajasCollectionNewAtributosTiposCajasToAttach);
+            List<AtributosTiposCajas> attachedAtributosTiposCajasListNew = new ArrayList<AtributosTiposCajas>();
+            for (AtributosTiposCajas atributosTiposCajasListNewAtributosTiposCajasToAttach : atributosTiposCajasListNew) {
+                atributosTiposCajasListNewAtributosTiposCajasToAttach = em.getReference(atributosTiposCajasListNewAtributosTiposCajasToAttach.getClass(), atributosTiposCajasListNewAtributosTiposCajasToAttach.getIdTiposCajas());
+                attachedAtributosTiposCajasListNew.add(atributosTiposCajasListNewAtributosTiposCajasToAttach);
             }
-            atributosTiposCajasCollectionNew = attachedAtributosTiposCajasCollectionNew;
-            atributosFabricantes.setAtributosTiposCajasCollection(atributosTiposCajasCollectionNew);
-            Collection<AtributosTiposMedidores> attachedAtributosTiposMedidoresCollectionNew = new ArrayList<AtributosTiposMedidores>();
-            for (AtributosTiposMedidores atributosTiposMedidoresCollectionNewAtributosTiposMedidoresToAttach : atributosTiposMedidoresCollectionNew) {
-                atributosTiposMedidoresCollectionNewAtributosTiposMedidoresToAttach = em.getReference(atributosTiposMedidoresCollectionNewAtributosTiposMedidoresToAttach.getClass(), atributosTiposMedidoresCollectionNewAtributosTiposMedidoresToAttach.getIdTiposMedidores());
-                attachedAtributosTiposMedidoresCollectionNew.add(atributosTiposMedidoresCollectionNewAtributosTiposMedidoresToAttach);
+            atributosTiposCajasListNew = attachedAtributosTiposCajasListNew;
+            atributosFabricantes.setAtributosTiposCajasList(atributosTiposCajasListNew);
+            List<AtributosTiposMedidores> attachedAtributosTiposMedidoresListNew = new ArrayList<AtributosTiposMedidores>();
+            for (AtributosTiposMedidores atributosTiposMedidoresListNewAtributosTiposMedidoresToAttach : atributosTiposMedidoresListNew) {
+                atributosTiposMedidoresListNewAtributosTiposMedidoresToAttach = em.getReference(atributosTiposMedidoresListNewAtributosTiposMedidoresToAttach.getClass(), atributosTiposMedidoresListNewAtributosTiposMedidoresToAttach.getIdTiposMedidores());
+                attachedAtributosTiposMedidoresListNew.add(atributosTiposMedidoresListNewAtributosTiposMedidoresToAttach);
             }
-            atributosTiposMedidoresCollectionNew = attachedAtributosTiposMedidoresCollectionNew;
-            atributosFabricantes.setAtributosTiposMedidoresCollection(atributosTiposMedidoresCollectionNew);
+            atributosTiposMedidoresListNew = attachedAtributosTiposMedidoresListNew;
+            atributosFabricantes.setAtributosTiposMedidoresList(atributosTiposMedidoresListNew);
             atributosFabricantes = em.merge(atributosFabricantes);
-            for (AtributosTiposCajas atributosTiposCajasCollectionNewAtributosTiposCajas : atributosTiposCajasCollectionNew) {
-                if (!atributosTiposCajasCollectionOld.contains(atributosTiposCajasCollectionNewAtributosTiposCajas)) {
-                    AtributosFabricantes oldFkAtributosFabricantesOfAtributosTiposCajasCollectionNewAtributosTiposCajas = atributosTiposCajasCollectionNewAtributosTiposCajas.getFkAtributosFabricantes();
-                    atributosTiposCajasCollectionNewAtributosTiposCajas.setFkAtributosFabricantes(atributosFabricantes);
-                    atributosTiposCajasCollectionNewAtributosTiposCajas = em.merge(atributosTiposCajasCollectionNewAtributosTiposCajas);
-                    if (oldFkAtributosFabricantesOfAtributosTiposCajasCollectionNewAtributosTiposCajas != null && !oldFkAtributosFabricantesOfAtributosTiposCajasCollectionNewAtributosTiposCajas.equals(atributosFabricantes)) {
-                        oldFkAtributosFabricantesOfAtributosTiposCajasCollectionNewAtributosTiposCajas.getAtributosTiposCajasCollection().remove(atributosTiposCajasCollectionNewAtributosTiposCajas);
-                        oldFkAtributosFabricantesOfAtributosTiposCajasCollectionNewAtributosTiposCajas = em.merge(oldFkAtributosFabricantesOfAtributosTiposCajasCollectionNewAtributosTiposCajas);
+            for (AtributosTiposCajas atributosTiposCajasListNewAtributosTiposCajas : atributosTiposCajasListNew) {
+                if (!atributosTiposCajasListOld.contains(atributosTiposCajasListNewAtributosTiposCajas)) {
+                    AtributosFabricantes oldFkAtributosFabricantesOfAtributosTiposCajasListNewAtributosTiposCajas = atributosTiposCajasListNewAtributosTiposCajas.getFkAtributosFabricantes();
+                    atributosTiposCajasListNewAtributosTiposCajas.setFkAtributosFabricantes(atributosFabricantes);
+                    atributosTiposCajasListNewAtributosTiposCajas = em.merge(atributosTiposCajasListNewAtributosTiposCajas);
+                    if (oldFkAtributosFabricantesOfAtributosTiposCajasListNewAtributosTiposCajas != null && !oldFkAtributosFabricantesOfAtributosTiposCajasListNewAtributosTiposCajas.equals(atributosFabricantes)) {
+                        oldFkAtributosFabricantesOfAtributosTiposCajasListNewAtributosTiposCajas.getAtributosTiposCajasList().remove(atributosTiposCajasListNewAtributosTiposCajas);
+                        oldFkAtributosFabricantesOfAtributosTiposCajasListNewAtributosTiposCajas = em.merge(oldFkAtributosFabricantesOfAtributosTiposCajasListNewAtributosTiposCajas);
                     }
                 }
             }
-            for (AtributosTiposMedidores atributosTiposMedidoresCollectionNewAtributosTiposMedidores : atributosTiposMedidoresCollectionNew) {
-                if (!atributosTiposMedidoresCollectionOld.contains(atributosTiposMedidoresCollectionNewAtributosTiposMedidores)) {
-                    AtributosFabricantes oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionNewAtributosTiposMedidores = atributosTiposMedidoresCollectionNewAtributosTiposMedidores.getFkAtributosFabricantes();
-                    atributosTiposMedidoresCollectionNewAtributosTiposMedidores.setFkAtributosFabricantes(atributosFabricantes);
-                    atributosTiposMedidoresCollectionNewAtributosTiposMedidores = em.merge(atributosTiposMedidoresCollectionNewAtributosTiposMedidores);
-                    if (oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionNewAtributosTiposMedidores != null && !oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionNewAtributosTiposMedidores.equals(atributosFabricantes)) {
-                        oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionNewAtributosTiposMedidores.getAtributosTiposMedidoresCollection().remove(atributosTiposMedidoresCollectionNewAtributosTiposMedidores);
-                        oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionNewAtributosTiposMedidores = em.merge(oldFkAtributosFabricantesOfAtributosTiposMedidoresCollectionNewAtributosTiposMedidores);
+            for (AtributosTiposMedidores atributosTiposMedidoresListNewAtributosTiposMedidores : atributosTiposMedidoresListNew) {
+                if (!atributosTiposMedidoresListOld.contains(atributosTiposMedidoresListNewAtributosTiposMedidores)) {
+                    AtributosFabricantes oldFkAtributosFabricantesOfAtributosTiposMedidoresListNewAtributosTiposMedidores = atributosTiposMedidoresListNewAtributosTiposMedidores.getFkAtributosFabricantes();
+                    atributosTiposMedidoresListNewAtributosTiposMedidores.setFkAtributosFabricantes(atributosFabricantes);
+                    atributosTiposMedidoresListNewAtributosTiposMedidores = em.merge(atributosTiposMedidoresListNewAtributosTiposMedidores);
+                    if (oldFkAtributosFabricantesOfAtributosTiposMedidoresListNewAtributosTiposMedidores != null && !oldFkAtributosFabricantesOfAtributosTiposMedidoresListNewAtributosTiposMedidores.equals(atributosFabricantes)) {
+                        oldFkAtributosFabricantesOfAtributosTiposMedidoresListNewAtributosTiposMedidores.getAtributosTiposMedidoresList().remove(atributosTiposMedidoresListNewAtributosTiposMedidores);
+                        oldFkAtributosFabricantesOfAtributosTiposMedidoresListNewAtributosTiposMedidores = em.merge(oldFkAtributosFabricantesOfAtributosTiposMedidoresListNewAtributosTiposMedidores);
                     }
                 }
             }
@@ -203,19 +202,19 @@ public class AtributosFabricantesJpaController implements Serializable {
                 throw new NonexistentEntityException("The atributosFabricantes with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<AtributosTiposCajas> atributosTiposCajasCollectionOrphanCheck = atributosFabricantes.getAtributosTiposCajasCollection();
-            for (AtributosTiposCajas atributosTiposCajasCollectionOrphanCheckAtributosTiposCajas : atributosTiposCajasCollectionOrphanCheck) {
+            List<AtributosTiposCajas> atributosTiposCajasListOrphanCheck = atributosFabricantes.getAtributosTiposCajasList();
+            for (AtributosTiposCajas atributosTiposCajasListOrphanCheckAtributosTiposCajas : atributosTiposCajasListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This AtributosFabricantes (" + atributosFabricantes + ") cannot be destroyed since the AtributosTiposCajas " + atributosTiposCajasCollectionOrphanCheckAtributosTiposCajas + " in its atributosTiposCajasCollection field has a non-nullable fkAtributosFabricantes field.");
+                illegalOrphanMessages.add("This AtributosFabricantes (" + atributosFabricantes + ") cannot be destroyed since the AtributosTiposCajas " + atributosTiposCajasListOrphanCheckAtributosTiposCajas + " in its atributosTiposCajasList field has a non-nullable fkAtributosFabricantes field.");
             }
-            Collection<AtributosTiposMedidores> atributosTiposMedidoresCollectionOrphanCheck = atributosFabricantes.getAtributosTiposMedidoresCollection();
-            for (AtributosTiposMedidores atributosTiposMedidoresCollectionOrphanCheckAtributosTiposMedidores : atributosTiposMedidoresCollectionOrphanCheck) {
+            List<AtributosTiposMedidores> atributosTiposMedidoresListOrphanCheck = atributosFabricantes.getAtributosTiposMedidoresList();
+            for (AtributosTiposMedidores atributosTiposMedidoresListOrphanCheckAtributosTiposMedidores : atributosTiposMedidoresListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This AtributosFabricantes (" + atributosFabricantes + ") cannot be destroyed since the AtributosTiposMedidores " + atributosTiposMedidoresCollectionOrphanCheckAtributosTiposMedidores + " in its atributosTiposMedidoresCollection field has a non-nullable fkAtributosFabricantes field.");
+                illegalOrphanMessages.add("This AtributosFabricantes (" + atributosFabricantes + ") cannot be destroyed since the AtributosTiposMedidores " + atributosTiposMedidoresListOrphanCheckAtributosTiposMedidores + " in its atributosTiposMedidoresList field has a non-nullable fkAtributosFabricantes field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

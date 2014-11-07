@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,7 +43,7 @@ public class PrepagoEstado implements Serializable {
     @Column(name = "ESTADO")
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkPrepagoEstado")
-    private Collection<PrepagoClientes> prepagoClientesCollection;
+    private List<PrepagoClientes> prepagoClientesList;
 
     public PrepagoEstado() {
     }
@@ -69,12 +69,12 @@ public class PrepagoEstado implements Serializable {
     }
 
     @XmlTransient
-    public Collection<PrepagoClientes> getPrepagoClientesCollection() {
-        return prepagoClientesCollection;
+    public List<PrepagoClientes> getPrepagoClientesList() {
+        return prepagoClientesList;
     }
 
-    public void setPrepagoClientesCollection(Collection<PrepagoClientes> prepagoClientesCollection) {
-        this.prepagoClientesCollection = prepagoClientesCollection;
+    public void setPrepagoClientesList(List<PrepagoClientes> prepagoClientesList) {
+        this.prepagoClientesList = prepagoClientesList;
     }
 
     @Override

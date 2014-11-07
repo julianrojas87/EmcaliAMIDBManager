@@ -17,9 +17,8 @@ import javax.persistence.criteria.Root;
 import emcali.ami.persistence.entity.AmyEventos;
 import emcali.ami.persistence.entity.AmyTipoEventos;
 import java.util.ArrayList;
-import java.util.Collection;
-import emcali.ami.persistence.entity.PrepagoEventos;
 import java.util.List;
+import emcali.ami.persistence.entity.PrepagoEventos;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
@@ -42,45 +41,45 @@ public class AmyTipoEventosJpaController implements Serializable {
     }
 
     public void create(AmyTipoEventos amyTipoEventos) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (amyTipoEventos.getAmyEventosCollection() == null) {
-            amyTipoEventos.setAmyEventosCollection(new ArrayList<AmyEventos>());
+        if (amyTipoEventos.getAmyEventosList() == null) {
+            amyTipoEventos.setAmyEventosList(new ArrayList<AmyEventos>());
         }
-        if (amyTipoEventos.getPrepagoEventosCollection() == null) {
-            amyTipoEventos.setPrepagoEventosCollection(new ArrayList<PrepagoEventos>());
+        if (amyTipoEventos.getPrepagoEventosList() == null) {
+            amyTipoEventos.setPrepagoEventosList(new ArrayList<PrepagoEventos>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<AmyEventos> attachedAmyEventosCollection = new ArrayList<AmyEventos>();
-            for (AmyEventos amyEventosCollectionAmyEventosToAttach : amyTipoEventos.getAmyEventosCollection()) {
-                amyEventosCollectionAmyEventosToAttach = em.getReference(amyEventosCollectionAmyEventosToAttach.getClass(), amyEventosCollectionAmyEventosToAttach.getIdEvento());
-                attachedAmyEventosCollection.add(amyEventosCollectionAmyEventosToAttach);
+            List<AmyEventos> attachedAmyEventosList = new ArrayList<AmyEventos>();
+            for (AmyEventos amyEventosListAmyEventosToAttach : amyTipoEventos.getAmyEventosList()) {
+                amyEventosListAmyEventosToAttach = em.getReference(amyEventosListAmyEventosToAttach.getClass(), amyEventosListAmyEventosToAttach.getIdEvento());
+                attachedAmyEventosList.add(amyEventosListAmyEventosToAttach);
             }
-            amyTipoEventos.setAmyEventosCollection(attachedAmyEventosCollection);
-            Collection<PrepagoEventos> attachedPrepagoEventosCollection = new ArrayList<PrepagoEventos>();
-            for (PrepagoEventos prepagoEventosCollectionPrepagoEventosToAttach : amyTipoEventos.getPrepagoEventosCollection()) {
-                prepagoEventosCollectionPrepagoEventosToAttach = em.getReference(prepagoEventosCollectionPrepagoEventosToAttach.getClass(), prepagoEventosCollectionPrepagoEventosToAttach.getIdEventos());
-                attachedPrepagoEventosCollection.add(prepagoEventosCollectionPrepagoEventosToAttach);
+            amyTipoEventos.setAmyEventosList(attachedAmyEventosList);
+            List<PrepagoEventos> attachedPrepagoEventosList = new ArrayList<PrepagoEventos>();
+            for (PrepagoEventos prepagoEventosListPrepagoEventosToAttach : amyTipoEventos.getPrepagoEventosList()) {
+                prepagoEventosListPrepagoEventosToAttach = em.getReference(prepagoEventosListPrepagoEventosToAttach.getClass(), prepagoEventosListPrepagoEventosToAttach.getIdEventos());
+                attachedPrepagoEventosList.add(prepagoEventosListPrepagoEventosToAttach);
             }
-            amyTipoEventos.setPrepagoEventosCollection(attachedPrepagoEventosCollection);
+            amyTipoEventos.setPrepagoEventosList(attachedPrepagoEventosList);
             em.persist(amyTipoEventos);
-            for (AmyEventos amyEventosCollectionAmyEventos : amyTipoEventos.getAmyEventosCollection()) {
-                AmyTipoEventos oldFkAmyTipoEventosOfAmyEventosCollectionAmyEventos = amyEventosCollectionAmyEventos.getFkAmyTipoEventos();
-                amyEventosCollectionAmyEventos.setFkAmyTipoEventos(amyTipoEventos);
-                amyEventosCollectionAmyEventos = em.merge(amyEventosCollectionAmyEventos);
-                if (oldFkAmyTipoEventosOfAmyEventosCollectionAmyEventos != null) {
-                    oldFkAmyTipoEventosOfAmyEventosCollectionAmyEventos.getAmyEventosCollection().remove(amyEventosCollectionAmyEventos);
-                    oldFkAmyTipoEventosOfAmyEventosCollectionAmyEventos = em.merge(oldFkAmyTipoEventosOfAmyEventosCollectionAmyEventos);
+            for (AmyEventos amyEventosListAmyEventos : amyTipoEventos.getAmyEventosList()) {
+                AmyTipoEventos oldFkAmyTipoEventosOfAmyEventosListAmyEventos = amyEventosListAmyEventos.getFkAmyTipoEventos();
+                amyEventosListAmyEventos.setFkAmyTipoEventos(amyTipoEventos);
+                amyEventosListAmyEventos = em.merge(amyEventosListAmyEventos);
+                if (oldFkAmyTipoEventosOfAmyEventosListAmyEventos != null) {
+                    oldFkAmyTipoEventosOfAmyEventosListAmyEventos.getAmyEventosList().remove(amyEventosListAmyEventos);
+                    oldFkAmyTipoEventosOfAmyEventosListAmyEventos = em.merge(oldFkAmyTipoEventosOfAmyEventosListAmyEventos);
                 }
             }
-            for (PrepagoEventos prepagoEventosCollectionPrepagoEventos : amyTipoEventos.getPrepagoEventosCollection()) {
-                AmyTipoEventos oldFkAmyTipoEventosOfPrepagoEventosCollectionPrepagoEventos = prepagoEventosCollectionPrepagoEventos.getFkAmyTipoEventos();
-                prepagoEventosCollectionPrepagoEventos.setFkAmyTipoEventos(amyTipoEventos);
-                prepagoEventosCollectionPrepagoEventos = em.merge(prepagoEventosCollectionPrepagoEventos);
-                if (oldFkAmyTipoEventosOfPrepagoEventosCollectionPrepagoEventos != null) {
-                    oldFkAmyTipoEventosOfPrepagoEventosCollectionPrepagoEventos.getPrepagoEventosCollection().remove(prepagoEventosCollectionPrepagoEventos);
-                    oldFkAmyTipoEventosOfPrepagoEventosCollectionPrepagoEventos = em.merge(oldFkAmyTipoEventosOfPrepagoEventosCollectionPrepagoEventos);
+            for (PrepagoEventos prepagoEventosListPrepagoEventos : amyTipoEventos.getPrepagoEventosList()) {
+                AmyTipoEventos oldFkAmyTipoEventosOfPrepagoEventosListPrepagoEventos = prepagoEventosListPrepagoEventos.getFkAmyTipoEventos();
+                prepagoEventosListPrepagoEventos.setFkAmyTipoEventos(amyTipoEventos);
+                prepagoEventosListPrepagoEventos = em.merge(prepagoEventosListPrepagoEventos);
+                if (oldFkAmyTipoEventosOfPrepagoEventosListPrepagoEventos != null) {
+                    oldFkAmyTipoEventosOfPrepagoEventosListPrepagoEventos.getPrepagoEventosList().remove(prepagoEventosListPrepagoEventos);
+                    oldFkAmyTipoEventosOfPrepagoEventosListPrepagoEventos = em.merge(oldFkAmyTipoEventosOfPrepagoEventosListPrepagoEventos);
                 }
             }
             utx.commit();
@@ -107,64 +106,64 @@ public class AmyTipoEventosJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             AmyTipoEventos persistentAmyTipoEventos = em.find(AmyTipoEventos.class, amyTipoEventos.getIdTipoEvento());
-            Collection<AmyEventos> amyEventosCollectionOld = persistentAmyTipoEventos.getAmyEventosCollection();
-            Collection<AmyEventos> amyEventosCollectionNew = amyTipoEventos.getAmyEventosCollection();
-            Collection<PrepagoEventos> prepagoEventosCollectionOld = persistentAmyTipoEventos.getPrepagoEventosCollection();
-            Collection<PrepagoEventos> prepagoEventosCollectionNew = amyTipoEventos.getPrepagoEventosCollection();
+            List<AmyEventos> amyEventosListOld = persistentAmyTipoEventos.getAmyEventosList();
+            List<AmyEventos> amyEventosListNew = amyTipoEventos.getAmyEventosList();
+            List<PrepagoEventos> prepagoEventosListOld = persistentAmyTipoEventos.getPrepagoEventosList();
+            List<PrepagoEventos> prepagoEventosListNew = amyTipoEventos.getPrepagoEventosList();
             List<String> illegalOrphanMessages = null;
-            for (AmyEventos amyEventosCollectionOldAmyEventos : amyEventosCollectionOld) {
-                if (!amyEventosCollectionNew.contains(amyEventosCollectionOldAmyEventos)) {
+            for (AmyEventos amyEventosListOldAmyEventos : amyEventosListOld) {
+                if (!amyEventosListNew.contains(amyEventosListOldAmyEventos)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain AmyEventos " + amyEventosCollectionOldAmyEventos + " since its fkAmyTipoEventos field is not nullable.");
+                    illegalOrphanMessages.add("You must retain AmyEventos " + amyEventosListOldAmyEventos + " since its fkAmyTipoEventos field is not nullable.");
                 }
             }
-            for (PrepagoEventos prepagoEventosCollectionOldPrepagoEventos : prepagoEventosCollectionOld) {
-                if (!prepagoEventosCollectionNew.contains(prepagoEventosCollectionOldPrepagoEventos)) {
+            for (PrepagoEventos prepagoEventosListOldPrepagoEventos : prepagoEventosListOld) {
+                if (!prepagoEventosListNew.contains(prepagoEventosListOldPrepagoEventos)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain PrepagoEventos " + prepagoEventosCollectionOldPrepagoEventos + " since its fkAmyTipoEventos field is not nullable.");
+                    illegalOrphanMessages.add("You must retain PrepagoEventos " + prepagoEventosListOldPrepagoEventos + " since its fkAmyTipoEventos field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<AmyEventos> attachedAmyEventosCollectionNew = new ArrayList<AmyEventos>();
-            for (AmyEventos amyEventosCollectionNewAmyEventosToAttach : amyEventosCollectionNew) {
-                amyEventosCollectionNewAmyEventosToAttach = em.getReference(amyEventosCollectionNewAmyEventosToAttach.getClass(), amyEventosCollectionNewAmyEventosToAttach.getIdEvento());
-                attachedAmyEventosCollectionNew.add(amyEventosCollectionNewAmyEventosToAttach);
+            List<AmyEventos> attachedAmyEventosListNew = new ArrayList<AmyEventos>();
+            for (AmyEventos amyEventosListNewAmyEventosToAttach : amyEventosListNew) {
+                amyEventosListNewAmyEventosToAttach = em.getReference(amyEventosListNewAmyEventosToAttach.getClass(), amyEventosListNewAmyEventosToAttach.getIdEvento());
+                attachedAmyEventosListNew.add(amyEventosListNewAmyEventosToAttach);
             }
-            amyEventosCollectionNew = attachedAmyEventosCollectionNew;
-            amyTipoEventos.setAmyEventosCollection(amyEventosCollectionNew);
-            Collection<PrepagoEventos> attachedPrepagoEventosCollectionNew = new ArrayList<PrepagoEventos>();
-            for (PrepagoEventos prepagoEventosCollectionNewPrepagoEventosToAttach : prepagoEventosCollectionNew) {
-                prepagoEventosCollectionNewPrepagoEventosToAttach = em.getReference(prepagoEventosCollectionNewPrepagoEventosToAttach.getClass(), prepagoEventosCollectionNewPrepagoEventosToAttach.getIdEventos());
-                attachedPrepagoEventosCollectionNew.add(prepagoEventosCollectionNewPrepagoEventosToAttach);
+            amyEventosListNew = attachedAmyEventosListNew;
+            amyTipoEventos.setAmyEventosList(amyEventosListNew);
+            List<PrepagoEventos> attachedPrepagoEventosListNew = new ArrayList<PrepagoEventos>();
+            for (PrepagoEventos prepagoEventosListNewPrepagoEventosToAttach : prepagoEventosListNew) {
+                prepagoEventosListNewPrepagoEventosToAttach = em.getReference(prepagoEventosListNewPrepagoEventosToAttach.getClass(), prepagoEventosListNewPrepagoEventosToAttach.getIdEventos());
+                attachedPrepagoEventosListNew.add(prepagoEventosListNewPrepagoEventosToAttach);
             }
-            prepagoEventosCollectionNew = attachedPrepagoEventosCollectionNew;
-            amyTipoEventos.setPrepagoEventosCollection(prepagoEventosCollectionNew);
+            prepagoEventosListNew = attachedPrepagoEventosListNew;
+            amyTipoEventos.setPrepagoEventosList(prepagoEventosListNew);
             amyTipoEventos = em.merge(amyTipoEventos);
-            for (AmyEventos amyEventosCollectionNewAmyEventos : amyEventosCollectionNew) {
-                if (!amyEventosCollectionOld.contains(amyEventosCollectionNewAmyEventos)) {
-                    AmyTipoEventos oldFkAmyTipoEventosOfAmyEventosCollectionNewAmyEventos = amyEventosCollectionNewAmyEventos.getFkAmyTipoEventos();
-                    amyEventosCollectionNewAmyEventos.setFkAmyTipoEventos(amyTipoEventos);
-                    amyEventosCollectionNewAmyEventos = em.merge(amyEventosCollectionNewAmyEventos);
-                    if (oldFkAmyTipoEventosOfAmyEventosCollectionNewAmyEventos != null && !oldFkAmyTipoEventosOfAmyEventosCollectionNewAmyEventos.equals(amyTipoEventos)) {
-                        oldFkAmyTipoEventosOfAmyEventosCollectionNewAmyEventos.getAmyEventosCollection().remove(amyEventosCollectionNewAmyEventos);
-                        oldFkAmyTipoEventosOfAmyEventosCollectionNewAmyEventos = em.merge(oldFkAmyTipoEventosOfAmyEventosCollectionNewAmyEventos);
+            for (AmyEventos amyEventosListNewAmyEventos : amyEventosListNew) {
+                if (!amyEventosListOld.contains(amyEventosListNewAmyEventos)) {
+                    AmyTipoEventos oldFkAmyTipoEventosOfAmyEventosListNewAmyEventos = amyEventosListNewAmyEventos.getFkAmyTipoEventos();
+                    amyEventosListNewAmyEventos.setFkAmyTipoEventos(amyTipoEventos);
+                    amyEventosListNewAmyEventos = em.merge(amyEventosListNewAmyEventos);
+                    if (oldFkAmyTipoEventosOfAmyEventosListNewAmyEventos != null && !oldFkAmyTipoEventosOfAmyEventosListNewAmyEventos.equals(amyTipoEventos)) {
+                        oldFkAmyTipoEventosOfAmyEventosListNewAmyEventos.getAmyEventosList().remove(amyEventosListNewAmyEventos);
+                        oldFkAmyTipoEventosOfAmyEventosListNewAmyEventos = em.merge(oldFkAmyTipoEventosOfAmyEventosListNewAmyEventos);
                     }
                 }
             }
-            for (PrepagoEventos prepagoEventosCollectionNewPrepagoEventos : prepagoEventosCollectionNew) {
-                if (!prepagoEventosCollectionOld.contains(prepagoEventosCollectionNewPrepagoEventos)) {
-                    AmyTipoEventos oldFkAmyTipoEventosOfPrepagoEventosCollectionNewPrepagoEventos = prepagoEventosCollectionNewPrepagoEventos.getFkAmyTipoEventos();
-                    prepagoEventosCollectionNewPrepagoEventos.setFkAmyTipoEventos(amyTipoEventos);
-                    prepagoEventosCollectionNewPrepagoEventos = em.merge(prepagoEventosCollectionNewPrepagoEventos);
-                    if (oldFkAmyTipoEventosOfPrepagoEventosCollectionNewPrepagoEventos != null && !oldFkAmyTipoEventosOfPrepagoEventosCollectionNewPrepagoEventos.equals(amyTipoEventos)) {
-                        oldFkAmyTipoEventosOfPrepagoEventosCollectionNewPrepagoEventos.getPrepagoEventosCollection().remove(prepagoEventosCollectionNewPrepagoEventos);
-                        oldFkAmyTipoEventosOfPrepagoEventosCollectionNewPrepagoEventos = em.merge(oldFkAmyTipoEventosOfPrepagoEventosCollectionNewPrepagoEventos);
+            for (PrepagoEventos prepagoEventosListNewPrepagoEventos : prepagoEventosListNew) {
+                if (!prepagoEventosListOld.contains(prepagoEventosListNewPrepagoEventos)) {
+                    AmyTipoEventos oldFkAmyTipoEventosOfPrepagoEventosListNewPrepagoEventos = prepagoEventosListNewPrepagoEventos.getFkAmyTipoEventos();
+                    prepagoEventosListNewPrepagoEventos.setFkAmyTipoEventos(amyTipoEventos);
+                    prepagoEventosListNewPrepagoEventos = em.merge(prepagoEventosListNewPrepagoEventos);
+                    if (oldFkAmyTipoEventosOfPrepagoEventosListNewPrepagoEventos != null && !oldFkAmyTipoEventosOfPrepagoEventosListNewPrepagoEventos.equals(amyTipoEventos)) {
+                        oldFkAmyTipoEventosOfPrepagoEventosListNewPrepagoEventos.getPrepagoEventosList().remove(prepagoEventosListNewPrepagoEventos);
+                        oldFkAmyTipoEventosOfPrepagoEventosListNewPrepagoEventos = em.merge(oldFkAmyTipoEventosOfPrepagoEventosListNewPrepagoEventos);
                     }
                 }
             }
@@ -203,19 +202,19 @@ public class AmyTipoEventosJpaController implements Serializable {
                 throw new NonexistentEntityException("The amyTipoEventos with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<AmyEventos> amyEventosCollectionOrphanCheck = amyTipoEventos.getAmyEventosCollection();
-            for (AmyEventos amyEventosCollectionOrphanCheckAmyEventos : amyEventosCollectionOrphanCheck) {
+            List<AmyEventos> amyEventosListOrphanCheck = amyTipoEventos.getAmyEventosList();
+            for (AmyEventos amyEventosListOrphanCheckAmyEventos : amyEventosListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This AmyTipoEventos (" + amyTipoEventos + ") cannot be destroyed since the AmyEventos " + amyEventosCollectionOrphanCheckAmyEventos + " in its amyEventosCollection field has a non-nullable fkAmyTipoEventos field.");
+                illegalOrphanMessages.add("This AmyTipoEventos (" + amyTipoEventos + ") cannot be destroyed since the AmyEventos " + amyEventosListOrphanCheckAmyEventos + " in its amyEventosList field has a non-nullable fkAmyTipoEventos field.");
             }
-            Collection<PrepagoEventos> prepagoEventosCollectionOrphanCheck = amyTipoEventos.getPrepagoEventosCollection();
-            for (PrepagoEventos prepagoEventosCollectionOrphanCheckPrepagoEventos : prepagoEventosCollectionOrphanCheck) {
+            List<PrepagoEventos> prepagoEventosListOrphanCheck = amyTipoEventos.getPrepagoEventosList();
+            for (PrepagoEventos prepagoEventosListOrphanCheckPrepagoEventos : prepagoEventosListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This AmyTipoEventos (" + amyTipoEventos + ") cannot be destroyed since the PrepagoEventos " + prepagoEventosCollectionOrphanCheckPrepagoEventos + " in its prepagoEventosCollection field has a non-nullable fkAmyTipoEventos field.");
+                illegalOrphanMessages.add("This AmyTipoEventos (" + amyTipoEventos + ") cannot be destroyed since the PrepagoEventos " + prepagoEventosListOrphanCheckPrepagoEventos + " in its prepagoEventosList field has a non-nullable fkAmyTipoEventos field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

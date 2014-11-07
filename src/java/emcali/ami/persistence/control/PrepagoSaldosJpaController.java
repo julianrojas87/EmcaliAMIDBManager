@@ -49,7 +49,7 @@ public class PrepagoSaldosJpaController implements Serializable {
             }
             em.persist(prepagoSaldos);
             if (fkAmyMedidores != null) {
-                fkAmyMedidores.getPrepagoSaldosCollection().add(prepagoSaldos);
+                fkAmyMedidores.getPrepagoSaldosList().add(prepagoSaldos);
                 fkAmyMedidores = em.merge(fkAmyMedidores);
             }
             utx.commit();
@@ -84,11 +84,11 @@ public class PrepagoSaldosJpaController implements Serializable {
             }
             prepagoSaldos = em.merge(prepagoSaldos);
             if (fkAmyMedidoresOld != null && !fkAmyMedidoresOld.equals(fkAmyMedidoresNew)) {
-                fkAmyMedidoresOld.getPrepagoSaldosCollection().remove(prepagoSaldos);
+                fkAmyMedidoresOld.getPrepagoSaldosList().remove(prepagoSaldos);
                 fkAmyMedidoresOld = em.merge(fkAmyMedidoresOld);
             }
             if (fkAmyMedidoresNew != null && !fkAmyMedidoresNew.equals(fkAmyMedidoresOld)) {
-                fkAmyMedidoresNew.getPrepagoSaldosCollection().add(prepagoSaldos);
+                fkAmyMedidoresNew.getPrepagoSaldosList().add(prepagoSaldos);
                 fkAmyMedidoresNew = em.merge(fkAmyMedidoresNew);
             }
             utx.commit();
@@ -127,7 +127,7 @@ public class PrepagoSaldosJpaController implements Serializable {
             }
             AmyMedidores fkAmyMedidores = prepagoSaldos.getFkAmyMedidores();
             if (fkAmyMedidores != null) {
-                fkAmyMedidores.getPrepagoSaldosCollection().remove(prepagoSaldos);
+                fkAmyMedidores.getPrepagoSaldosList().remove(prepagoSaldos);
                 fkAmyMedidores = em.merge(fkAmyMedidores);
             }
             em.remove(prepagoSaldos);

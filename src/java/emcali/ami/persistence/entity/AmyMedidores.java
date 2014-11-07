@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -75,11 +75,11 @@ public class AmyMedidores implements Serializable {
     @Column(name = "LONGITUD")
     private Double longitud;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyMedidores")
-    private Collection<AmyLecturas> amyLecturasCollection;
+    private List<AmyLecturas> amyLecturasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyMedidores")
-    private Collection<PrepagoSaldos> prepagoSaldosCollection;
+    private List<PrepagoSaldos> prepagoSaldosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyMedidores")
-    private Collection<AmyEventos> amyEventosCollection;
+    private List<AmyEventos> amyEventosList;
     @JoinColumn(name = "FK_COMERCIAL_PRODUCTOS", referencedColumnName = "ID_PRODUCTOS")
     @ManyToOne(optional = false)
     private ComercialProductos fkComercialProductos;
@@ -90,11 +90,11 @@ public class AmyMedidores implements Serializable {
     @ManyToOne(optional = false)
     private AmyCajas fkAmyCajas;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyMedidores")
-    private Collection<AmyConsumos> amyConsumosCollection;
+    private List<AmyConsumos> amyConsumosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyMedidores")
-    private Collection<TelcoInfo> telcoInfoCollection;
+    private List<TelcoInfo> telcoInfoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAmyMedidores")
-    private Collection<AmyMedidoresHistorico> amyMedidoresHistoricoCollection;
+    private List<AmyMedidoresHistorico> amyMedidoresHistoricoList;
 
     public AmyMedidores() {
     }
@@ -177,30 +177,30 @@ public class AmyMedidores implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AmyLecturas> getAmyLecturasCollection() {
-        return amyLecturasCollection;
+    public List<AmyLecturas> getAmyLecturasList() {
+        return amyLecturasList;
     }
 
-    public void setAmyLecturasCollection(Collection<AmyLecturas> amyLecturasCollection) {
-        this.amyLecturasCollection = amyLecturasCollection;
-    }
-
-    @XmlTransient
-    public Collection<PrepagoSaldos> getPrepagoSaldosCollection() {
-        return prepagoSaldosCollection;
-    }
-
-    public void setPrepagoSaldosCollection(Collection<PrepagoSaldos> prepagoSaldosCollection) {
-        this.prepagoSaldosCollection = prepagoSaldosCollection;
+    public void setAmyLecturasList(List<AmyLecturas> amyLecturasList) {
+        this.amyLecturasList = amyLecturasList;
     }
 
     @XmlTransient
-    public Collection<AmyEventos> getAmyEventosCollection() {
-        return amyEventosCollection;
+    public List<PrepagoSaldos> getPrepagoSaldosList() {
+        return prepagoSaldosList;
     }
 
-    public void setAmyEventosCollection(Collection<AmyEventos> amyEventosCollection) {
-        this.amyEventosCollection = amyEventosCollection;
+    public void setPrepagoSaldosList(List<PrepagoSaldos> prepagoSaldosList) {
+        this.prepagoSaldosList = prepagoSaldosList;
+    }
+
+    @XmlTransient
+    public List<AmyEventos> getAmyEventosList() {
+        return amyEventosList;
+    }
+
+    public void setAmyEventosList(List<AmyEventos> amyEventosList) {
+        this.amyEventosList = amyEventosList;
     }
 
     public ComercialProductos getFkComercialProductos() {
@@ -228,30 +228,30 @@ public class AmyMedidores implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AmyConsumos> getAmyConsumosCollection() {
-        return amyConsumosCollection;
+    public List<AmyConsumos> getAmyConsumosList() {
+        return amyConsumosList;
     }
 
-    public void setAmyConsumosCollection(Collection<AmyConsumos> amyConsumosCollection) {
-        this.amyConsumosCollection = amyConsumosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TelcoInfo> getTelcoInfoCollection() {
-        return telcoInfoCollection;
-    }
-
-    public void setTelcoInfoCollection(Collection<TelcoInfo> telcoInfoCollection) {
-        this.telcoInfoCollection = telcoInfoCollection;
+    public void setAmyConsumosList(List<AmyConsumos> amyConsumosList) {
+        this.amyConsumosList = amyConsumosList;
     }
 
     @XmlTransient
-    public Collection<AmyMedidoresHistorico> getAmyMedidoresHistoricoCollection() {
-        return amyMedidoresHistoricoCollection;
+    public List<TelcoInfo> getTelcoInfoList() {
+        return telcoInfoList;
     }
 
-    public void setAmyMedidoresHistoricoCollection(Collection<AmyMedidoresHistorico> amyMedidoresHistoricoCollection) {
-        this.amyMedidoresHistoricoCollection = amyMedidoresHistoricoCollection;
+    public void setTelcoInfoList(List<TelcoInfo> telcoInfoList) {
+        this.telcoInfoList = telcoInfoList;
+    }
+
+    @XmlTransient
+    public List<AmyMedidoresHistorico> getAmyMedidoresHistoricoList() {
+        return amyMedidoresHistoricoList;
+    }
+
+    public void setAmyMedidoresHistoricoList(List<AmyMedidoresHistorico> amyMedidoresHistoricoList) {
+        this.amyMedidoresHistoricoList = amyMedidoresHistoricoList;
     }
 
     @Override

@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -50,18 +50,18 @@ public class ComercialProductos implements Serializable {
     @Column(name = "SUSCRIPCION_TELCO")
     private String suscripcionTelco;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkComercialProductos")
-    private Collection<RecargaRecargas> recargaRecargasCollection;
+    private List<RecargaRecargas> recargaRecargasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkComercialProductos")
-    private Collection<SaldosHistoria> saldosHistoriaCollection;
+    private List<SaldosHistoria> saldosHistoriaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkComercialProductos")
-    private Collection<PrepagoEventos> prepagoEventosCollection;
+    private List<PrepagoEventos> prepagoEventosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkComercialProductos")
-    private Collection<AmyMedidores> amyMedidoresCollection;
+    private List<AmyMedidores> amyMedidoresList;
     @JoinColumn(name = "FK_COMERCIAL_CONTRATOS", referencedColumnName = "ID_CONTRATOS")
     @ManyToOne(optional = false)
     private ComercialContratos fkComercialContratos;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkComercialProductos")
-    private Collection<PrepagoClientes> prepagoClientesCollection;
+    private List<PrepagoClientes> prepagoClientesList;
 
     public ComercialProductos() {
     }
@@ -100,39 +100,39 @@ public class ComercialProductos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<RecargaRecargas> getRecargaRecargasCollection() {
-        return recargaRecargasCollection;
+    public List<RecargaRecargas> getRecargaRecargasList() {
+        return recargaRecargasList;
     }
 
-    public void setRecargaRecargasCollection(Collection<RecargaRecargas> recargaRecargasCollection) {
-        this.recargaRecargasCollection = recargaRecargasCollection;
-    }
-
-    @XmlTransient
-    public Collection<SaldosHistoria> getSaldosHistoriaCollection() {
-        return saldosHistoriaCollection;
-    }
-
-    public void setSaldosHistoriaCollection(Collection<SaldosHistoria> saldosHistoriaCollection) {
-        this.saldosHistoriaCollection = saldosHistoriaCollection;
+    public void setRecargaRecargasList(List<RecargaRecargas> recargaRecargasList) {
+        this.recargaRecargasList = recargaRecargasList;
     }
 
     @XmlTransient
-    public Collection<PrepagoEventos> getPrepagoEventosCollection() {
-        return prepagoEventosCollection;
+    public List<SaldosHistoria> getSaldosHistoriaList() {
+        return saldosHistoriaList;
     }
 
-    public void setPrepagoEventosCollection(Collection<PrepagoEventos> prepagoEventosCollection) {
-        this.prepagoEventosCollection = prepagoEventosCollection;
+    public void setSaldosHistoriaList(List<SaldosHistoria> saldosHistoriaList) {
+        this.saldosHistoriaList = saldosHistoriaList;
     }
 
     @XmlTransient
-    public Collection<AmyMedidores> getAmyMedidoresCollection() {
-        return amyMedidoresCollection;
+    public List<PrepagoEventos> getPrepagoEventosList() {
+        return prepagoEventosList;
     }
 
-    public void setAmyMedidoresCollection(Collection<AmyMedidores> amyMedidoresCollection) {
-        this.amyMedidoresCollection = amyMedidoresCollection;
+    public void setPrepagoEventosList(List<PrepagoEventos> prepagoEventosList) {
+        this.prepagoEventosList = prepagoEventosList;
+    }
+
+    @XmlTransient
+    public List<AmyMedidores> getAmyMedidoresList() {
+        return amyMedidoresList;
+    }
+
+    public void setAmyMedidoresList(List<AmyMedidores> amyMedidoresList) {
+        this.amyMedidoresList = amyMedidoresList;
     }
 
     public ComercialContratos getFkComercialContratos() {
@@ -144,12 +144,12 @@ public class ComercialProductos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<PrepagoClientes> getPrepagoClientesCollection() {
-        return prepagoClientesCollection;
+    public List<PrepagoClientes> getPrepagoClientesList() {
+        return prepagoClientesList;
     }
 
-    public void setPrepagoClientesCollection(Collection<PrepagoClientes> prepagoClientesCollection) {
-        this.prepagoClientesCollection = prepagoClientesCollection;
+    public void setPrepagoClientesList(List<PrepagoClientes> prepagoClientesList) {
+        this.prepagoClientesList = prepagoClientesList;
     }
 
     @Override

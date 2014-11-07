@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -60,7 +60,7 @@ public class AtributosTiposMedidores implements Serializable {
     @ManyToOne(optional = false)
     private AtributosFabricantes fkAtributosFabricantes;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAtributosTiposMedidores")
-    private Collection<AmyMedidores> amyMedidoresCollection;
+    private List<AmyMedidores> amyMedidoresList;
 
     public AtributosTiposMedidores() {
     }
@@ -116,12 +116,12 @@ public class AtributosTiposMedidores implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AmyMedidores> getAmyMedidoresCollection() {
-        return amyMedidoresCollection;
+    public List<AmyMedidores> getAmyMedidoresList() {
+        return amyMedidoresList;
     }
 
-    public void setAmyMedidoresCollection(Collection<AmyMedidores> amyMedidoresCollection) {
-        this.amyMedidoresCollection = amyMedidoresCollection;
+    public void setAmyMedidoresList(List<AmyMedidores> amyMedidoresList) {
+        this.amyMedidoresList = amyMedidoresList;
     }
 
     @Override

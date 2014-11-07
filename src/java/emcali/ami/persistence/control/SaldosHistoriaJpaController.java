@@ -61,15 +61,15 @@ public class SaldosHistoriaJpaController implements Serializable {
             }
             em.persist(saldosHistoria);
             if (fkSaldosTipoSaldo != null) {
-                fkSaldosTipoSaldo.getSaldosHistoriaCollection().add(saldosHistoria);
+                fkSaldosTipoSaldo.getSaldosHistoriaList().add(saldosHistoria);
                 fkSaldosTipoSaldo = em.merge(fkSaldosTipoSaldo);
             }
             if (fkRecargaTipoRecarga != null) {
-                fkRecargaTipoRecarga.getSaldosHistoriaCollection().add(saldosHistoria);
+                fkRecargaTipoRecarga.getSaldosHistoriaList().add(saldosHistoria);
                 fkRecargaTipoRecarga = em.merge(fkRecargaTipoRecarga);
             }
             if (fkComercialProductos != null) {
-                fkComercialProductos.getSaldosHistoriaCollection().add(saldosHistoria);
+                fkComercialProductos.getSaldosHistoriaList().add(saldosHistoria);
                 fkComercialProductos = em.merge(fkComercialProductos);
             }
             utx.commit();
@@ -116,27 +116,27 @@ public class SaldosHistoriaJpaController implements Serializable {
             }
             saldosHistoria = em.merge(saldosHistoria);
             if (fkSaldosTipoSaldoOld != null && !fkSaldosTipoSaldoOld.equals(fkSaldosTipoSaldoNew)) {
-                fkSaldosTipoSaldoOld.getSaldosHistoriaCollection().remove(saldosHistoria);
+                fkSaldosTipoSaldoOld.getSaldosHistoriaList().remove(saldosHistoria);
                 fkSaldosTipoSaldoOld = em.merge(fkSaldosTipoSaldoOld);
             }
             if (fkSaldosTipoSaldoNew != null && !fkSaldosTipoSaldoNew.equals(fkSaldosTipoSaldoOld)) {
-                fkSaldosTipoSaldoNew.getSaldosHistoriaCollection().add(saldosHistoria);
+                fkSaldosTipoSaldoNew.getSaldosHistoriaList().add(saldosHistoria);
                 fkSaldosTipoSaldoNew = em.merge(fkSaldosTipoSaldoNew);
             }
             if (fkRecargaTipoRecargaOld != null && !fkRecargaTipoRecargaOld.equals(fkRecargaTipoRecargaNew)) {
-                fkRecargaTipoRecargaOld.getSaldosHistoriaCollection().remove(saldosHistoria);
+                fkRecargaTipoRecargaOld.getSaldosHistoriaList().remove(saldosHistoria);
                 fkRecargaTipoRecargaOld = em.merge(fkRecargaTipoRecargaOld);
             }
             if (fkRecargaTipoRecargaNew != null && !fkRecargaTipoRecargaNew.equals(fkRecargaTipoRecargaOld)) {
-                fkRecargaTipoRecargaNew.getSaldosHistoriaCollection().add(saldosHistoria);
+                fkRecargaTipoRecargaNew.getSaldosHistoriaList().add(saldosHistoria);
                 fkRecargaTipoRecargaNew = em.merge(fkRecargaTipoRecargaNew);
             }
             if (fkComercialProductosOld != null && !fkComercialProductosOld.equals(fkComercialProductosNew)) {
-                fkComercialProductosOld.getSaldosHistoriaCollection().remove(saldosHistoria);
+                fkComercialProductosOld.getSaldosHistoriaList().remove(saldosHistoria);
                 fkComercialProductosOld = em.merge(fkComercialProductosOld);
             }
             if (fkComercialProductosNew != null && !fkComercialProductosNew.equals(fkComercialProductosOld)) {
-                fkComercialProductosNew.getSaldosHistoriaCollection().add(saldosHistoria);
+                fkComercialProductosNew.getSaldosHistoriaList().add(saldosHistoria);
                 fkComercialProductosNew = em.merge(fkComercialProductosNew);
             }
             utx.commit();
@@ -175,17 +175,17 @@ public class SaldosHistoriaJpaController implements Serializable {
             }
             SaldosTipoSaldo fkSaldosTipoSaldo = saldosHistoria.getFkSaldosTipoSaldo();
             if (fkSaldosTipoSaldo != null) {
-                fkSaldosTipoSaldo.getSaldosHistoriaCollection().remove(saldosHistoria);
+                fkSaldosTipoSaldo.getSaldosHistoriaList().remove(saldosHistoria);
                 fkSaldosTipoSaldo = em.merge(fkSaldosTipoSaldo);
             }
             RecargaTipoRecarga fkRecargaTipoRecarga = saldosHistoria.getFkRecargaTipoRecarga();
             if (fkRecargaTipoRecarga != null) {
-                fkRecargaTipoRecarga.getSaldosHistoriaCollection().remove(saldosHistoria);
+                fkRecargaTipoRecarga.getSaldosHistoriaList().remove(saldosHistoria);
                 fkRecargaTipoRecarga = em.merge(fkRecargaTipoRecarga);
             }
             ComercialProductos fkComercialProductos = saldosHistoria.getFkComercialProductos();
             if (fkComercialProductos != null) {
-                fkComercialProductos.getSaldosHistoriaCollection().remove(saldosHistoria);
+                fkComercialProductos.getSaldosHistoriaList().remove(saldosHistoria);
                 fkComercialProductos = em.merge(fkComercialProductos);
             }
             em.remove(saldosHistoria);

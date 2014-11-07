@@ -55,11 +55,11 @@ public class AtrFncsActvCajasJpaController implements Serializable {
             }
             em.persist(atrFncsActvCajas);
             if (fkAtributosFuncionCajas != null) {
-                fkAtributosFuncionCajas.getAtrFncsActvCajasCollection().add(atrFncsActvCajas);
+                fkAtributosFuncionCajas.getAtrFncsActvCajasList().add(atrFncsActvCajas);
                 fkAtributosFuncionCajas = em.merge(fkAtributosFuncionCajas);
             }
             if (fkAmyCajas != null) {
-                fkAmyCajas.getAtrFncsActvCajasCollection().add(atrFncsActvCajas);
+                fkAmyCajas.getAtrFncsActvCajasList().add(atrFncsActvCajas);
                 fkAmyCajas = em.merge(fkAmyCajas);
             }
             utx.commit();
@@ -100,19 +100,19 @@ public class AtrFncsActvCajasJpaController implements Serializable {
             }
             atrFncsActvCajas = em.merge(atrFncsActvCajas);
             if (fkAtributosFuncionCajasOld != null && !fkAtributosFuncionCajasOld.equals(fkAtributosFuncionCajasNew)) {
-                fkAtributosFuncionCajasOld.getAtrFncsActvCajasCollection().remove(atrFncsActvCajas);
+                fkAtributosFuncionCajasOld.getAtrFncsActvCajasList().remove(atrFncsActvCajas);
                 fkAtributosFuncionCajasOld = em.merge(fkAtributosFuncionCajasOld);
             }
             if (fkAtributosFuncionCajasNew != null && !fkAtributosFuncionCajasNew.equals(fkAtributosFuncionCajasOld)) {
-                fkAtributosFuncionCajasNew.getAtrFncsActvCajasCollection().add(atrFncsActvCajas);
+                fkAtributosFuncionCajasNew.getAtrFncsActvCajasList().add(atrFncsActvCajas);
                 fkAtributosFuncionCajasNew = em.merge(fkAtributosFuncionCajasNew);
             }
             if (fkAmyCajasOld != null && !fkAmyCajasOld.equals(fkAmyCajasNew)) {
-                fkAmyCajasOld.getAtrFncsActvCajasCollection().remove(atrFncsActvCajas);
+                fkAmyCajasOld.getAtrFncsActvCajasList().remove(atrFncsActvCajas);
                 fkAmyCajasOld = em.merge(fkAmyCajasOld);
             }
             if (fkAmyCajasNew != null && !fkAmyCajasNew.equals(fkAmyCajasOld)) {
-                fkAmyCajasNew.getAtrFncsActvCajasCollection().add(atrFncsActvCajas);
+                fkAmyCajasNew.getAtrFncsActvCajasList().add(atrFncsActvCajas);
                 fkAmyCajasNew = em.merge(fkAmyCajasNew);
             }
             utx.commit();
@@ -151,12 +151,12 @@ public class AtrFncsActvCajasJpaController implements Serializable {
             }
             AtributosFuncionCajas fkAtributosFuncionCajas = atrFncsActvCajas.getFkAtributosFuncionCajas();
             if (fkAtributosFuncionCajas != null) {
-                fkAtributosFuncionCajas.getAtrFncsActvCajasCollection().remove(atrFncsActvCajas);
+                fkAtributosFuncionCajas.getAtrFncsActvCajasList().remove(atrFncsActvCajas);
                 fkAtributosFuncionCajas = em.merge(fkAtributosFuncionCajas);
             }
             AmyCajas fkAmyCajas = atrFncsActvCajas.getFkAmyCajas();
             if (fkAmyCajas != null) {
-                fkAmyCajas.getAtrFncsActvCajasCollection().remove(atrFncsActvCajas);
+                fkAmyCajas.getAtrFncsActvCajasList().remove(atrFncsActvCajas);
                 fkAmyCajas = em.merge(fkAmyCajas);
             }
             em.remove(atrFncsActvCajas);

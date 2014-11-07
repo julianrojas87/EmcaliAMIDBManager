@@ -67,19 +67,19 @@ public class AmyLecturasJpaController implements Serializable {
             }
             em.persist(amyLecturas);
             if (fkAmyTipolecturas != null) {
-                fkAmyTipolecturas.getAmyLecturasCollection().add(amyLecturas);
+                fkAmyTipolecturas.getAmyLecturasList().add(amyLecturas);
                 fkAmyTipolecturas = em.merge(fkAmyTipolecturas);
             }
             if (fkAmyMedidores != null) {
-                fkAmyMedidores.getAmyLecturasCollection().add(amyLecturas);
+                fkAmyMedidores.getAmyLecturasList().add(amyLecturas);
                 fkAmyMedidores = em.merge(fkAmyMedidores);
             }
             if (fkAmyInterval != null) {
-                fkAmyInterval.getAmyLecturasCollection().add(amyLecturas);
+                fkAmyInterval.getAmyLecturasList().add(amyLecturas);
                 fkAmyInterval = em.merge(fkAmyInterval);
             }
             if (fkAmyCanal != null) {
-                fkAmyCanal.getAmyLecturasCollection().add(amyLecturas);
+                fkAmyCanal.getAmyLecturasList().add(amyLecturas);
                 fkAmyCanal = em.merge(fkAmyCanal);
             }
             utx.commit();
@@ -132,35 +132,35 @@ public class AmyLecturasJpaController implements Serializable {
             }
             amyLecturas = em.merge(amyLecturas);
             if (fkAmyTipolecturasOld != null && !fkAmyTipolecturasOld.equals(fkAmyTipolecturasNew)) {
-                fkAmyTipolecturasOld.getAmyLecturasCollection().remove(amyLecturas);
+                fkAmyTipolecturasOld.getAmyLecturasList().remove(amyLecturas);
                 fkAmyTipolecturasOld = em.merge(fkAmyTipolecturasOld);
             }
             if (fkAmyTipolecturasNew != null && !fkAmyTipolecturasNew.equals(fkAmyTipolecturasOld)) {
-                fkAmyTipolecturasNew.getAmyLecturasCollection().add(amyLecturas);
+                fkAmyTipolecturasNew.getAmyLecturasList().add(amyLecturas);
                 fkAmyTipolecturasNew = em.merge(fkAmyTipolecturasNew);
             }
             if (fkAmyMedidoresOld != null && !fkAmyMedidoresOld.equals(fkAmyMedidoresNew)) {
-                fkAmyMedidoresOld.getAmyLecturasCollection().remove(amyLecturas);
+                fkAmyMedidoresOld.getAmyLecturasList().remove(amyLecturas);
                 fkAmyMedidoresOld = em.merge(fkAmyMedidoresOld);
             }
             if (fkAmyMedidoresNew != null && !fkAmyMedidoresNew.equals(fkAmyMedidoresOld)) {
-                fkAmyMedidoresNew.getAmyLecturasCollection().add(amyLecturas);
+                fkAmyMedidoresNew.getAmyLecturasList().add(amyLecturas);
                 fkAmyMedidoresNew = em.merge(fkAmyMedidoresNew);
             }
             if (fkAmyIntervalOld != null && !fkAmyIntervalOld.equals(fkAmyIntervalNew)) {
-                fkAmyIntervalOld.getAmyLecturasCollection().remove(amyLecturas);
+                fkAmyIntervalOld.getAmyLecturasList().remove(amyLecturas);
                 fkAmyIntervalOld = em.merge(fkAmyIntervalOld);
             }
             if (fkAmyIntervalNew != null && !fkAmyIntervalNew.equals(fkAmyIntervalOld)) {
-                fkAmyIntervalNew.getAmyLecturasCollection().add(amyLecturas);
+                fkAmyIntervalNew.getAmyLecturasList().add(amyLecturas);
                 fkAmyIntervalNew = em.merge(fkAmyIntervalNew);
             }
             if (fkAmyCanalOld != null && !fkAmyCanalOld.equals(fkAmyCanalNew)) {
-                fkAmyCanalOld.getAmyLecturasCollection().remove(amyLecturas);
+                fkAmyCanalOld.getAmyLecturasList().remove(amyLecturas);
                 fkAmyCanalOld = em.merge(fkAmyCanalOld);
             }
             if (fkAmyCanalNew != null && !fkAmyCanalNew.equals(fkAmyCanalOld)) {
-                fkAmyCanalNew.getAmyLecturasCollection().add(amyLecturas);
+                fkAmyCanalNew.getAmyLecturasList().add(amyLecturas);
                 fkAmyCanalNew = em.merge(fkAmyCanalNew);
             }
             utx.commit();
@@ -199,22 +199,22 @@ public class AmyLecturasJpaController implements Serializable {
             }
             AmyTipolecturas fkAmyTipolecturas = amyLecturas.getFkAmyTipolecturas();
             if (fkAmyTipolecturas != null) {
-                fkAmyTipolecturas.getAmyLecturasCollection().remove(amyLecturas);
+                fkAmyTipolecturas.getAmyLecturasList().remove(amyLecturas);
                 fkAmyTipolecturas = em.merge(fkAmyTipolecturas);
             }
             AmyMedidores fkAmyMedidores = amyLecturas.getFkAmyMedidores();
             if (fkAmyMedidores != null) {
-                fkAmyMedidores.getAmyLecturasCollection().remove(amyLecturas);
+                fkAmyMedidores.getAmyLecturasList().remove(amyLecturas);
                 fkAmyMedidores = em.merge(fkAmyMedidores);
             }
             AmyInterval fkAmyInterval = amyLecturas.getFkAmyInterval();
             if (fkAmyInterval != null) {
-                fkAmyInterval.getAmyLecturasCollection().remove(amyLecturas);
+                fkAmyInterval.getAmyLecturasList().remove(amyLecturas);
                 fkAmyInterval = em.merge(fkAmyInterval);
             }
             AmyCanal fkAmyCanal = amyLecturas.getFkAmyCanal();
             if (fkAmyCanal != null) {
-                fkAmyCanal.getAmyLecturasCollection().remove(amyLecturas);
+                fkAmyCanal.getAmyLecturasList().remove(amyLecturas);
                 fkAmyCanal = em.merge(fkAmyCanal);
             }
             em.remove(amyLecturas);

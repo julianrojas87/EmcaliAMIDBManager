@@ -6,13 +6,15 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -35,9 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "GestionPerfiles.findAll", query = "SELECT g FROM GestionPerfiles g"),
     @NamedQuery(name = "GestionPerfiles.findByIdPerfiles", query = "SELECT g FROM GestionPerfiles g WHERE g.idPerfiles = :idPerfiles"),
     @NamedQuery(name = "GestionPerfiles.findByNombrePerfiles", query = "SELECT g FROM GestionPerfiles g WHERE g.nombrePerfiles = :nombrePerfiles"),
-    @NamedQuery(name = "GestionPerfiles.findByCreadoPor", query = "SELECT g FROM GestionPerfiles g WHERE g.creadoPor = :creadoPor"),
     @NamedQuery(name = "GestionPerfiles.findByFechaCreacion", query = "SELECT g FROM GestionPerfiles g WHERE g.fechaCreacion = :fechaCreacion"),
-    @NamedQuery(name = "GestionPerfiles.findByModificadoPor", query = "SELECT g FROM GestionPerfiles g WHERE g.modificadoPor = :modificadoPor"),
     @NamedQuery(name = "GestionPerfiles.findByFechaModificacion", query = "SELECT g FROM GestionPerfiles g WHERE g.fechaModificacion = :fechaModificacion"),
     @NamedQuery(name = "GestionPerfiles.findByObservaciones", query = "SELECT g FROM GestionPerfiles g WHERE g.observaciones = :observaciones")})
 public class GestionPerfiles implements Serializable {
@@ -54,17 +54,9 @@ public class GestionPerfiles implements Serializable {
     private String nombrePerfiles;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CREADO_POR")
-    private long creadoPor;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHA_CREACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "MODIFICADO_POR")
-    private long modificadoPor;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_MODIFICACION")
@@ -73,10 +65,16 @@ public class GestionPerfiles implements Serializable {
     @Size(max = 45)
     @Column(name = "OBSERVACIONES")
     private String observaciones;
+    @JoinColumn(name = "MODIFICADO_POR", referencedColumnName = "ID_FUNCIONARIOS")
+    @ManyToOne(optional = false)
+    private GestionFuncionarios modificadoPor;
+    @JoinColumn(name = "CREADO_POR", referencedColumnName = "ID_FUNCIONARIOS")
+    @ManyToOne(optional = false)
+    private GestionFuncionarios creadoPor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkGestionPerfiles")
-    private Collection<GestionUsuarios> gestionUsuariosCollection;
+    private List<GestionUsuarios> gestionUsuariosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkGestionPerfiles")
-    private Collection<GestionPerfilesMenu> gestionPerfilesMenuCollection;
+    private List<GestionPerfilesMenu> gestionPerfilesMenuList;
 
     public GestionPerfiles() {
     }
@@ -85,12 +83,10 @@ public class GestionPerfiles implements Serializable {
         this.idPerfiles = idPerfiles;
     }
 
-    public GestionPerfiles(Long idPerfiles, String nombrePerfiles, long creadoPor, Date fechaCreacion, long modificadoPor, Date fechaModificacion) {
+    public GestionPerfiles(Long idPerfiles, String nombrePerfiles, Date fechaCreacion, Date fechaModificacion) {
         this.idPerfiles = idPerfiles;
         this.nombrePerfiles = nombrePerfiles;
-        this.creadoPor = creadoPor;
         this.fechaCreacion = fechaCreacion;
-        this.modificadoPor = modificadoPor;
         this.fechaModificacion = fechaModificacion;
     }
 
@@ -110,28 +106,12 @@ public class GestionPerfiles implements Serializable {
         this.nombrePerfiles = nombrePerfiles;
     }
 
-    public long getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(long creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
 
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
-    }
-
-    public long getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(long modificadoPor) {
-        this.modificadoPor = modificadoPor;
     }
 
     public Date getFechaModificacion() {
@@ -150,22 +130,38 @@ public class GestionPerfiles implements Serializable {
         this.observaciones = observaciones;
     }
 
+    public GestionFuncionarios getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(GestionFuncionarios modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    public GestionFuncionarios getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(GestionFuncionarios creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
     @XmlTransient
-    public Collection<GestionUsuarios> getGestionUsuariosCollection() {
-        return gestionUsuariosCollection;
+    public List<GestionUsuarios> getGestionUsuariosList() {
+        return gestionUsuariosList;
     }
 
-    public void setGestionUsuariosCollection(Collection<GestionUsuarios> gestionUsuariosCollection) {
-        this.gestionUsuariosCollection = gestionUsuariosCollection;
+    public void setGestionUsuariosList(List<GestionUsuarios> gestionUsuariosList) {
+        this.gestionUsuariosList = gestionUsuariosList;
     }
 
     @XmlTransient
-    public Collection<GestionPerfilesMenu> getGestionPerfilesMenuCollection() {
-        return gestionPerfilesMenuCollection;
+    public List<GestionPerfilesMenu> getGestionPerfilesMenuList() {
+        return gestionPerfilesMenuList;
     }
 
-    public void setGestionPerfilesMenuCollection(Collection<GestionPerfilesMenu> gestionPerfilesMenuCollection) {
-        this.gestionPerfilesMenuCollection = gestionPerfilesMenuCollection;
+    public void setGestionPerfilesMenuList(List<GestionPerfilesMenu> gestionPerfilesMenuList) {
+        this.gestionPerfilesMenuList = gestionPerfilesMenuList;
     }
 
     @Override

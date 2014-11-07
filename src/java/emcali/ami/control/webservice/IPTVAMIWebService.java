@@ -13,10 +13,10 @@ import emcali.ami.persistence.entity.ComercialClientes;
 import emcali.ami.persistence.entity.TelcoInfo;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -98,34 +98,40 @@ public class IPTVAMIWebService {
         Date today = cal.getTime();
         cal.add(Calendar.DAY_OF_MONTH, -11);
         Date tendaysago = cal.getTime();
-        
+
         String telcoid = (String) req.get("suscriptor");
-        JSONObject data = new JSONObject();
-        JSONArray consumos = new JSONArray();
-        
         TelcoInfoJpaController tijc = new TelcoInfoJpaController(utx, emf);
         TelcoInfo ti = tijc.findTelcoInfo(Long.parseLong(telcoid));
-        AmyMedidores med = ti.getFkAmyMedidores();
-        ComercialClientes cc = ti.getFkComercialClientes();
-        ArrayList<AmyConsumos> ac = new ArrayList<>(med.getAmyConsumosCollection());
-        
-        data.put("id_cliente", cc.getIdClientes());
-        data.put("nombre_cliente", cc.getNombreClientes());
-        data.put("direccion", cc.getDireccion());
-        data.put("serial_medidor", med.getSerial());
-        
-        for (AmyConsumos amic : ac) {
-            if (amic.getFkAmyInterval().getIntervalo().equals("Dia")) {
-                Date fechacons = amic.getFechaConsumo();
-                if ((fechacons.compareTo(tendaysago) > 0) && fechacons.before(today)) {
-                    JSONObject consumo = new JSONObject();
-                    consumo.put("consumo", amic.getConsumo());
-                    consumo.put("fecha", dateformat.format(amic.getFechaConsumo()));
-                    consumos.add(consumo);
+
+        try {
+            JSONObject data = new JSONObject();
+            JSONArray consumos = new JSONArray();
+            AmyMedidores med = ti.getFkAmyMedidores();
+            ComercialClientes cc = ti.getFkComercialClientes();
+            List<AmyConsumos> ac = med.getAmyConsumosList();
+
+            data.put("id_cliente", cc.getIdClientes());
+            data.put("nombre_cliente", cc.getNombreClientes());
+            data.put("direccion", cc.getDireccion());
+            data.put("serial_medidor", med.getSerial());
+
+            for (AmyConsumos amic : ac) {
+                if (amic.getFkAmyInterval().getIntervalo().equals("Dia")) {
+                    Date fechacons = amic.getFechaConsumo();
+                    if ((fechacons.compareTo(tendaysago) > 0) && fechacons.before(today)) {
+                        JSONObject consumo = new JSONObject();
+                        consumo.put("consumo", amic.getConsumo());
+                        consumo.put("fecha", dateformat.format(amic.getFechaConsumo()));
+                        consumos.add(consumo);
+                    }
                 }
             }
+            resp.put("data", consumos);
+        } catch (NullPointerException ex) {
+            resp.put("message", "Invalid Telco user");
+            resp.put("type", "error");
         }
-        resp.put("data", consumos);
+
         return resp;
     }
 }

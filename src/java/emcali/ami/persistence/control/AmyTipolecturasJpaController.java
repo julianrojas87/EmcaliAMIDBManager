@@ -16,11 +16,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import emcali.ami.persistence.entity.AmyLecturas;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import emcali.ami.persistence.entity.ConsumosConsumos;
 import emcali.ami.persistence.entity.AmyConsumos;
 import emcali.ami.persistence.entity.AmyTipolecturas;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
@@ -43,63 +42,63 @@ public class AmyTipolecturasJpaController implements Serializable {
     }
 
     public void create(AmyTipolecturas amyTipolecturas) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (amyTipolecturas.getAmyLecturasCollection() == null) {
-            amyTipolecturas.setAmyLecturasCollection(new ArrayList<AmyLecturas>());
+        if (amyTipolecturas.getAmyLecturasList() == null) {
+            amyTipolecturas.setAmyLecturasList(new ArrayList<AmyLecturas>());
         }
-        if (amyTipolecturas.getConsumosConsumosCollection() == null) {
-            amyTipolecturas.setConsumosConsumosCollection(new ArrayList<ConsumosConsumos>());
+        if (amyTipolecturas.getConsumosConsumosList() == null) {
+            amyTipolecturas.setConsumosConsumosList(new ArrayList<ConsumosConsumos>());
         }
-        if (amyTipolecturas.getAmyConsumosCollection() == null) {
-            amyTipolecturas.setAmyConsumosCollection(new ArrayList<AmyConsumos>());
+        if (amyTipolecturas.getAmyConsumosList() == null) {
+            amyTipolecturas.setAmyConsumosList(new ArrayList<AmyConsumos>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<AmyLecturas> attachedAmyLecturasCollection = new ArrayList<AmyLecturas>();
-            for (AmyLecturas amyLecturasCollectionAmyLecturasToAttach : amyTipolecturas.getAmyLecturasCollection()) {
-                amyLecturasCollectionAmyLecturasToAttach = em.getReference(amyLecturasCollectionAmyLecturasToAttach.getClass(), amyLecturasCollectionAmyLecturasToAttach.getIdLecturas());
-                attachedAmyLecturasCollection.add(amyLecturasCollectionAmyLecturasToAttach);
+            List<AmyLecturas> attachedAmyLecturasList = new ArrayList<AmyLecturas>();
+            for (AmyLecturas amyLecturasListAmyLecturasToAttach : amyTipolecturas.getAmyLecturasList()) {
+                amyLecturasListAmyLecturasToAttach = em.getReference(amyLecturasListAmyLecturasToAttach.getClass(), amyLecturasListAmyLecturasToAttach.getIdLecturas());
+                attachedAmyLecturasList.add(amyLecturasListAmyLecturasToAttach);
             }
-            amyTipolecturas.setAmyLecturasCollection(attachedAmyLecturasCollection);
-            Collection<ConsumosConsumos> attachedConsumosConsumosCollection = new ArrayList<ConsumosConsumos>();
-            for (ConsumosConsumos consumosConsumosCollectionConsumosConsumosToAttach : amyTipolecturas.getConsumosConsumosCollection()) {
-                consumosConsumosCollectionConsumosConsumosToAttach = em.getReference(consumosConsumosCollectionConsumosConsumosToAttach.getClass(), consumosConsumosCollectionConsumosConsumosToAttach.getIdConsumo());
-                attachedConsumosConsumosCollection.add(consumosConsumosCollectionConsumosConsumosToAttach);
+            amyTipolecturas.setAmyLecturasList(attachedAmyLecturasList);
+            List<ConsumosConsumos> attachedConsumosConsumosList = new ArrayList<ConsumosConsumos>();
+            for (ConsumosConsumos consumosConsumosListConsumosConsumosToAttach : amyTipolecturas.getConsumosConsumosList()) {
+                consumosConsumosListConsumosConsumosToAttach = em.getReference(consumosConsumosListConsumosConsumosToAttach.getClass(), consumosConsumosListConsumosConsumosToAttach.getIdConsumo());
+                attachedConsumosConsumosList.add(consumosConsumosListConsumosConsumosToAttach);
             }
-            amyTipolecturas.setConsumosConsumosCollection(attachedConsumosConsumosCollection);
-            Collection<AmyConsumos> attachedAmyConsumosCollection = new ArrayList<AmyConsumos>();
-            for (AmyConsumos amyConsumosCollectionAmyConsumosToAttach : amyTipolecturas.getAmyConsumosCollection()) {
-                amyConsumosCollectionAmyConsumosToAttach = em.getReference(amyConsumosCollectionAmyConsumosToAttach.getClass(), amyConsumosCollectionAmyConsumosToAttach.getIdConsumo());
-                attachedAmyConsumosCollection.add(amyConsumosCollectionAmyConsumosToAttach);
+            amyTipolecturas.setConsumosConsumosList(attachedConsumosConsumosList);
+            List<AmyConsumos> attachedAmyConsumosList = new ArrayList<AmyConsumos>();
+            for (AmyConsumos amyConsumosListAmyConsumosToAttach : amyTipolecturas.getAmyConsumosList()) {
+                amyConsumosListAmyConsumosToAttach = em.getReference(amyConsumosListAmyConsumosToAttach.getClass(), amyConsumosListAmyConsumosToAttach.getIdConsumo());
+                attachedAmyConsumosList.add(amyConsumosListAmyConsumosToAttach);
             }
-            amyTipolecturas.setAmyConsumosCollection(attachedAmyConsumosCollection);
+            amyTipolecturas.setAmyConsumosList(attachedAmyConsumosList);
             em.persist(amyTipolecturas);
-            for (AmyLecturas amyLecturasCollectionAmyLecturas : amyTipolecturas.getAmyLecturasCollection()) {
-                AmyTipolecturas oldFkAmyTipolecturasOfAmyLecturasCollectionAmyLecturas = amyLecturasCollectionAmyLecturas.getFkAmyTipolecturas();
-                amyLecturasCollectionAmyLecturas.setFkAmyTipolecturas(amyTipolecturas);
-                amyLecturasCollectionAmyLecturas = em.merge(amyLecturasCollectionAmyLecturas);
-                if (oldFkAmyTipolecturasOfAmyLecturasCollectionAmyLecturas != null) {
-                    oldFkAmyTipolecturasOfAmyLecturasCollectionAmyLecturas.getAmyLecturasCollection().remove(amyLecturasCollectionAmyLecturas);
-                    oldFkAmyTipolecturasOfAmyLecturasCollectionAmyLecturas = em.merge(oldFkAmyTipolecturasOfAmyLecturasCollectionAmyLecturas);
+            for (AmyLecturas amyLecturasListAmyLecturas : amyTipolecturas.getAmyLecturasList()) {
+                AmyTipolecturas oldFkAmyTipolecturasOfAmyLecturasListAmyLecturas = amyLecturasListAmyLecturas.getFkAmyTipolecturas();
+                amyLecturasListAmyLecturas.setFkAmyTipolecturas(amyTipolecturas);
+                amyLecturasListAmyLecturas = em.merge(amyLecturasListAmyLecturas);
+                if (oldFkAmyTipolecturasOfAmyLecturasListAmyLecturas != null) {
+                    oldFkAmyTipolecturasOfAmyLecturasListAmyLecturas.getAmyLecturasList().remove(amyLecturasListAmyLecturas);
+                    oldFkAmyTipolecturasOfAmyLecturasListAmyLecturas = em.merge(oldFkAmyTipolecturasOfAmyLecturasListAmyLecturas);
                 }
             }
-            for (ConsumosConsumos consumosConsumosCollectionConsumosConsumos : amyTipolecturas.getConsumosConsumosCollection()) {
-                AmyTipolecturas oldFkAmyTipolecturasOfConsumosConsumosCollectionConsumosConsumos = consumosConsumosCollectionConsumosConsumos.getFkAmyTipolecturas();
-                consumosConsumosCollectionConsumosConsumos.setFkAmyTipolecturas(amyTipolecturas);
-                consumosConsumosCollectionConsumosConsumos = em.merge(consumosConsumosCollectionConsumosConsumos);
-                if (oldFkAmyTipolecturasOfConsumosConsumosCollectionConsumosConsumos != null) {
-                    oldFkAmyTipolecturasOfConsumosConsumosCollectionConsumosConsumos.getConsumosConsumosCollection().remove(consumosConsumosCollectionConsumosConsumos);
-                    oldFkAmyTipolecturasOfConsumosConsumosCollectionConsumosConsumos = em.merge(oldFkAmyTipolecturasOfConsumosConsumosCollectionConsumosConsumos);
+            for (ConsumosConsumos consumosConsumosListConsumosConsumos : amyTipolecturas.getConsumosConsumosList()) {
+                AmyTipolecturas oldFkAmyTipolecturasOfConsumosConsumosListConsumosConsumos = consumosConsumosListConsumosConsumos.getFkAmyTipolecturas();
+                consumosConsumosListConsumosConsumos.setFkAmyTipolecturas(amyTipolecturas);
+                consumosConsumosListConsumosConsumos = em.merge(consumosConsumosListConsumosConsumos);
+                if (oldFkAmyTipolecturasOfConsumosConsumosListConsumosConsumos != null) {
+                    oldFkAmyTipolecturasOfConsumosConsumosListConsumosConsumos.getConsumosConsumosList().remove(consumosConsumosListConsumosConsumos);
+                    oldFkAmyTipolecturasOfConsumosConsumosListConsumosConsumos = em.merge(oldFkAmyTipolecturasOfConsumosConsumosListConsumosConsumos);
                 }
             }
-            for (AmyConsumos amyConsumosCollectionAmyConsumos : amyTipolecturas.getAmyConsumosCollection()) {
-                AmyTipolecturas oldFkAmyTipolecturasOfAmyConsumosCollectionAmyConsumos = amyConsumosCollectionAmyConsumos.getFkAmyTipolecturas();
-                amyConsumosCollectionAmyConsumos.setFkAmyTipolecturas(amyTipolecturas);
-                amyConsumosCollectionAmyConsumos = em.merge(amyConsumosCollectionAmyConsumos);
-                if (oldFkAmyTipolecturasOfAmyConsumosCollectionAmyConsumos != null) {
-                    oldFkAmyTipolecturasOfAmyConsumosCollectionAmyConsumos.getAmyConsumosCollection().remove(amyConsumosCollectionAmyConsumos);
-                    oldFkAmyTipolecturasOfAmyConsumosCollectionAmyConsumos = em.merge(oldFkAmyTipolecturasOfAmyConsumosCollectionAmyConsumos);
+            for (AmyConsumos amyConsumosListAmyConsumos : amyTipolecturas.getAmyConsumosList()) {
+                AmyTipolecturas oldFkAmyTipolecturasOfAmyConsumosListAmyConsumos = amyConsumosListAmyConsumos.getFkAmyTipolecturas();
+                amyConsumosListAmyConsumos.setFkAmyTipolecturas(amyTipolecturas);
+                amyConsumosListAmyConsumos = em.merge(amyConsumosListAmyConsumos);
+                if (oldFkAmyTipolecturasOfAmyConsumosListAmyConsumos != null) {
+                    oldFkAmyTipolecturasOfAmyConsumosListAmyConsumos.getAmyConsumosList().remove(amyConsumosListAmyConsumos);
+                    oldFkAmyTipolecturasOfAmyConsumosListAmyConsumos = em.merge(oldFkAmyTipolecturasOfAmyConsumosListAmyConsumos);
                 }
             }
             utx.commit();
@@ -126,92 +125,92 @@ public class AmyTipolecturasJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             AmyTipolecturas persistentAmyTipolecturas = em.find(AmyTipolecturas.class, amyTipolecturas.getIdTipolectura());
-            Collection<AmyLecturas> amyLecturasCollectionOld = persistentAmyTipolecturas.getAmyLecturasCollection();
-            Collection<AmyLecturas> amyLecturasCollectionNew = amyTipolecturas.getAmyLecturasCollection();
-            Collection<ConsumosConsumos> consumosConsumosCollectionOld = persistentAmyTipolecturas.getConsumosConsumosCollection();
-            Collection<ConsumosConsumos> consumosConsumosCollectionNew = amyTipolecturas.getConsumosConsumosCollection();
-            Collection<AmyConsumos> amyConsumosCollectionOld = persistentAmyTipolecturas.getAmyConsumosCollection();
-            Collection<AmyConsumos> amyConsumosCollectionNew = amyTipolecturas.getAmyConsumosCollection();
+            List<AmyLecturas> amyLecturasListOld = persistentAmyTipolecturas.getAmyLecturasList();
+            List<AmyLecturas> amyLecturasListNew = amyTipolecturas.getAmyLecturasList();
+            List<ConsumosConsumos> consumosConsumosListOld = persistentAmyTipolecturas.getConsumosConsumosList();
+            List<ConsumosConsumos> consumosConsumosListNew = amyTipolecturas.getConsumosConsumosList();
+            List<AmyConsumos> amyConsumosListOld = persistentAmyTipolecturas.getAmyConsumosList();
+            List<AmyConsumos> amyConsumosListNew = amyTipolecturas.getAmyConsumosList();
             List<String> illegalOrphanMessages = null;
-            for (AmyLecturas amyLecturasCollectionOldAmyLecturas : amyLecturasCollectionOld) {
-                if (!amyLecturasCollectionNew.contains(amyLecturasCollectionOldAmyLecturas)) {
+            for (AmyLecturas amyLecturasListOldAmyLecturas : amyLecturasListOld) {
+                if (!amyLecturasListNew.contains(amyLecturasListOldAmyLecturas)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain AmyLecturas " + amyLecturasCollectionOldAmyLecturas + " since its fkAmyTipolecturas field is not nullable.");
+                    illegalOrphanMessages.add("You must retain AmyLecturas " + amyLecturasListOldAmyLecturas + " since its fkAmyTipolecturas field is not nullable.");
                 }
             }
-            for (ConsumosConsumos consumosConsumosCollectionOldConsumosConsumos : consumosConsumosCollectionOld) {
-                if (!consumosConsumosCollectionNew.contains(consumosConsumosCollectionOldConsumosConsumos)) {
+            for (ConsumosConsumos consumosConsumosListOldConsumosConsumos : consumosConsumosListOld) {
+                if (!consumosConsumosListNew.contains(consumosConsumosListOldConsumosConsumos)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain ConsumosConsumos " + consumosConsumosCollectionOldConsumosConsumos + " since its fkAmyTipolecturas field is not nullable.");
+                    illegalOrphanMessages.add("You must retain ConsumosConsumos " + consumosConsumosListOldConsumosConsumos + " since its fkAmyTipolecturas field is not nullable.");
                 }
             }
-            for (AmyConsumos amyConsumosCollectionOldAmyConsumos : amyConsumosCollectionOld) {
-                if (!amyConsumosCollectionNew.contains(amyConsumosCollectionOldAmyConsumos)) {
+            for (AmyConsumos amyConsumosListOldAmyConsumos : amyConsumosListOld) {
+                if (!amyConsumosListNew.contains(amyConsumosListOldAmyConsumos)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain AmyConsumos " + amyConsumosCollectionOldAmyConsumos + " since its fkAmyTipolecturas field is not nullable.");
+                    illegalOrphanMessages.add("You must retain AmyConsumos " + amyConsumosListOldAmyConsumos + " since its fkAmyTipolecturas field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<AmyLecturas> attachedAmyLecturasCollectionNew = new ArrayList<AmyLecturas>();
-            for (AmyLecturas amyLecturasCollectionNewAmyLecturasToAttach : amyLecturasCollectionNew) {
-                amyLecturasCollectionNewAmyLecturasToAttach = em.getReference(amyLecturasCollectionNewAmyLecturasToAttach.getClass(), amyLecturasCollectionNewAmyLecturasToAttach.getIdLecturas());
-                attachedAmyLecturasCollectionNew.add(amyLecturasCollectionNewAmyLecturasToAttach);
+            List<AmyLecturas> attachedAmyLecturasListNew = new ArrayList<AmyLecturas>();
+            for (AmyLecturas amyLecturasListNewAmyLecturasToAttach : amyLecturasListNew) {
+                amyLecturasListNewAmyLecturasToAttach = em.getReference(amyLecturasListNewAmyLecturasToAttach.getClass(), amyLecturasListNewAmyLecturasToAttach.getIdLecturas());
+                attachedAmyLecturasListNew.add(amyLecturasListNewAmyLecturasToAttach);
             }
-            amyLecturasCollectionNew = attachedAmyLecturasCollectionNew;
-            amyTipolecturas.setAmyLecturasCollection(amyLecturasCollectionNew);
-            Collection<ConsumosConsumos> attachedConsumosConsumosCollectionNew = new ArrayList<ConsumosConsumos>();
-            for (ConsumosConsumos consumosConsumosCollectionNewConsumosConsumosToAttach : consumosConsumosCollectionNew) {
-                consumosConsumosCollectionNewConsumosConsumosToAttach = em.getReference(consumosConsumosCollectionNewConsumosConsumosToAttach.getClass(), consumosConsumosCollectionNewConsumosConsumosToAttach.getIdConsumo());
-                attachedConsumosConsumosCollectionNew.add(consumosConsumosCollectionNewConsumosConsumosToAttach);
+            amyLecturasListNew = attachedAmyLecturasListNew;
+            amyTipolecturas.setAmyLecturasList(amyLecturasListNew);
+            List<ConsumosConsumos> attachedConsumosConsumosListNew = new ArrayList<ConsumosConsumos>();
+            for (ConsumosConsumos consumosConsumosListNewConsumosConsumosToAttach : consumosConsumosListNew) {
+                consumosConsumosListNewConsumosConsumosToAttach = em.getReference(consumosConsumosListNewConsumosConsumosToAttach.getClass(), consumosConsumosListNewConsumosConsumosToAttach.getIdConsumo());
+                attachedConsumosConsumosListNew.add(consumosConsumosListNewConsumosConsumosToAttach);
             }
-            consumosConsumosCollectionNew = attachedConsumosConsumosCollectionNew;
-            amyTipolecturas.setConsumosConsumosCollection(consumosConsumosCollectionNew);
-            Collection<AmyConsumos> attachedAmyConsumosCollectionNew = new ArrayList<AmyConsumos>();
-            for (AmyConsumos amyConsumosCollectionNewAmyConsumosToAttach : amyConsumosCollectionNew) {
-                amyConsumosCollectionNewAmyConsumosToAttach = em.getReference(amyConsumosCollectionNewAmyConsumosToAttach.getClass(), amyConsumosCollectionNewAmyConsumosToAttach.getIdConsumo());
-                attachedAmyConsumosCollectionNew.add(amyConsumosCollectionNewAmyConsumosToAttach);
+            consumosConsumosListNew = attachedConsumosConsumosListNew;
+            amyTipolecturas.setConsumosConsumosList(consumosConsumosListNew);
+            List<AmyConsumos> attachedAmyConsumosListNew = new ArrayList<AmyConsumos>();
+            for (AmyConsumos amyConsumosListNewAmyConsumosToAttach : amyConsumosListNew) {
+                amyConsumosListNewAmyConsumosToAttach = em.getReference(amyConsumosListNewAmyConsumosToAttach.getClass(), amyConsumosListNewAmyConsumosToAttach.getIdConsumo());
+                attachedAmyConsumosListNew.add(amyConsumosListNewAmyConsumosToAttach);
             }
-            amyConsumosCollectionNew = attachedAmyConsumosCollectionNew;
-            amyTipolecturas.setAmyConsumosCollection(amyConsumosCollectionNew);
+            amyConsumosListNew = attachedAmyConsumosListNew;
+            amyTipolecturas.setAmyConsumosList(amyConsumosListNew);
             amyTipolecturas = em.merge(amyTipolecturas);
-            for (AmyLecturas amyLecturasCollectionNewAmyLecturas : amyLecturasCollectionNew) {
-                if (!amyLecturasCollectionOld.contains(amyLecturasCollectionNewAmyLecturas)) {
-                    AmyTipolecturas oldFkAmyTipolecturasOfAmyLecturasCollectionNewAmyLecturas = amyLecturasCollectionNewAmyLecturas.getFkAmyTipolecturas();
-                    amyLecturasCollectionNewAmyLecturas.setFkAmyTipolecturas(amyTipolecturas);
-                    amyLecturasCollectionNewAmyLecturas = em.merge(amyLecturasCollectionNewAmyLecturas);
-                    if (oldFkAmyTipolecturasOfAmyLecturasCollectionNewAmyLecturas != null && !oldFkAmyTipolecturasOfAmyLecturasCollectionNewAmyLecturas.equals(amyTipolecturas)) {
-                        oldFkAmyTipolecturasOfAmyLecturasCollectionNewAmyLecturas.getAmyLecturasCollection().remove(amyLecturasCollectionNewAmyLecturas);
-                        oldFkAmyTipolecturasOfAmyLecturasCollectionNewAmyLecturas = em.merge(oldFkAmyTipolecturasOfAmyLecturasCollectionNewAmyLecturas);
+            for (AmyLecturas amyLecturasListNewAmyLecturas : amyLecturasListNew) {
+                if (!amyLecturasListOld.contains(amyLecturasListNewAmyLecturas)) {
+                    AmyTipolecturas oldFkAmyTipolecturasOfAmyLecturasListNewAmyLecturas = amyLecturasListNewAmyLecturas.getFkAmyTipolecturas();
+                    amyLecturasListNewAmyLecturas.setFkAmyTipolecturas(amyTipolecturas);
+                    amyLecturasListNewAmyLecturas = em.merge(amyLecturasListNewAmyLecturas);
+                    if (oldFkAmyTipolecturasOfAmyLecturasListNewAmyLecturas != null && !oldFkAmyTipolecturasOfAmyLecturasListNewAmyLecturas.equals(amyTipolecturas)) {
+                        oldFkAmyTipolecturasOfAmyLecturasListNewAmyLecturas.getAmyLecturasList().remove(amyLecturasListNewAmyLecturas);
+                        oldFkAmyTipolecturasOfAmyLecturasListNewAmyLecturas = em.merge(oldFkAmyTipolecturasOfAmyLecturasListNewAmyLecturas);
                     }
                 }
             }
-            for (ConsumosConsumos consumosConsumosCollectionNewConsumosConsumos : consumosConsumosCollectionNew) {
-                if (!consumosConsumosCollectionOld.contains(consumosConsumosCollectionNewConsumosConsumos)) {
-                    AmyTipolecturas oldFkAmyTipolecturasOfConsumosConsumosCollectionNewConsumosConsumos = consumosConsumosCollectionNewConsumosConsumos.getFkAmyTipolecturas();
-                    consumosConsumosCollectionNewConsumosConsumos.setFkAmyTipolecturas(amyTipolecturas);
-                    consumosConsumosCollectionNewConsumosConsumos = em.merge(consumosConsumosCollectionNewConsumosConsumos);
-                    if (oldFkAmyTipolecturasOfConsumosConsumosCollectionNewConsumosConsumos != null && !oldFkAmyTipolecturasOfConsumosConsumosCollectionNewConsumosConsumos.equals(amyTipolecturas)) {
-                        oldFkAmyTipolecturasOfConsumosConsumosCollectionNewConsumosConsumos.getConsumosConsumosCollection().remove(consumosConsumosCollectionNewConsumosConsumos);
-                        oldFkAmyTipolecturasOfConsumosConsumosCollectionNewConsumosConsumos = em.merge(oldFkAmyTipolecturasOfConsumosConsumosCollectionNewConsumosConsumos);
+            for (ConsumosConsumos consumosConsumosListNewConsumosConsumos : consumosConsumosListNew) {
+                if (!consumosConsumosListOld.contains(consumosConsumosListNewConsumosConsumos)) {
+                    AmyTipolecturas oldFkAmyTipolecturasOfConsumosConsumosListNewConsumosConsumos = consumosConsumosListNewConsumosConsumos.getFkAmyTipolecturas();
+                    consumosConsumosListNewConsumosConsumos.setFkAmyTipolecturas(amyTipolecturas);
+                    consumosConsumosListNewConsumosConsumos = em.merge(consumosConsumosListNewConsumosConsumos);
+                    if (oldFkAmyTipolecturasOfConsumosConsumosListNewConsumosConsumos != null && !oldFkAmyTipolecturasOfConsumosConsumosListNewConsumosConsumos.equals(amyTipolecturas)) {
+                        oldFkAmyTipolecturasOfConsumosConsumosListNewConsumosConsumos.getConsumosConsumosList().remove(consumosConsumosListNewConsumosConsumos);
+                        oldFkAmyTipolecturasOfConsumosConsumosListNewConsumosConsumos = em.merge(oldFkAmyTipolecturasOfConsumosConsumosListNewConsumosConsumos);
                     }
                 }
             }
-            for (AmyConsumos amyConsumosCollectionNewAmyConsumos : amyConsumosCollectionNew) {
-                if (!amyConsumosCollectionOld.contains(amyConsumosCollectionNewAmyConsumos)) {
-                    AmyTipolecturas oldFkAmyTipolecturasOfAmyConsumosCollectionNewAmyConsumos = amyConsumosCollectionNewAmyConsumos.getFkAmyTipolecturas();
-                    amyConsumosCollectionNewAmyConsumos.setFkAmyTipolecturas(amyTipolecturas);
-                    amyConsumosCollectionNewAmyConsumos = em.merge(amyConsumosCollectionNewAmyConsumos);
-                    if (oldFkAmyTipolecturasOfAmyConsumosCollectionNewAmyConsumos != null && !oldFkAmyTipolecturasOfAmyConsumosCollectionNewAmyConsumos.equals(amyTipolecturas)) {
-                        oldFkAmyTipolecturasOfAmyConsumosCollectionNewAmyConsumos.getAmyConsumosCollection().remove(amyConsumosCollectionNewAmyConsumos);
-                        oldFkAmyTipolecturasOfAmyConsumosCollectionNewAmyConsumos = em.merge(oldFkAmyTipolecturasOfAmyConsumosCollectionNewAmyConsumos);
+            for (AmyConsumos amyConsumosListNewAmyConsumos : amyConsumosListNew) {
+                if (!amyConsumosListOld.contains(amyConsumosListNewAmyConsumos)) {
+                    AmyTipolecturas oldFkAmyTipolecturasOfAmyConsumosListNewAmyConsumos = amyConsumosListNewAmyConsumos.getFkAmyTipolecturas();
+                    amyConsumosListNewAmyConsumos.setFkAmyTipolecturas(amyTipolecturas);
+                    amyConsumosListNewAmyConsumos = em.merge(amyConsumosListNewAmyConsumos);
+                    if (oldFkAmyTipolecturasOfAmyConsumosListNewAmyConsumos != null && !oldFkAmyTipolecturasOfAmyConsumosListNewAmyConsumos.equals(amyTipolecturas)) {
+                        oldFkAmyTipolecturasOfAmyConsumosListNewAmyConsumos.getAmyConsumosList().remove(amyConsumosListNewAmyConsumos);
+                        oldFkAmyTipolecturasOfAmyConsumosListNewAmyConsumos = em.merge(oldFkAmyTipolecturasOfAmyConsumosListNewAmyConsumos);
                     }
                 }
             }
@@ -250,26 +249,26 @@ public class AmyTipolecturasJpaController implements Serializable {
                 throw new NonexistentEntityException("The amyTipolecturas with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<AmyLecturas> amyLecturasCollectionOrphanCheck = amyTipolecturas.getAmyLecturasCollection();
-            for (AmyLecturas amyLecturasCollectionOrphanCheckAmyLecturas : amyLecturasCollectionOrphanCheck) {
+            List<AmyLecturas> amyLecturasListOrphanCheck = amyTipolecturas.getAmyLecturasList();
+            for (AmyLecturas amyLecturasListOrphanCheckAmyLecturas : amyLecturasListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This AmyTipolecturas (" + amyTipolecturas + ") cannot be destroyed since the AmyLecturas " + amyLecturasCollectionOrphanCheckAmyLecturas + " in its amyLecturasCollection field has a non-nullable fkAmyTipolecturas field.");
+                illegalOrphanMessages.add("This AmyTipolecturas (" + amyTipolecturas + ") cannot be destroyed since the AmyLecturas " + amyLecturasListOrphanCheckAmyLecturas + " in its amyLecturasList field has a non-nullable fkAmyTipolecturas field.");
             }
-            Collection<ConsumosConsumos> consumosConsumosCollectionOrphanCheck = amyTipolecturas.getConsumosConsumosCollection();
-            for (ConsumosConsumos consumosConsumosCollectionOrphanCheckConsumosConsumos : consumosConsumosCollectionOrphanCheck) {
+            List<ConsumosConsumos> consumosConsumosListOrphanCheck = amyTipolecturas.getConsumosConsumosList();
+            for (ConsumosConsumos consumosConsumosListOrphanCheckConsumosConsumos : consumosConsumosListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This AmyTipolecturas (" + amyTipolecturas + ") cannot be destroyed since the ConsumosConsumos " + consumosConsumosCollectionOrphanCheckConsumosConsumos + " in its consumosConsumosCollection field has a non-nullable fkAmyTipolecturas field.");
+                illegalOrphanMessages.add("This AmyTipolecturas (" + amyTipolecturas + ") cannot be destroyed since the ConsumosConsumos " + consumosConsumosListOrphanCheckConsumosConsumos + " in its consumosConsumosList field has a non-nullable fkAmyTipolecturas field.");
             }
-            Collection<AmyConsumos> amyConsumosCollectionOrphanCheck = amyTipolecturas.getAmyConsumosCollection();
-            for (AmyConsumos amyConsumosCollectionOrphanCheckAmyConsumos : amyConsumosCollectionOrphanCheck) {
+            List<AmyConsumos> amyConsumosListOrphanCheck = amyTipolecturas.getAmyConsumosList();
+            for (AmyConsumos amyConsumosListOrphanCheckAmyConsumos : amyConsumosListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This AmyTipolecturas (" + amyTipolecturas + ") cannot be destroyed since the AmyConsumos " + amyConsumosCollectionOrphanCheckAmyConsumos + " in its amyConsumosCollection field has a non-nullable fkAmyTipolecturas field.");
+                illegalOrphanMessages.add("This AmyTipolecturas (" + amyTipolecturas + ") cannot be destroyed since the AmyConsumos " + amyConsumosListOrphanCheckAmyConsumos + " in its amyConsumosList field has a non-nullable fkAmyTipolecturas field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

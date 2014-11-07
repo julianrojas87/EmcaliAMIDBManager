@@ -49,7 +49,7 @@ public class AtrFncsActvMedidoresJpaController implements Serializable {
             }
             em.persist(atrFncsActvMedidores);
             if (fkAtrFncMedidores != null) {
-                fkAtrFncMedidores.getAtrFncsActvMedidoresCollection().add(atrFncsActvMedidores);
+                fkAtrFncMedidores.getAtrFncsActvMedidoresList().add(atrFncsActvMedidores);
                 fkAtrFncMedidores = em.merge(fkAtrFncMedidores);
             }
             utx.commit();
@@ -84,11 +84,11 @@ public class AtrFncsActvMedidoresJpaController implements Serializable {
             }
             atrFncsActvMedidores = em.merge(atrFncsActvMedidores);
             if (fkAtrFncMedidoresOld != null && !fkAtrFncMedidoresOld.equals(fkAtrFncMedidoresNew)) {
-                fkAtrFncMedidoresOld.getAtrFncsActvMedidoresCollection().remove(atrFncsActvMedidores);
+                fkAtrFncMedidoresOld.getAtrFncsActvMedidoresList().remove(atrFncsActvMedidores);
                 fkAtrFncMedidoresOld = em.merge(fkAtrFncMedidoresOld);
             }
             if (fkAtrFncMedidoresNew != null && !fkAtrFncMedidoresNew.equals(fkAtrFncMedidoresOld)) {
-                fkAtrFncMedidoresNew.getAtrFncsActvMedidoresCollection().add(atrFncsActvMedidores);
+                fkAtrFncMedidoresNew.getAtrFncsActvMedidoresList().add(atrFncsActvMedidores);
                 fkAtrFncMedidoresNew = em.merge(fkAtrFncMedidoresNew);
             }
             utx.commit();
@@ -127,7 +127,7 @@ public class AtrFncsActvMedidoresJpaController implements Serializable {
             }
             AtributosFuncionMedidores fkAtrFncMedidores = atrFncsActvMedidores.getFkAtrFncMedidores();
             if (fkAtrFncMedidores != null) {
-                fkAtrFncMedidores.getAtrFncsActvMedidoresCollection().remove(atrFncsActvMedidores);
+                fkAtrFncMedidores.getAtrFncsActvMedidoresList().remove(atrFncsActvMedidores);
                 fkAtrFncMedidores = em.merge(fkAtrFncMedidores);
             }
             em.remove(atrFncsActvMedidores);

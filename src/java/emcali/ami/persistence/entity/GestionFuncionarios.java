@@ -6,13 +6,15 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -38,9 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "GestionFuncionarios.findByIdentificacion", query = "SELECT g FROM GestionFuncionarios g WHERE g.identificacion = :identificacion"),
     @NamedQuery(name = "GestionFuncionarios.findByMail", query = "SELECT g FROM GestionFuncionarios g WHERE g.mail = :mail"),
     @NamedQuery(name = "GestionFuncionarios.findByTelefonoContacto", query = "SELECT g FROM GestionFuncionarios g WHERE g.telefonoContacto = :telefonoContacto"),
-    @NamedQuery(name = "GestionFuncionarios.findByCreadoPor", query = "SELECT g FROM GestionFuncionarios g WHERE g.creadoPor = :creadoPor"),
     @NamedQuery(name = "GestionFuncionarios.findByFechaCreacion", query = "SELECT g FROM GestionFuncionarios g WHERE g.fechaCreacion = :fechaCreacion"),
-    @NamedQuery(name = "GestionFuncionarios.findByModificadoPor", query = "SELECT g FROM GestionFuncionarios g WHERE g.modificadoPor = :modificadoPor"),
     @NamedQuery(name = "GestionFuncionarios.findByFechaModificacion", query = "SELECT g FROM GestionFuncionarios g WHERE g.fechaModificacion = :fechaModificacion"),
     @NamedQuery(name = "GestionFuncionarios.findByObservaciones", query = "SELECT g FROM GestionFuncionarios g WHERE g.observaciones = :observaciones")})
 public class GestionFuncionarios implements Serializable {
@@ -71,17 +71,9 @@ public class GestionFuncionarios implements Serializable {
     private long telefonoContacto;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "CREADO_POR")
-    private long creadoPor;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHA_CREACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "MODIFICADO_POR")
-    private long modificadoPor;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_MODIFICACION")
@@ -90,8 +82,30 @@ public class GestionFuncionarios implements Serializable {
     @Size(max = 45)
     @Column(name = "OBSERVACIONES")
     private String observaciones;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<ComercialClientes> comercialClientesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<ComercialClientes> comercialClientesList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<GestionFuncionarios> gestionFuncionariosList;
+    @JoinColumn(name = "MODIFICADO_POR", referencedColumnName = "ID_FUNCIONARIOS")
+    @ManyToOne(optional = false)
+    private GestionFuncionarios modificadoPor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<GestionFuncionarios> gestionFuncionariosList1;
+    @JoinColumn(name = "CREADO_POR", referencedColumnName = "ID_FUNCIONARIOS")
+    @ManyToOne(optional = false)
+    private GestionFuncionarios creadoPor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<GestionPerfiles> gestionPerfilesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<GestionPerfiles> gestionPerfilesList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkGestionFuncionarios")
-    private Collection<GestionUsuarios> gestionUsuariosCollection;
+    private List<GestionUsuarios> gestionUsuariosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<GestionUsuarios> gestionUsuariosList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<GestionUsuarios> gestionUsuariosList2;
 
     public GestionFuncionarios() {
     }
@@ -100,15 +114,13 @@ public class GestionFuncionarios implements Serializable {
         this.idFuncionarios = idFuncionarios;
     }
 
-    public GestionFuncionarios(Long idFuncionarios, String nombreFuncionarios, String identificacion, String mail, long telefonoContacto, long creadoPor, Date fechaCreacion, long modificadoPor, Date fechaModificacion) {
+    public GestionFuncionarios(Long idFuncionarios, String nombreFuncionarios, String identificacion, String mail, long telefonoContacto, Date fechaCreacion, Date fechaModificacion) {
         this.idFuncionarios = idFuncionarios;
         this.nombreFuncionarios = nombreFuncionarios;
         this.identificacion = identificacion;
         this.mail = mail;
         this.telefonoContacto = telefonoContacto;
-        this.creadoPor = creadoPor;
         this.fechaCreacion = fechaCreacion;
-        this.modificadoPor = modificadoPor;
         this.fechaModificacion = fechaModificacion;
     }
 
@@ -152,28 +164,12 @@ public class GestionFuncionarios implements Serializable {
         this.telefonoContacto = telefonoContacto;
     }
 
-    public long getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(long creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
 
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
-    }
-
-    public long getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(long modificadoPor) {
-        this.modificadoPor = modificadoPor;
     }
 
     public Date getFechaModificacion() {
@@ -193,12 +189,100 @@ public class GestionFuncionarios implements Serializable {
     }
 
     @XmlTransient
-    public Collection<GestionUsuarios> getGestionUsuariosCollection() {
-        return gestionUsuariosCollection;
+    public List<ComercialClientes> getComercialClientesList() {
+        return comercialClientesList;
     }
 
-    public void setGestionUsuariosCollection(Collection<GestionUsuarios> gestionUsuariosCollection) {
-        this.gestionUsuariosCollection = gestionUsuariosCollection;
+    public void setComercialClientesList(List<ComercialClientes> comercialClientesList) {
+        this.comercialClientesList = comercialClientesList;
+    }
+
+    @XmlTransient
+    public List<ComercialClientes> getComercialClientesList1() {
+        return comercialClientesList1;
+    }
+
+    public void setComercialClientesList1(List<ComercialClientes> comercialClientesList1) {
+        this.comercialClientesList1 = comercialClientesList1;
+    }
+
+    @XmlTransient
+    public List<GestionFuncionarios> getGestionFuncionariosList() {
+        return gestionFuncionariosList;
+    }
+
+    public void setGestionFuncionariosList(List<GestionFuncionarios> gestionFuncionariosList) {
+        this.gestionFuncionariosList = gestionFuncionariosList;
+    }
+
+    public GestionFuncionarios getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(GestionFuncionarios modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    @XmlTransient
+    public List<GestionFuncionarios> getGestionFuncionariosList1() {
+        return gestionFuncionariosList1;
+    }
+
+    public void setGestionFuncionariosList1(List<GestionFuncionarios> gestionFuncionariosList1) {
+        this.gestionFuncionariosList1 = gestionFuncionariosList1;
+    }
+
+    public GestionFuncionarios getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(GestionFuncionarios creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    @XmlTransient
+    public List<GestionPerfiles> getGestionPerfilesList() {
+        return gestionPerfilesList;
+    }
+
+    public void setGestionPerfilesList(List<GestionPerfiles> gestionPerfilesList) {
+        this.gestionPerfilesList = gestionPerfilesList;
+    }
+
+    @XmlTransient
+    public List<GestionPerfiles> getGestionPerfilesList1() {
+        return gestionPerfilesList1;
+    }
+
+    public void setGestionPerfilesList1(List<GestionPerfiles> gestionPerfilesList1) {
+        this.gestionPerfilesList1 = gestionPerfilesList1;
+    }
+
+    @XmlTransient
+    public List<GestionUsuarios> getGestionUsuariosList() {
+        return gestionUsuariosList;
+    }
+
+    public void setGestionUsuariosList(List<GestionUsuarios> gestionUsuariosList) {
+        this.gestionUsuariosList = gestionUsuariosList;
+    }
+
+    @XmlTransient
+    public List<GestionUsuarios> getGestionUsuariosList1() {
+        return gestionUsuariosList1;
+    }
+
+    public void setGestionUsuariosList1(List<GestionUsuarios> gestionUsuariosList1) {
+        this.gestionUsuariosList1 = gestionUsuariosList1;
+    }
+
+    @XmlTransient
+    public List<GestionUsuarios> getGestionUsuariosList2() {
+        return gestionUsuariosList2;
+    }
+
+    public void setGestionUsuariosList2(List<GestionUsuarios> gestionUsuariosList2) {
+        this.gestionUsuariosList2 = gestionUsuariosList2;
     }
 
     @Override

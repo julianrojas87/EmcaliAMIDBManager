@@ -18,7 +18,6 @@ import emcali.ami.persistence.entity.ComercialClientes;
 import emcali.ami.persistence.entity.ComercialContratos;
 import emcali.ami.persistence.entity.ComercialProductos;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -42,8 +41,8 @@ public class ComercialContratosJpaController implements Serializable {
     }
 
     public void create(ComercialContratos comercialContratos) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (comercialContratos.getComercialProductosCollection() == null) {
-            comercialContratos.setComercialProductosCollection(new ArrayList<ComercialProductos>());
+        if (comercialContratos.getComercialProductosList() == null) {
+            comercialContratos.setComercialProductosList(new ArrayList<ComercialProductos>());
         }
         EntityManager em = null;
         try {
@@ -54,24 +53,24 @@ public class ComercialContratosJpaController implements Serializable {
                 fkComercialClientes = em.getReference(fkComercialClientes.getClass(), fkComercialClientes.getIdClientes());
                 comercialContratos.setFkComercialClientes(fkComercialClientes);
             }
-            Collection<ComercialProductos> attachedComercialProductosCollection = new ArrayList<ComercialProductos>();
-            for (ComercialProductos comercialProductosCollectionComercialProductosToAttach : comercialContratos.getComercialProductosCollection()) {
-                comercialProductosCollectionComercialProductosToAttach = em.getReference(comercialProductosCollectionComercialProductosToAttach.getClass(), comercialProductosCollectionComercialProductosToAttach.getIdProductos());
-                attachedComercialProductosCollection.add(comercialProductosCollectionComercialProductosToAttach);
+            List<ComercialProductos> attachedComercialProductosList = new ArrayList<ComercialProductos>();
+            for (ComercialProductos comercialProductosListComercialProductosToAttach : comercialContratos.getComercialProductosList()) {
+                comercialProductosListComercialProductosToAttach = em.getReference(comercialProductosListComercialProductosToAttach.getClass(), comercialProductosListComercialProductosToAttach.getIdProductos());
+                attachedComercialProductosList.add(comercialProductosListComercialProductosToAttach);
             }
-            comercialContratos.setComercialProductosCollection(attachedComercialProductosCollection);
+            comercialContratos.setComercialProductosList(attachedComercialProductosList);
             em.persist(comercialContratos);
             if (fkComercialClientes != null) {
-                fkComercialClientes.getComercialContratosCollection().add(comercialContratos);
+                fkComercialClientes.getComercialContratosList().add(comercialContratos);
                 fkComercialClientes = em.merge(fkComercialClientes);
             }
-            for (ComercialProductos comercialProductosCollectionComercialProductos : comercialContratos.getComercialProductosCollection()) {
-                ComercialContratos oldFkComercialContratosOfComercialProductosCollectionComercialProductos = comercialProductosCollectionComercialProductos.getFkComercialContratos();
-                comercialProductosCollectionComercialProductos.setFkComercialContratos(comercialContratos);
-                comercialProductosCollectionComercialProductos = em.merge(comercialProductosCollectionComercialProductos);
-                if (oldFkComercialContratosOfComercialProductosCollectionComercialProductos != null) {
-                    oldFkComercialContratosOfComercialProductosCollectionComercialProductos.getComercialProductosCollection().remove(comercialProductosCollectionComercialProductos);
-                    oldFkComercialContratosOfComercialProductosCollectionComercialProductos = em.merge(oldFkComercialContratosOfComercialProductosCollectionComercialProductos);
+            for (ComercialProductos comercialProductosListComercialProductos : comercialContratos.getComercialProductosList()) {
+                ComercialContratos oldFkComercialContratosOfComercialProductosListComercialProductos = comercialProductosListComercialProductos.getFkComercialContratos();
+                comercialProductosListComercialProductos.setFkComercialContratos(comercialContratos);
+                comercialProductosListComercialProductos = em.merge(comercialProductosListComercialProductos);
+                if (oldFkComercialContratosOfComercialProductosListComercialProductos != null) {
+                    oldFkComercialContratosOfComercialProductosListComercialProductos.getComercialProductosList().remove(comercialProductosListComercialProductos);
+                    oldFkComercialContratosOfComercialProductosListComercialProductos = em.merge(oldFkComercialContratosOfComercialProductosListComercialProductos);
                 }
             }
             utx.commit();
@@ -100,15 +99,15 @@ public class ComercialContratosJpaController implements Serializable {
             ComercialContratos persistentComercialContratos = em.find(ComercialContratos.class, comercialContratos.getIdContratos());
             ComercialClientes fkComercialClientesOld = persistentComercialContratos.getFkComercialClientes();
             ComercialClientes fkComercialClientesNew = comercialContratos.getFkComercialClientes();
-            Collection<ComercialProductos> comercialProductosCollectionOld = persistentComercialContratos.getComercialProductosCollection();
-            Collection<ComercialProductos> comercialProductosCollectionNew = comercialContratos.getComercialProductosCollection();
+            List<ComercialProductos> comercialProductosListOld = persistentComercialContratos.getComercialProductosList();
+            List<ComercialProductos> comercialProductosListNew = comercialContratos.getComercialProductosList();
             List<String> illegalOrphanMessages = null;
-            for (ComercialProductos comercialProductosCollectionOldComercialProductos : comercialProductosCollectionOld) {
-                if (!comercialProductosCollectionNew.contains(comercialProductosCollectionOldComercialProductos)) {
+            for (ComercialProductos comercialProductosListOldComercialProductos : comercialProductosListOld) {
+                if (!comercialProductosListNew.contains(comercialProductosListOldComercialProductos)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain ComercialProductos " + comercialProductosCollectionOldComercialProductos + " since its fkComercialContratos field is not nullable.");
+                    illegalOrphanMessages.add("You must retain ComercialProductos " + comercialProductosListOldComercialProductos + " since its fkComercialContratos field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -118,30 +117,30 @@ public class ComercialContratosJpaController implements Serializable {
                 fkComercialClientesNew = em.getReference(fkComercialClientesNew.getClass(), fkComercialClientesNew.getIdClientes());
                 comercialContratos.setFkComercialClientes(fkComercialClientesNew);
             }
-            Collection<ComercialProductos> attachedComercialProductosCollectionNew = new ArrayList<ComercialProductos>();
-            for (ComercialProductos comercialProductosCollectionNewComercialProductosToAttach : comercialProductosCollectionNew) {
-                comercialProductosCollectionNewComercialProductosToAttach = em.getReference(comercialProductosCollectionNewComercialProductosToAttach.getClass(), comercialProductosCollectionNewComercialProductosToAttach.getIdProductos());
-                attachedComercialProductosCollectionNew.add(comercialProductosCollectionNewComercialProductosToAttach);
+            List<ComercialProductos> attachedComercialProductosListNew = new ArrayList<ComercialProductos>();
+            for (ComercialProductos comercialProductosListNewComercialProductosToAttach : comercialProductosListNew) {
+                comercialProductosListNewComercialProductosToAttach = em.getReference(comercialProductosListNewComercialProductosToAttach.getClass(), comercialProductosListNewComercialProductosToAttach.getIdProductos());
+                attachedComercialProductosListNew.add(comercialProductosListNewComercialProductosToAttach);
             }
-            comercialProductosCollectionNew = attachedComercialProductosCollectionNew;
-            comercialContratos.setComercialProductosCollection(comercialProductosCollectionNew);
+            comercialProductosListNew = attachedComercialProductosListNew;
+            comercialContratos.setComercialProductosList(comercialProductosListNew);
             comercialContratos = em.merge(comercialContratos);
             if (fkComercialClientesOld != null && !fkComercialClientesOld.equals(fkComercialClientesNew)) {
-                fkComercialClientesOld.getComercialContratosCollection().remove(comercialContratos);
+                fkComercialClientesOld.getComercialContratosList().remove(comercialContratos);
                 fkComercialClientesOld = em.merge(fkComercialClientesOld);
             }
             if (fkComercialClientesNew != null && !fkComercialClientesNew.equals(fkComercialClientesOld)) {
-                fkComercialClientesNew.getComercialContratosCollection().add(comercialContratos);
+                fkComercialClientesNew.getComercialContratosList().add(comercialContratos);
                 fkComercialClientesNew = em.merge(fkComercialClientesNew);
             }
-            for (ComercialProductos comercialProductosCollectionNewComercialProductos : comercialProductosCollectionNew) {
-                if (!comercialProductosCollectionOld.contains(comercialProductosCollectionNewComercialProductos)) {
-                    ComercialContratos oldFkComercialContratosOfComercialProductosCollectionNewComercialProductos = comercialProductosCollectionNewComercialProductos.getFkComercialContratos();
-                    comercialProductosCollectionNewComercialProductos.setFkComercialContratos(comercialContratos);
-                    comercialProductosCollectionNewComercialProductos = em.merge(comercialProductosCollectionNewComercialProductos);
-                    if (oldFkComercialContratosOfComercialProductosCollectionNewComercialProductos != null && !oldFkComercialContratosOfComercialProductosCollectionNewComercialProductos.equals(comercialContratos)) {
-                        oldFkComercialContratosOfComercialProductosCollectionNewComercialProductos.getComercialProductosCollection().remove(comercialProductosCollectionNewComercialProductos);
-                        oldFkComercialContratosOfComercialProductosCollectionNewComercialProductos = em.merge(oldFkComercialContratosOfComercialProductosCollectionNewComercialProductos);
+            for (ComercialProductos comercialProductosListNewComercialProductos : comercialProductosListNew) {
+                if (!comercialProductosListOld.contains(comercialProductosListNewComercialProductos)) {
+                    ComercialContratos oldFkComercialContratosOfComercialProductosListNewComercialProductos = comercialProductosListNewComercialProductos.getFkComercialContratos();
+                    comercialProductosListNewComercialProductos.setFkComercialContratos(comercialContratos);
+                    comercialProductosListNewComercialProductos = em.merge(comercialProductosListNewComercialProductos);
+                    if (oldFkComercialContratosOfComercialProductosListNewComercialProductos != null && !oldFkComercialContratosOfComercialProductosListNewComercialProductos.equals(comercialContratos)) {
+                        oldFkComercialContratosOfComercialProductosListNewComercialProductos.getComercialProductosList().remove(comercialProductosListNewComercialProductos);
+                        oldFkComercialContratosOfComercialProductosListNewComercialProductos = em.merge(oldFkComercialContratosOfComercialProductosListNewComercialProductos);
                     }
                 }
             }
@@ -180,19 +179,19 @@ public class ComercialContratosJpaController implements Serializable {
                 throw new NonexistentEntityException("The comercialContratos with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<ComercialProductos> comercialProductosCollectionOrphanCheck = comercialContratos.getComercialProductosCollection();
-            for (ComercialProductos comercialProductosCollectionOrphanCheckComercialProductos : comercialProductosCollectionOrphanCheck) {
+            List<ComercialProductos> comercialProductosListOrphanCheck = comercialContratos.getComercialProductosList();
+            for (ComercialProductos comercialProductosListOrphanCheckComercialProductos : comercialProductosListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This ComercialContratos (" + comercialContratos + ") cannot be destroyed since the ComercialProductos " + comercialProductosCollectionOrphanCheckComercialProductos + " in its comercialProductosCollection field has a non-nullable fkComercialContratos field.");
+                illegalOrphanMessages.add("This ComercialContratos (" + comercialContratos + ") cannot be destroyed since the ComercialProductos " + comercialProductosListOrphanCheckComercialProductos + " in its comercialProductosList field has a non-nullable fkComercialContratos field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             ComercialClientes fkComercialClientes = comercialContratos.getFkComercialClientes();
             if (fkComercialClientes != null) {
-                fkComercialClientes.getComercialContratosCollection().remove(comercialContratos);
+                fkComercialClientes.getComercialContratosList().remove(comercialContratos);
                 fkComercialClientes = em.merge(fkComercialClientes);
             }
             em.remove(comercialContratos);

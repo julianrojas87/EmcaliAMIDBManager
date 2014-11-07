@@ -18,7 +18,6 @@ import emcali.ami.persistence.entity.AtributosFabricantes;
 import emcali.ami.persistence.entity.AmyCajas;
 import emcali.ami.persistence.entity.AtributosTiposCajas;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -42,8 +41,8 @@ public class AtributosTiposCajasJpaController implements Serializable {
     }
 
     public void create(AtributosTiposCajas atributosTiposCajas) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (atributosTiposCajas.getAmyCajasCollection() == null) {
-            atributosTiposCajas.setAmyCajasCollection(new ArrayList<AmyCajas>());
+        if (atributosTiposCajas.getAmyCajasList() == null) {
+            atributosTiposCajas.setAmyCajasList(new ArrayList<AmyCajas>());
         }
         EntityManager em = null;
         try {
@@ -54,24 +53,24 @@ public class AtributosTiposCajasJpaController implements Serializable {
                 fkAtributosFabricantes = em.getReference(fkAtributosFabricantes.getClass(), fkAtributosFabricantes.getIdFabricantes());
                 atributosTiposCajas.setFkAtributosFabricantes(fkAtributosFabricantes);
             }
-            Collection<AmyCajas> attachedAmyCajasCollection = new ArrayList<AmyCajas>();
-            for (AmyCajas amyCajasCollectionAmyCajasToAttach : atributosTiposCajas.getAmyCajasCollection()) {
-                amyCajasCollectionAmyCajasToAttach = em.getReference(amyCajasCollectionAmyCajasToAttach.getClass(), amyCajasCollectionAmyCajasToAttach.getIdCajas());
-                attachedAmyCajasCollection.add(amyCajasCollectionAmyCajasToAttach);
+            List<AmyCajas> attachedAmyCajasList = new ArrayList<AmyCajas>();
+            for (AmyCajas amyCajasListAmyCajasToAttach : atributosTiposCajas.getAmyCajasList()) {
+                amyCajasListAmyCajasToAttach = em.getReference(amyCajasListAmyCajasToAttach.getClass(), amyCajasListAmyCajasToAttach.getIdCajas());
+                attachedAmyCajasList.add(amyCajasListAmyCajasToAttach);
             }
-            atributosTiposCajas.setAmyCajasCollection(attachedAmyCajasCollection);
+            atributosTiposCajas.setAmyCajasList(attachedAmyCajasList);
             em.persist(atributosTiposCajas);
             if (fkAtributosFabricantes != null) {
-                fkAtributosFabricantes.getAtributosTiposCajasCollection().add(atributosTiposCajas);
+                fkAtributosFabricantes.getAtributosTiposCajasList().add(atributosTiposCajas);
                 fkAtributosFabricantes = em.merge(fkAtributosFabricantes);
             }
-            for (AmyCajas amyCajasCollectionAmyCajas : atributosTiposCajas.getAmyCajasCollection()) {
-                AtributosTiposCajas oldFkTiposCajasOfAmyCajasCollectionAmyCajas = amyCajasCollectionAmyCajas.getFkTiposCajas();
-                amyCajasCollectionAmyCajas.setFkTiposCajas(atributosTiposCajas);
-                amyCajasCollectionAmyCajas = em.merge(amyCajasCollectionAmyCajas);
-                if (oldFkTiposCajasOfAmyCajasCollectionAmyCajas != null) {
-                    oldFkTiposCajasOfAmyCajasCollectionAmyCajas.getAmyCajasCollection().remove(amyCajasCollectionAmyCajas);
-                    oldFkTiposCajasOfAmyCajasCollectionAmyCajas = em.merge(oldFkTiposCajasOfAmyCajasCollectionAmyCajas);
+            for (AmyCajas amyCajasListAmyCajas : atributosTiposCajas.getAmyCajasList()) {
+                AtributosTiposCajas oldFkTiposCajasOfAmyCajasListAmyCajas = amyCajasListAmyCajas.getFkTiposCajas();
+                amyCajasListAmyCajas.setFkTiposCajas(atributosTiposCajas);
+                amyCajasListAmyCajas = em.merge(amyCajasListAmyCajas);
+                if (oldFkTiposCajasOfAmyCajasListAmyCajas != null) {
+                    oldFkTiposCajasOfAmyCajasListAmyCajas.getAmyCajasList().remove(amyCajasListAmyCajas);
+                    oldFkTiposCajasOfAmyCajasListAmyCajas = em.merge(oldFkTiposCajasOfAmyCajasListAmyCajas);
                 }
             }
             utx.commit();
@@ -100,15 +99,15 @@ public class AtributosTiposCajasJpaController implements Serializable {
             AtributosTiposCajas persistentAtributosTiposCajas = em.find(AtributosTiposCajas.class, atributosTiposCajas.getIdTiposCajas());
             AtributosFabricantes fkAtributosFabricantesOld = persistentAtributosTiposCajas.getFkAtributosFabricantes();
             AtributosFabricantes fkAtributosFabricantesNew = atributosTiposCajas.getFkAtributosFabricantes();
-            Collection<AmyCajas> amyCajasCollectionOld = persistentAtributosTiposCajas.getAmyCajasCollection();
-            Collection<AmyCajas> amyCajasCollectionNew = atributosTiposCajas.getAmyCajasCollection();
+            List<AmyCajas> amyCajasListOld = persistentAtributosTiposCajas.getAmyCajasList();
+            List<AmyCajas> amyCajasListNew = atributosTiposCajas.getAmyCajasList();
             List<String> illegalOrphanMessages = null;
-            for (AmyCajas amyCajasCollectionOldAmyCajas : amyCajasCollectionOld) {
-                if (!amyCajasCollectionNew.contains(amyCajasCollectionOldAmyCajas)) {
+            for (AmyCajas amyCajasListOldAmyCajas : amyCajasListOld) {
+                if (!amyCajasListNew.contains(amyCajasListOldAmyCajas)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain AmyCajas " + amyCajasCollectionOldAmyCajas + " since its fkTiposCajas field is not nullable.");
+                    illegalOrphanMessages.add("You must retain AmyCajas " + amyCajasListOldAmyCajas + " since its fkTiposCajas field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -118,30 +117,30 @@ public class AtributosTiposCajasJpaController implements Serializable {
                 fkAtributosFabricantesNew = em.getReference(fkAtributosFabricantesNew.getClass(), fkAtributosFabricantesNew.getIdFabricantes());
                 atributosTiposCajas.setFkAtributosFabricantes(fkAtributosFabricantesNew);
             }
-            Collection<AmyCajas> attachedAmyCajasCollectionNew = new ArrayList<AmyCajas>();
-            for (AmyCajas amyCajasCollectionNewAmyCajasToAttach : amyCajasCollectionNew) {
-                amyCajasCollectionNewAmyCajasToAttach = em.getReference(amyCajasCollectionNewAmyCajasToAttach.getClass(), amyCajasCollectionNewAmyCajasToAttach.getIdCajas());
-                attachedAmyCajasCollectionNew.add(amyCajasCollectionNewAmyCajasToAttach);
+            List<AmyCajas> attachedAmyCajasListNew = new ArrayList<AmyCajas>();
+            for (AmyCajas amyCajasListNewAmyCajasToAttach : amyCajasListNew) {
+                amyCajasListNewAmyCajasToAttach = em.getReference(amyCajasListNewAmyCajasToAttach.getClass(), amyCajasListNewAmyCajasToAttach.getIdCajas());
+                attachedAmyCajasListNew.add(amyCajasListNewAmyCajasToAttach);
             }
-            amyCajasCollectionNew = attachedAmyCajasCollectionNew;
-            atributosTiposCajas.setAmyCajasCollection(amyCajasCollectionNew);
+            amyCajasListNew = attachedAmyCajasListNew;
+            atributosTiposCajas.setAmyCajasList(amyCajasListNew);
             atributosTiposCajas = em.merge(atributosTiposCajas);
             if (fkAtributosFabricantesOld != null && !fkAtributosFabricantesOld.equals(fkAtributosFabricantesNew)) {
-                fkAtributosFabricantesOld.getAtributosTiposCajasCollection().remove(atributosTiposCajas);
+                fkAtributosFabricantesOld.getAtributosTiposCajasList().remove(atributosTiposCajas);
                 fkAtributosFabricantesOld = em.merge(fkAtributosFabricantesOld);
             }
             if (fkAtributosFabricantesNew != null && !fkAtributosFabricantesNew.equals(fkAtributosFabricantesOld)) {
-                fkAtributosFabricantesNew.getAtributosTiposCajasCollection().add(atributosTiposCajas);
+                fkAtributosFabricantesNew.getAtributosTiposCajasList().add(atributosTiposCajas);
                 fkAtributosFabricantesNew = em.merge(fkAtributosFabricantesNew);
             }
-            for (AmyCajas amyCajasCollectionNewAmyCajas : amyCajasCollectionNew) {
-                if (!amyCajasCollectionOld.contains(amyCajasCollectionNewAmyCajas)) {
-                    AtributosTiposCajas oldFkTiposCajasOfAmyCajasCollectionNewAmyCajas = amyCajasCollectionNewAmyCajas.getFkTiposCajas();
-                    amyCajasCollectionNewAmyCajas.setFkTiposCajas(atributosTiposCajas);
-                    amyCajasCollectionNewAmyCajas = em.merge(amyCajasCollectionNewAmyCajas);
-                    if (oldFkTiposCajasOfAmyCajasCollectionNewAmyCajas != null && !oldFkTiposCajasOfAmyCajasCollectionNewAmyCajas.equals(atributosTiposCajas)) {
-                        oldFkTiposCajasOfAmyCajasCollectionNewAmyCajas.getAmyCajasCollection().remove(amyCajasCollectionNewAmyCajas);
-                        oldFkTiposCajasOfAmyCajasCollectionNewAmyCajas = em.merge(oldFkTiposCajasOfAmyCajasCollectionNewAmyCajas);
+            for (AmyCajas amyCajasListNewAmyCajas : amyCajasListNew) {
+                if (!amyCajasListOld.contains(amyCajasListNewAmyCajas)) {
+                    AtributosTiposCajas oldFkTiposCajasOfAmyCajasListNewAmyCajas = amyCajasListNewAmyCajas.getFkTiposCajas();
+                    amyCajasListNewAmyCajas.setFkTiposCajas(atributosTiposCajas);
+                    amyCajasListNewAmyCajas = em.merge(amyCajasListNewAmyCajas);
+                    if (oldFkTiposCajasOfAmyCajasListNewAmyCajas != null && !oldFkTiposCajasOfAmyCajasListNewAmyCajas.equals(atributosTiposCajas)) {
+                        oldFkTiposCajasOfAmyCajasListNewAmyCajas.getAmyCajasList().remove(amyCajasListNewAmyCajas);
+                        oldFkTiposCajasOfAmyCajasListNewAmyCajas = em.merge(oldFkTiposCajasOfAmyCajasListNewAmyCajas);
                     }
                 }
             }
@@ -180,19 +179,19 @@ public class AtributosTiposCajasJpaController implements Serializable {
                 throw new NonexistentEntityException("The atributosTiposCajas with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<AmyCajas> amyCajasCollectionOrphanCheck = atributosTiposCajas.getAmyCajasCollection();
-            for (AmyCajas amyCajasCollectionOrphanCheckAmyCajas : amyCajasCollectionOrphanCheck) {
+            List<AmyCajas> amyCajasListOrphanCheck = atributosTiposCajas.getAmyCajasList();
+            for (AmyCajas amyCajasListOrphanCheckAmyCajas : amyCajasListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This AtributosTiposCajas (" + atributosTiposCajas + ") cannot be destroyed since the AmyCajas " + amyCajasCollectionOrphanCheckAmyCajas + " in its amyCajasCollection field has a non-nullable fkTiposCajas field.");
+                illegalOrphanMessages.add("This AtributosTiposCajas (" + atributosTiposCajas + ") cannot be destroyed since the AmyCajas " + amyCajasListOrphanCheckAmyCajas + " in its amyCajasList field has a non-nullable fkTiposCajas field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             AtributosFabricantes fkAtributosFabricantes = atributosTiposCajas.getFkAtributosFabricantes();
             if (fkAtributosFabricantes != null) {
-                fkAtributosFabricantes.getAtributosTiposCajasCollection().remove(atributosTiposCajas);
+                fkAtributosFabricantes.getAtributosTiposCajasList().remove(atributosTiposCajas);
                 fkAtributosFabricantes = em.merge(fkAtributosFabricantes);
             }
             em.remove(atributosTiposCajas);

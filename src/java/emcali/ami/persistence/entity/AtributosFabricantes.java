@@ -6,7 +6,7 @@
 package emcali.ami.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,9 +45,9 @@ public class AtributosFabricantes implements Serializable {
     @Column(name = "NOMBRE_FABRICANTES")
     private String nombreFabricantes;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAtributosFabricantes")
-    private Collection<AtributosTiposCajas> atributosTiposCajasCollection;
+    private List<AtributosTiposCajas> atributosTiposCajasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkAtributosFabricantes")
-    private Collection<AtributosTiposMedidores> atributosTiposMedidoresCollection;
+    private List<AtributosTiposMedidores> atributosTiposMedidoresList;
 
     public AtributosFabricantes() {
     }
@@ -78,21 +78,21 @@ public class AtributosFabricantes implements Serializable {
     }
 
     @XmlTransient
-    public Collection<AtributosTiposCajas> getAtributosTiposCajasCollection() {
-        return atributosTiposCajasCollection;
+    public List<AtributosTiposCajas> getAtributosTiposCajasList() {
+        return atributosTiposCajasList;
     }
 
-    public void setAtributosTiposCajasCollection(Collection<AtributosTiposCajas> atributosTiposCajasCollection) {
-        this.atributosTiposCajasCollection = atributosTiposCajasCollection;
+    public void setAtributosTiposCajasList(List<AtributosTiposCajas> atributosTiposCajasList) {
+        this.atributosTiposCajasList = atributosTiposCajasList;
     }
 
     @XmlTransient
-    public Collection<AtributosTiposMedidores> getAtributosTiposMedidoresCollection() {
-        return atributosTiposMedidoresCollection;
+    public List<AtributosTiposMedidores> getAtributosTiposMedidoresList() {
+        return atributosTiposMedidoresList;
     }
 
-    public void setAtributosTiposMedidoresCollection(Collection<AtributosTiposMedidores> atributosTiposMedidoresCollection) {
-        this.atributosTiposMedidoresCollection = atributosTiposMedidoresCollection;
+    public void setAtributosTiposMedidoresList(List<AtributosTiposMedidores> atributosTiposMedidoresList) {
+        this.atributosTiposMedidoresList = atributosTiposMedidoresList;
     }
 
     @Override
